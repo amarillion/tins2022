@@ -11,15 +11,18 @@
 #include "versionLoader.h"
 #include "strutil.h"
 #include "menubase.h"
+#include "settings.h"
+#include "keymenuitem.h"
 
 using namespace std;
 
-const int DIRNUM = 4;
-const char *DIRECTIONS[DIRNUM] = { "n", "e", "s", "w" };
+const int DIRNUM = 2;
+const char *DIRECTIONS[DIRNUM] = { "left", "right" };
 
 class EngineImpl : public Engine
 {
 private:
+	Settings settings;
 	shared_ptr<Game> game;
 	shared_ptr<Resources> resources;
 
@@ -44,18 +47,37 @@ public:
 
 	virtual shared_ptr<Resources> getResources() override { return resources; }
 
+	virtual bool isDebug() override { return debug; }
 	virtual int init() override
 	{
 		Anim::setDirectionModel (make_shared<DirectionModel>(DIRECTIONS, DIRNUM));
 		srand(time(0));
 
 		if (!(
-			resources->addFiles("data/*.ttf")
+			// resources->addFiles("data/*.png") &&
+			// resources->addFiles("data/*.tll") &&
+			// resources->addFiles("data/*.xml") &&
+			resources->addFiles("data/*.ttf") 
 			))
 		{
 			allegro_message ("Error while loading resources!\n%s", resources->getErrorMsg());
-			return 1;
+			return -1;
 		}
+
+		// if (!(
+		// 	resources->addJsonMapFile("data/bg1.json", "tiles1") &&
+		// 	resources->addJsonMapFile("data/map1.json", "tiles1") &&
+		// 	resources->addJsonMapFile("data/map2.json", "tiles1") &&
+		// 	resources->addJsonMapFile("data/map3.json", "tiles1") &&
+		// 	resources->addJsonMapFile("data/map4.json", "tiles1") &&
+		// 	resources->addJsonMapFile("data/bg2.json", "tiles1") &&
+		// 	resources->addJsonMapFile("data/bg3.json", "tiles1") &&
+		// 	resources->addJsonMapFile("data/bg4.json", "tiles1")
+		// ))
+		// {
+		// 	allegro_message ("Error while loading resources!\n%s", resources->getErrorMsg());
+		// 	return -1;
+		// }
 
 		sfont = resources->getFont("DejaVuSans")->get(16);
 
@@ -93,7 +115,7 @@ public:
 		}
 		if (btnAbort.justPressed())
 		{
-			pushMsg(MSG_QUIT);
+			pushMsg(E_QUIT);
 		}
 #endif
 	}
@@ -108,6 +130,8 @@ public:
 	std::shared_ptr<ActionMenuItem> miStart;
 
 	MenuScreenPtr mMain;
+	MenuScreenPtr mKeys;
+	MenuScreenPtr mPause;
 
 	void initMenu()
 	{
@@ -119,14 +143,13 @@ public:
 			"Music", "Press left or right to change music volume");
 		miMusic->setEnabled(MainLoop::getMainLoop()->isSoundInstalled());
 
-
-		miStart = make_shared<ActionMenuItem>(MSG_PLAY, "Start game", "");
+		miStart = make_shared<ActionMenuItem>(E_LEVEL_INTRO, "Start game", "");
 		mMain = MenuBuilder(this, NULL)
 			.push_back (miStart)
 			.push_back (miSound)
 			.push_back (miMusic)
-			.push_back (make_shared<ActionMenuItem>(MSG_TOGGLE_WINDOWED, "Toggle Fullscreen", "Switch fullscreen / windowed mode"))
-			.push_back (make_shared<ActionMenuItem>(MSG_QUIT, "Quit", ""))
+			.push_back (make_shared<ActionMenuItem>(E_TOGGLE_FULLSCREEN, "Toggle Fullscreen", "Switch fullscreen / windowed mode"))
+			.push_back (make_shared<ActionMenuItem>(E_QUIT, "Quit", ""))
 			.build();
 		mMain->add(ClearScreen::build(BLACK).get(), FLAG_BOTTOM);
 		mMain->setMargin(160, 80);
@@ -135,35 +158,120 @@ public:
 				.layout(Layout::RIGHT_BOTTOM_W_H, 4, 4, 200, 28).get());
 
 		add(mMain);
+
+		ALLEGRO_CONFIG *config = MainLoop::getMainLoop()->getConfig();
+		mKeys = MenuBuilder(this, NULL)
+			.push_back (make_shared<KeyMenuItem>("Up", config_keys[btnUp], getInput()[btnUp], config))
+			.push_back (make_shared<KeyMenuItem>("Down", config_keys[btnDown], getInput()[btnDown], config))
+			.push_back (make_shared<KeyMenuItem>("Left", config_keys[btnLeft], getInput()[btnLeft], config))
+			.push_back (make_shared<KeyMenuItem>("Right", config_keys[btnRight], getInput()[btnRight], config))
+			.push_back (make_shared<KeyMenuItem>("Action", config_keys[btnAction], getInput()[btnAction], config))
+			.push_back (make_shared<ActionMenuItem>(E_TOGGLE_FULLSCREEN, "Toggle Fullscreen", "Switch fullscreen / windowed mode"))
+			.push_back (make_shared<ActionMenuItem>(E_SHOW_MAIN_MENU, "Main Menu", "Return to the main menu"))
+			.build();
+		mKeys->setFont(resources->getFont("GP32")->get(40));
+		mKeys->add(ClearScreen::build(BLACK).get(), FLAG_BOTTOM);
+
+		mPause = MenuBuilder(this, NULL)
+			.push_back (make_shared<ActionMenuItem>(E_ACTION, "Resume", "Resume game"))
+			.push_back (make_shared<ActionMenuItem>(E_STOPGAME,
+					"Exit to Main Menu", "Stop game and exit to main menu"))
+			.build();
+		mPause->setFont(resources->getFont("GP32")->get(40));
+		mPause->add(ClearScreen::build(BLACK).get(), FLAG_BOTTOM);
 	}
 
 	virtual void handleMessage(ComponentPtr src, int code) override
 	{
 		switch (code)
 		{
-		case MSG_MAIN_MENU:
-			setFocus(mMain);
-			break;
-		case MSG_QUIT:
+		case E_QUIT:
 			metrics->logSessionClose();
 			pushMsg(MSG_CLOSE);
 			break;
-		case MSG_PLAY:
-			setFocus(game);
-			break;
-		case MSG_TOGGLE_WINDOWED:
-			MainLoop::getMainLoop()->toggleWindowed();
-			break;
-		case MSG_TOGGLE_MUSIC:
-		{
+		case E_TOGGLE_MUSIC: {
 			bool enabled = MainLoop::getMainLoop()->isMusicOn();
 			enabled = !enabled;
 			MainLoop::getMainLoop()->musicVolume.set(enabled ? 1.0 : 0.0);
 			if (enabled) startMusic();
 		}
 			break;
+
+		case E_SHOW_SETTINGS_MENU:
+			setFocus (mKeys);
+			break;
+		case E_ACTION:
+			setFocus(game);
+			break;
+		case E_PAUSE:
+			setFocus(mPause);
+			break;
+		case E_TOGGLE_FULLSCREEN:
+			MainLoop::getMainLoop()->toggleWindowed();
+			break;
+		case E_SHOW_MAIN_MENU:
+			setFocus(mMain);
+			break;
+		case E_STOPGAME:
+			game->killAll();
+			setFocus(mMain);
+			break;
+		case E_LEVEL_INTRO: {
+				game->initLevel();
+				ContainerPtr intro = make_shared<Container>();
+				add(intro);
+				intro->add(ClearScreen::build(BLACK).get());
+				intro->add(Text::buildf(WHITE, "LIFE %02i", game->getLives())
+					.xy(getw() / 2, 130).get());
+				intro->add(Text::build(WHITE, "GET READY!")
+					.center().get());
+				intro->setTimer (50, MSG_KILL);
+				setFocus(intro);
+				setTimer(50, EngineImpl::E_ACTION);
+			}
+			break;
+		case E_LEVEL_CLEAR:
+			{
+				ContainerPtr intro = make_shared<Container>();
+				add(intro);
+				intro->add(ClearScreen::build(BLACK).get());
+				intro->add(Text::build(WHITE, "CONGRATULATIONS!")
+					.xy(getw() / 2, 130).get());
+				intro->add(Text::build(WHITE, "GAME COMPLETE!")
+					.center().get());
+				intro->setTimer (50, MSG_KILL);
+				setFocus(intro);
+				setTimer(50, EngineImpl::E_ACTION);
+			}
+			break;
+		case E_SHOW_GAME_OVER:
+			game->killAll();
+			{
+				ContainerPtr intro = make_shared<Container>();
+				add(intro);
+				intro->add(ClearScreen::build(BLACK).get());
+				intro->add(Text::build(WHITE, "GAME OVER").center().get());
+				intro->setTimer(200, MSG_KILL);
+				setFocus(intro);
+				setTimer(200, E_SHOW_MAIN_MENU);
+			}
+			break;
+
 		}
 	}
+
+	virtual Input* getInput() override {
+		return settings.getInput();
+	}
+
+	virtual void playSample (const char *name) override {
+		ALLEGRO_SAMPLE *sample = resources->getSampleIfExists(string(name));
+		if (sample != NULL)
+			MainLoop::getMainLoop()->playSample (sample);
+		else
+			log ("Could not play sample %s", name);
+	}
+
 };
 
 shared_ptr<Engine> Engine::newInstance()
