@@ -14,18 +14,6 @@
 using namespace std;
 using namespace xdom;
 
-class ResourceException: public exception
-{
-private:
-	std::string msg;
-public:
-	ResourceException(const std::string &msg) : msg(msg) {}
-	virtual const char* what() const throw()
-	{
-		return msg.c_str();
-	}
-};
-
 class BitmapFontWrapper : public FontWrapper {
 private:
 	ALLEGRO_FONT *wrapped;
@@ -66,7 +54,6 @@ public:
 class ResourcesImpl : public Resources
 {
 private:
-	char errorMsg[1024];
 	std::map <std::string, ALLEGRO_BITMAP*> sprites; // seperately loaded bitmaps
 	std::map <std::string, Anim*> animlist;
 	std::map <std::string, std::shared_ptr<FontWrapper>> fonts;
@@ -97,17 +84,12 @@ public:
 	{
 		if (animlist.find (id) == animlist.end())
 		{
-			allegro_message ("Couldn't find Animation '%s'", id.c_str());
-			exit(1);
+			throw (ResourceException(string_format("Couldn't find Animation '%s'", id.c_str())));
 		}
 		else
 		{
 			return animlist[id];
 		}
-	}
-
-	virtual const char *getErrorMsg() const override {
-		return errorMsg;
 	}
 
 	virtual ALLEGRO_SAMPLE *getSampleIfExists(const std::string &id) override
@@ -141,8 +123,8 @@ public:
 
 	}
 
-	// returns 0 on failure, and sets error message.
-	virtual int addSingleFile(const string &i) override
+	// throws ResourceException on failure
+	virtual void addSingleFile(const string &i) override
 	{
 		string basename;
 		string extension;
@@ -151,14 +133,13 @@ public:
 
 		// must have an extension, to be able to recognize file type.
 		//TODO: error message?
-		if (extension == "") return 0;
+		if (extension == "") return throw ResourceException("Called addSingleFile with unknown extension");
 		else if (equalsIgnoreCase (extension, "tll"))
 		{
 			TEG_TILELIST *temp = teg_loadtiles(i.c_str());
 			if (!temp)
 			{
-				snprintf(errorMsg, sizeof(errorMsg), "error load TLL %s with error %s", i.c_str(), teg_error);
-				return 0;
+				throw ResourceException(string_format("error load TLL %s with error %s", i.c_str(), teg_error));
 			}
 			else
 			{
@@ -174,8 +155,7 @@ public:
 			ALLEGRO_FONT *temp;
 			if (!(temp = al_load_bitmap_font(i.c_str())))
 			{
-				snprintf(errorMsg, sizeof(errorMsg), "error load AlFont %s", i.c_str());
-				return 0;
+				throw ResourceException(string_format("error load AlFont %s", i.c_str()));
 			} else {
 				fonts[basename] = make_shared<BitmapFontWrapper>(temp);
 			}
@@ -185,8 +165,7 @@ public:
 			ALLEGRO_AUDIO_STREAM *temp;
 			if (!(temp = al_load_audio_stream (i.c_str(), 4, 2048))) //TODO: correct values for al_load_audio_stream
 			{
-				snprintf(errorMsg, sizeof(errorMsg), "error loading DUMB %s", i.c_str());
-				return 0;
+				throw ResourceException(string_format("error loading DUMB %s", i.c_str()));
 			}
 			else {
 				al_set_audio_stream_playmode(temp, ALLEGRO_PLAYMODE_LOOP );
@@ -196,28 +175,24 @@ public:
 		}
 		else if (equalsIgnoreCase  (extension, "ogg"))
 		{
-           ALLEGRO_SAMPLE *sample_data = NULL;
-           sample_data = al_load_sample(i.c_str());
-           if (!sample_data)
-           {
-        	   log ("error loading OGG %s", i.c_str());
-        	    //TODO: write to log but don't quit. Sound is not essential.
-//				snprintf(errorMsg, sizeof(errorMsg), "error loading OGG %s", i.c_str());
-//				return 0;
-           }
-           else
-           {
-        	   samples[basename] = sample_data;
-           }
+			ALLEGRO_SAMPLE *sample_data = NULL;
+			sample_data = al_load_sample(i.c_str());
+			if (!sample_data)
+			{
+				log ("error loading OGG %s", i.c_str());
+				//TODO: write to log but don't quit. Sound is not essential.
+			}
+			else
+			{
+				samples[basename] = sample_data;
+			}
 		}
 		else if (equalsIgnoreCase (extension, "bmp") || equalsIgnoreCase (extension, "png"))
 		{
 			ALLEGRO_BITMAP *bmp;
 			bmp = al_load_bitmap (i.c_str());
-			if (!bmp)
-			{
-				snprintf(errorMsg, sizeof(errorMsg), "error loading BMP/PNG %s", i.c_str());
-				return 0;
+			if (!bmp) {
+				throw ResourceException(string_format("error loading BMP/PNG %s", i.c_str()));
 			}
 			else
 			{
@@ -230,10 +205,8 @@ public:
 		{
 			ALLEGRO_SAMPLE *wav;
 			wav = al_load_sample (i.c_str());
-			if (!wav)
-			{
-				snprintf(errorMsg, sizeof(errorMsg), "error loading WAV %s", i.c_str());
-				return 0;
+			if (!wav) {
+				throw ResourceException(string_format("error loading WAV %s", i.c_str()));
 			}
 			else
 			{
@@ -245,8 +218,7 @@ public:
 			try {
 				jsonFiles[basename] = jsonParseFile(i);
 			} catch (const JsonException &ex) {
-				snprintf(errorMsg, sizeof(errorMsg), "error loading JSON %s", i.c_str());
-				return 0;
+				throw ResourceException(string_format("error loading JSON %s", i.c_str()));
 			}
 		}
 		else if (equalsIgnoreCase (extension, "xml"))
@@ -272,11 +244,9 @@ public:
 
 			textFiles[basename] = result;
 		}
-
-		return 1;
 	}
 
-	virtual int addDir(const char *dir) override
+	virtual void addDir(const char *dir) override
 	{
 		//TODO: use listDir function from util.cpp
 
@@ -301,34 +271,26 @@ public:
 		}
 
 		al_destroy_fs_entry(entry);
-
-		return 0;
 	}
 
-	virtual int addFiles(const char *pattern) override
-	{
+	virtual void addFiles(const char *pattern) override {
 		vector<string> filenames;
 		glob (pattern, filenames);
 		if (filenames.size() == 0) {
-			snprintf(errorMsg, sizeof(errorMsg), "No files matching pattern %s", pattern);
-			return 0;
+			throw ResourceException(string_format("No files matching pattern %s", pattern));
 		}
-		for (string &i : filenames)
-		{
-			int result = addSingleFile (i);
-			if (result == 0) return 0; // error while loading a file.
+		for (string &i : filenames) {
+			addSingleFile (i);
 		}
-		return 1; // success
 	}
 
 	//TODO: rename to getMusic
 	virtual ALLEGRO_AUDIO_STREAM *getMusic (const string &id) override
 	{
-	    if (duhlist.find (id) == duhlist.end())
-	    {
+		if (duhlist.find (id) == duhlist.end()) {
 			throw (ResourceException(string_format("Couldn't find DUH (Music) '%s'", id.c_str())));
-	    }
-	    return duhlist[id];
+		}
+		return duhlist[id];
 	}
 
 	virtual ~ResourcesImpl()
@@ -418,48 +380,40 @@ public:
 
 	virtual Tilemap *getJsonMap (const string &id) override {
 		if (jsonMaps.find(id) == jsonMaps.end()) {
-			allegro_message ("Couldn't find MAP '%s'", id.c_str());
-			exit(1);
+			throw (ResourceException(string_format("Couldn't find MAP '%s'", id.c_str())));
 		}
 		return jsonMaps[id];
 	}
 
 	virtual TEG_TILELIST *getTilelist (const string &id) override {
 		if (tilelists.find (id) == tilelists.end()) {
-			allegro_message ("Couldn't find TILELIST '%s'", id.c_str());
-			exit(1);
+			throw (ResourceException(string_format("Couldn't find TILELIST '%s'", id.c_str())));
 		}
 
 		return tilelists[id];
 	}
 
-	virtual int addJsonMapFile(const string &filename, const string &tilesname) override {
+	virtual void addJsonMapFile(const string &filename, const string &tilesname) override {
 		string basename;
 		string extension;
 		split_path (filename, basename, extension);
 		return addJsonMapFile(basename, filename, tilesname);
 	}
 
-	virtual int addJsonMapFile(const string &id, const string &filename, const string &tilesname) override {
+	virtual void addJsonMapFile(const string &id, const string &filename, const string &tilesname) override {
 		TEG_TILELIST *tiles = getTilelist (tilesname);
-		if (!tiles)
-		{
-			snprintf(errorMsg, sizeof(errorMsg), "Could not find tiles named [%s]", tilesname.c_str());
-			return 0;
+		if (!tiles) {
+			throw (ResourceException(string_format("Could not find tiles named [%s]", tilesname.c_str())));
 		}
 
 		Tilemap *result = loadTilemap(filename, tiles);
-
 		jsonMaps[id] = result;
-		return 1;
 	}
 
-	virtual int addStream(const string &id, const string &filename) override {
+	virtual void addStream(const string &id, const string &filename) override {
 		ALLEGRO_AUDIO_STREAM *temp;
-		if (!(temp = al_load_audio_stream (filename.c_str(), 4, 2048))) //TODO: correct values for al_load_audio_stream
-		{
-			snprintf(errorMsg, sizeof(errorMsg), "error loading Stream %s", id.c_str());
-			return 0;
+		if (!(temp = al_load_audio_stream (filename.c_str(), 4, 2048))) { //TODO: correct values for al_load_audio_stream
+			throw (ResourceException(string_format("error loading Stream %s", id.c_str())));
 		}
 		else {
 			al_set_audio_stream_playmode(temp, ALLEGRO_PLAYMODE_LOOP );
@@ -468,12 +422,9 @@ public:
 			assert (duhlist.find(id) == duhlist.end()); // fails if you overload the same id.
 			duhlist[id] = temp;
 		}
-		
-		return 1;
 	}
 
-	virtual ALLEGRO_SAMPLE *getSample (const string &id) override
-	{
+	virtual ALLEGRO_SAMPLE *getSample (const string &id) override {
 		if (samples.find (id) == samples.end())
 		{
 			throw (ResourceException(string_format("Couldn't find SAMPLE '%s'", id.c_str())));
