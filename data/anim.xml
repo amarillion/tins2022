@@ -1,0 +1,398 @@
+<twist>
+	<anim id='chopper' dx='40' dy='40' dz='30'>
+		<state>
+			<dir id='N'>
+				<composite time='50'>
+					<part rle='helicopterB' hotx = '-32' hoty = '-50'/>
+					<part rle='rotor' hotx = '-60' hoty = '-50'/>
+				</composite>
+				<composite time='50'>
+					<part rle='helicopterB' hotx = '-32' hoty = '-50'/>
+					<part rle='rotor2' hotx = '-60' hoty = '-50'/>
+				</composite>
+				<composite time='50'>
+					<part rle='helicopterB' hotx = '-32' hoty = '-50'/>
+					<part rle='rotor3' hotx = '-60' hoty = '-50'/>
+				</composite>
+			</dir>
+			<dir id='NE'>
+				<composite time='50'>
+					<part rle='helicoperBR' hotx = '-60' hoty = '-50'/>
+					<part rle='rotor' hotx = '-60' hoty = '-50'/>
+				</composite>
+				<composite time='50'>
+					<part rle='helicoperBR' hotx = '-60' hoty = '-50'/>
+					<part rle='rotor2' hotx = '-60' hoty = '-50'/>
+				</composite>
+				<composite time='50'>
+					<part rle='helicoperBR' hotx = '-60' hoty = '-50'/>
+					<part rle='rotor3' hotx = '-60' hoty = '-50'/>
+				</composite>
+			</dir>
+			<dir id='E'>
+				<composite time='50'>
+					<part rle='helicopterR' hotx = '-80' hoty = '-50'/>
+					<part rle='rotor' hotx = '-60' hoty = '-50'/>
+				</composite>
+				<composite time='50'>
+					<part rle='helicopterR' hotx = '-80' hoty = '-50'/>
+					<part rle='rotor2' hotx = '-60' hoty = '-50'/>
+				</composite>
+				<composite time='50'>
+					<part rle='helicopterR' hotx = '-80' hoty = '-50'/>
+					<part rle='rotor3' hotx = '-60' hoty = '-50'/>
+				</composite>
+			</dir>
+			<dir id='SE'>
+				<composite time='50'>
+					<part rle='helicoperFR' hotx = '-60' hoty = '-50'/>
+					<part rle='rotor' hotx = '-60' hoty = '-50'/>
+				</composite>
+				<composite time='50'>
+					<part rle='helicoperFR' hotx = '-60' hoty = '-50'/>
+					<part rle='rotor2' hotx = '-60' hoty = '-50'/>
+				</composite>
+				<composite time='50'>
+					<part rle='helicoperFR' hotx = '-60' hoty = '-50'/>
+					<part rle='rotor3' hotx = '-60' hoty = '-50'/>
+				</composite>
+			</dir>
+			<dir id='S'>
+				<composite time='50'>
+					<part rle='helicopterF' hotx = '-32' hoty = '-50'/>
+					<part rle='rotor' hotx = '-60' hoty = '-50'/>
+				</composite>
+				<composite time='50'>
+					<part rle='helicopterF' hotx = '-32' hoty = '-50'/>
+					<part rle='rotor2' hotx = '-60' hoty = '-50'/>
+				</composite>
+				<composite time='50'>
+					<part rle='helicopterF' hotx = '-32' hoty = '-50'/>
+					<part rle='rotor3' hotx = '-60' hoty = '-50'/>
+				</composite>
+			</dir>
+			<dir id='SW'>
+				<composite time='50'>
+					<part rle='helicoperFL' hotx = '-56' hoty = '-50'/>
+					<part rle='rotor' hotx = '-60' hoty = '-50'/>
+				</composite>
+				<composite time='50'>
+					<part rle='helicoperFL' hotx = '-56' hoty = '-50'/>
+					<part rle='rotor2' hotx = '-60' hoty = '-50'/>
+				</composite>
+				<composite time='50'>
+					<part rle='helicoperFL' hotx = '-56' hoty = '-50'/>
+					<part rle='rotor3' hotx = '-60' hoty = '-50'/>
+				</composite>
+			</dir>
+			<dir id='W'>
+				<composite time='50'>
+					<part rle='helicopterL' hotx = '-36' hoty = '-50'/>
+					<part rle='rotor' hotx = '-60' hoty = '-50'/>
+				</composite>
+				<composite time='50'>
+					<part rle='helicopterL' hotx = '-36' hoty = '-50'/>
+					<part rle='rotor2' hotx = '-60' hoty = '-50'/>
+				</composite>
+				<composite time='50'>
+					<part rle='helicopterL' hotx = '-36' hoty = '-50'/>
+					<part rle='rotor3' hotx = '-60' hoty = '-50'/>
+				</composite>
+			</dir>
+			<dir id='NW'>
+				<composite time='50'>
+					<part rle='helicoperBL' hotx = '-56' hoty = '-50'/>
+					<part rle='rotor' hotx = '-60' hoty = '-50'/>
+				</composite>
+				<composite time='50'>
+					<part rle='helicoperBL' hotx = '-56' hoty = '-50'/>
+					<part rle='rotor2' hotx = '-60' hoty = '-50'/>
+				</composite>
+				<composite time='50'>
+					<part rle='helicoperBL' hotx = '-56' hoty = '-50'/>
+					<part rle='rotor3' hotx = '-60' hoty = '-50'/>
+				</composite>
+			</dir>
+		</state>
+		<state>
+			<frame rle='helicopter_destroyed' hotx = '-60' hoty= '-50'/>
+		</state>
+	</anim>
+	<anim id='tank' dx='40' dy='40' dz='30'>
+		<state>
+			<dir id='N'>
+				<composite time='0'>
+					<part rle='tankB' hotx = '-32' hoty = '-26' />
+					<part rle='RaulB' hotx = '-12' hoty = '-25' />
+				</composite>
+			</dir>
+			<dir id='NE'>
+				<composite time='0'>
+					<part rle='tankBR' hotx = '-32' hoty = '-26' />
+					<part rle='RaulB' hotx = '-12' hoty = '-25' />
+				</composite>
+			</dir>
+			<dir id='E'>
+				<composite time='0'>
+					<part rle='tankR' hotx = '-32' hoty = '-26' />
+					<part rle='RaulR' hotx = '-12' hoty = '-25' />
+				</composite>
+			</dir>
+			<dir id='SE'>
+				<composite time='0'>
+					<part rle='tankFR' hotx = '-32' hoty = '-26' />
+					<part rle='RaulF' hotx = '-12' hoty = '-25' />
+				</composite>
+			</dir>
+			<dir id='S'>
+				<composite time='0'>
+					<part rle='tankF' hotx = '-32' hoty = '-26' />
+					<part rle='RaulF' hotx = '-12' hoty = '-25' />
+				</composite>
+			</dir>
+			<dir id='SW'>
+				<composite time='0'>
+					<part rle='tankFL' hotx = '-32' hoty = '-26' />
+					<part rle='RaulL' hotx = '-12' hoty = '-25' />
+				</composite>
+			</dir>
+			<dir id='W'>
+				<composite time='0'>
+					<part rle='tankL' hotx = '-32' hoty = '-26' />
+					<part rle='RaulL' hotx = '-12' hoty = '-25' />
+				</composite>
+			</dir>
+			<dir id='NW'>
+				<composite time='0'>
+					<part rle='tankBL' hotx = '-32' hoty = '-26' />
+					<part rle='RaulB' hotx = '-12' hoty = '-25' />
+				</composite>
+			</dir>
+		</state>
+		<state>
+			<frame rle='tank_destroyed' hotx = '-32' hoty = '-12'/>
+		</state>
+	</anim>
+	<anim id='enemytank' dx='40' dy='40' dz='30'>
+		<state>
+			<dir id='N'>
+				<composite time='0'>
+					<part rle='tankB' hotx = '-32' hoty = '-26' />
+					<part rle='MinionB' hotx = '-12' hoty = '-25' />
+				</composite>
+			</dir>
+			<dir id='NE'>
+				<composite time='0'>
+					<part rle='tankBR' hotx = '-32' hoty = '-26' />
+					<part rle='MinionB' hotx = '-12' hoty = '-25' />
+				</composite>
+			</dir>
+			<dir id='E'>
+				<composite time='0'>
+					<part rle='tankR' hotx = '-32' hoty = '-26' />
+					<part rle='MinionR' hotx = '-12' hoty = '-25' />
+				</composite>
+			</dir>
+			<dir id='SE'>
+				<composite time='0'>
+					<part rle='tankFR' hotx = '-32' hoty = '-26' />
+					<part rle='MinionF' hotx = '-12' hoty = '-25' />
+				</composite>
+			</dir>
+			<dir id='S'>
+				<composite time='0'>
+					<part rle='tankF' hotx = '-32' hoty = '-26' />
+					<part rle='MinionF' hotx = '-12' hoty = '-25' />
+				</composite>
+			</dir>
+			<dir id='SW'>
+				<composite time='0'>
+					<part rle='tankFL' hotx = '-32' hoty = '-26' />
+					<part rle='MinionL' hotx = '-12' hoty = '-25' />
+				</composite>
+			</dir>
+			<dir id='W'>
+				<composite time='0'>
+					<part rle='tankL' hotx = '-32' hoty = '-26' />
+					<part rle='MinionL' hotx = '-12' hoty = '-25' />
+				</composite>
+			</dir>
+			<dir id='NW'>
+				<composite time='0'>
+					<part rle='tankBL' hotx = '-32' hoty = '-26' />
+					<part rle='MinionB' hotx = '-12' hoty = '-25' />
+				</composite>
+			</dir>
+		</state>
+		<state>
+			<frame rle='tank_destroyed' hotx = '-32' hoty = '-12'/>
+		</state>
+	</anim>
+	<anim id='turret' dx='20' dy='20' dz='90'>
+		<dir id='N'>
+			<frame rle='turretFL' hotx = '-25' hoty = '-90'/>
+		</dir>
+		<dir id='NE'>
+			<frame rle='turretFL' hotx = '-25' hoty = '-90'/>
+		</dir>
+		<dir id='E'>
+			<frame rle='turretBL' hotx = '-25' hoty = '-90'/>
+		</dir>
+		<dir id='SE'>
+			<frame rle='turretBL' hotx = '-25' hoty = '-90'/>
+		</dir>
+		<dir id='S'>
+			<frame rle='turretBR' hotx = '-25' hoty = '-90'/>
+		</dir>
+		<dir id='SW'>
+			<frame rle='turretBR' hotx = '-25' hoty = '-90'/>
+		</dir>
+		<dir id='W'>
+			<frame rle='turretFR' hotx = '-25' hoty = '-90'/>
+		</dir>
+		<dir id='NW'>
+			<frame rle='turretFR' hotx = '-25' hoty = '-90'/>
+		</dir>
+	</anim>
+	<anim id='sam' dx='20' dy='20' dz='90'>
+		<dir id='N'>
+			<frame rle='turret2FL' time = '0' hotx = '-25' hoty = '-90'/>
+		</dir>
+		<dir id='NE'>
+			<frame rle='turret2FL' time = '0' hotx = '-25' hoty = '-90'/>
+		</dir>
+		<dir id='E'>
+			<frame rle='turret2BL' time = '0' hotx = '-25' hoty = '-90'/>
+		</dir>
+		<dir id='SE'>
+			<frame rle='turret2BL' time = '0' hotx = '-25' hoty = '-90'/>
+		</dir>
+		<dir id='S'>
+			<frame rle='turret2BR' time = '0' hotx = '-25' hoty = '-90'/>
+		</dir>
+		<dir id='SW'>
+			<frame rle='turret2BR' time = '0' hotx = '-25' hoty = '-90'/>
+		</dir>
+		<dir id='W'>
+			<frame rle='turret2FR' time = '0' hotx = '-25' hoty = '-90'/>
+		</dir>
+		<dir id='NW'>
+			<frame rle='turret2FR' time = '0' hotx = '-25' hoty = '-90'/>
+		</dir>
+	</anim>
+	<anim id='bunker' dx='50' dy='50' dz='30'>
+		<state>
+			<frame rle='Bunker' hotx = '-60' hoty = '-30'/>
+		</state>
+		<state>
+			<frame rle='Bunker_semidestroyed' hotx = '-60' hoty = '-30'/>
+		</state>
+		<state>
+			<frame rle='Bunker_destroyed' hotx = '-60' hoty = '-30'/>
+		</state>
+	</anim>
+	<anim id='health' dx='30' dy='30' dz='10'>
+		<frame rle='health pack' hotx = '0' hoty = '0'/>
+	</anim>
+	<anim id='mainbunker' dx='90' dy='90' dz='70'>
+		<state>
+			<frame rle='Main Bunker' hotx = '-90' hoty = '-90'/>
+		</state>
+		<state>
+			<frame rle='Main Bunker_destroyed' hotx = '-90' hoty = '-90'/>
+		</state>
+	</anim>
+	<anim id='house' dx='30' dy='50' dz='50'>
+		<state>
+			<frame rle='building' hotx = '-60' hoty = '-55'/>
+		</state>
+		<state>
+			<frame rle='building_destroyed' hotx = '-60' hoty = '-55'/>
+		</state>
+	</anim>
+	<anim id='tree' dx='20' dy='20' dz='65'>
+		<frame rle='tree' hotx = '-20' hoty = '-65'/>
+	</anim>
+	<anim id='tall' dx='50' dy='50' dz='150'>
+		<state>
+			<frame rle='tall building' hotx = '-50' hoty = '-150'/>
+		</state>
+		<state>
+			<frame rle='tall building_destroyed' hotx = '-50' hoty = '-150'/>
+		</state>
+	</anim>
+	<anim id='bullet' dx='5' dy='5' dz='5'>
+		<frame rle='bullet' hotx = '-3' hoty = '-3'/>
+	</anim>
+	<anim id='missile' dx='5' dy='5' dz='5'>	
+		<dir id='N'>
+			<frame rle='missileB' hotx = '-5' hoty = '-5'/>			
+		</dir>
+		<dir id='NE'>
+			<frame rle='missileBL' hotx = '-5' hoty = '-5'><flip/></frame>			
+		</dir>
+		<dir id='E'>
+			<frame rle='missileL' hotx = '-5' hoty = '-5'><flip/></frame>			
+		</dir>
+		<dir id='SE'>
+			<frame rle='missileFL' hotx = '-5' hoty = '-5'><flip/></frame>			
+		</dir>
+		<dir id='S'>
+			<frame rle='missileF' hotx = '-5' hoty = '-5'/>			
+		</dir>
+		<dir id='SW'>
+			<frame rle='missileFL' hotx = '-5' hoty = '-5'/>			
+		</dir>
+		<dir id='W'>
+			<frame rle='missileL' hotx = '-5' hoty = '-5'/>			
+		</dir>
+		<dir id='NW'>
+			<frame rle='missileBL' hotx = '-5' hoty = '-5'/>			
+		</dir>
+	</anim>
+	<anim id='rock' dx='10' dy='10' dz='10'>
+		<frame rle='rock' hotx = '-10' hoty = '-10'/>
+	</anim>
+	<anim id='cactus' dx='10' dy='10' dz='25'>
+		<frame rle='cactus' hotx = '-10' hoty = '-28'/>
+	</anim>
+	<anim id='xmastree' dx='20' dy='20' dz='65'>
+		<frame rle='xmas tree' hotx = '-20' hoty = '-65'/>
+	</anim>
+	<anim id='gift' dx='90' dy='90' dz='70'>
+		<state>
+			<frame rle='gift' hotx = '-90' hoty = '-90'/>
+		</state>
+		<state>
+			<frame rle='gift-unwrap' hotx = '-90' hoty = '-90'/>
+		</state>
+	</anim>
+	<anim id='gift1' dx='32' dy='32' dz='32'>
+		<state>
+			<frame rle='gift1' hotx = '-32' hoty = '-32'/>
+		</state>
+	</anim>
+	<anim id='gift2' dx='32' dy='32' dz='32'>
+		<state>
+			<frame rle='gift2' hotx = '-32' hoty = '-32'/>
+		</state>
+	</anim>
+	<anim id='gift3' dx='32' dy='32' dz='32'>
+		<state>
+			<frame rle='gift3' hotx = '-32' hoty = '-32'/>
+		</state>
+	</anim>
+	<anim id='gift4' dx='32' dy='32' dz='32'>
+		<state>
+			<frame rle='gift4' hotx = '-32' hoty = '-32'/>
+		</state>
+	</anim>
+	<anim id='logcabin' dx='30' dy='50' dz='50'>
+		<state>
+			<frame rle='cottage' hotx = '-60' hoty = '-55'/>
+		</state>
+		<state>
+			<frame rle='cottageB_destroyed' hotx = '-60' hoty = '-55'/>
+		</state>
+	</anim>
+</twist>

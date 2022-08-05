@@ -1,21 +1,21 @@
+#include <anim.h>
+#include <input.h>
 #include <assert.h>
-#include "constants.h"
 #include "mainloop.h"
 #include "engine.h"
+
+using namespace std;
 
 int main(int argc, const char *const *argv)
 {
 	auto mainloop = MainLoop();
-	auto engine = Engine::newInstance();
+	auto engine = make_shared<Engine>();
 
 	mainloop
 		.setEngine(engine)
-		.setAppName("tins22")
-		.setTitle("TINS 2022 Entry")
-		.setConfigFilename("tins22.cfg")
-		.setLogicIntervalMsec(MSEC_PER_TICK)
-		.setResizableWindow(true)
-		.setPreferredGameResolution(GAME_WIDTH, GAME_HEIGHT);
+		.setAppName("Dr_F")
+		.setTitle("Dr. Evil F, Xmas edition")
+		.setConfigFilename("Dr_F.cfg");
 
 	if (!mainloop.init(argc, argv) && !engine->init())
 	{

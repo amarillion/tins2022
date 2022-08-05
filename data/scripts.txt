@@ -1,0 +1,99 @@
+[level1]
+CENTER Intro_Raul
+SAY Meet Raul.
+SAY This lovable monkey is the hero of our story. 
+PAUSE
+SAY Raul has a friend named Fole 
+SAY (short for Folencio)
+SAY Like most cats, Fole is an evil sociopath.
+PAUSE
+CENTER end level 2
+SAY Fole is terribly upset.
+SAY He found out that he is on Santa's nauhgty list this year
+SAY "If I'm not getting any gifts, no one is!"
+PAUSE
+SAY Fole, a.k.a. Dr Evil F, has joined forces with krampus
+SAY to steal all gifts for himself.
+SAY His minions are stationed around to defend the gifts.
+PAUSE
+SAY This is terrible! Santa Claus is in dire straits.
+SAY Who will save Christmas this time?
+PAUSE
+SAY COMMANDER RAUL WILL!!!!
+PAUSE
+CENTER intro part2
+SAY "We have a mission troops. We have to stop evil Dr. F 
+SAY and his vicious minions. We are attacking his base by 
+SAY surprise tomorrow morning. We need to find where the  
+SAY gifts are hidden and bring them back."
+PAUSE
+CENTER tankFR
+SAY In this first mission, you control this tank.
+SAY Use the arrow keys to move,
+SAY and space to fire.
+PAUSE
+CENTER gift
+SAY Find the package that looks like this.
+SAY Shoot at it to open it, and your mission will be completed.
+PAUSE
+
+[level2]
+CENTER gift1
+SAY Hmmm delicious cheese cake!
+SAY But this is not all.
+PAUSE
+CENTER helicoperFR
+SAY In this second mission you control this helicopter
+SAY In addition to the directional controls,
+SAY You can use the A and Z keys to move up and down.
+PAUSE
+
+[level3]
+CENTER gift2
+SAY Aww, it's a puppy!
+SAY Thank you Santa! Thank you Raul!
+PAUSE
+CENTER end level 3
+SAY "Now I want revenge!!"
+PAUSE
+SAY "I, with the help of my vicious minions will take 
+SAY over the world."
+PAUSE
+CENTER turret2FR
+SAY In this mission you can control both the 
+SAY tank and the helicopter
+PAUSE
+SAY Use the TAB key to toggle between the two.
+PAUSE
+SAY Be careful for the Anti-Air missiles
+PAUSE
+
+[level4]
+CENTER gift3
+SAY What the hell is that?
+SAY Must be an obscure reference
+SAY to an old videogame...
+PAUSE
+SAY One final mission remains...
+PAUSE
+
+[won]
+CENTER gift4
+SAY So cute!
+SAY You found the final gift! 
+PAUSE
+CENTER win
+SAY "Oh no! You defeated me, but I will be back. I swear it!"
+PAUSE
+SAY This game was created as a gift for Eric Johnson.
+SAY For Krampushack 2016.
+SAY Happy Christmas Eric!
+SAY And thank you for playing!
+SAY -- Max and Amarillion
+PAUSE
+
+[gameover]
+CENTER game over
+SAY "HA HA HA, you fool. Did you really think you could
+SAY defeat me? Next time think better before messing with me!"
+PAUSE
