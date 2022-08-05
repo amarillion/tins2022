@@ -54,9 +54,10 @@ public:
 		srand(time(0));
 
 		if (!(
-			// resources->addFiles("data/*.png") &&
-			// resources->addFiles("data/*.tll") &&
-			// resources->addFiles("data/*.xml") &&
+			resources->addFiles("data/*.png") &&
+			resources->addFiles("data/*.tll") &&
+			resources->addFiles("data/*.xml") &&
+			resources->addFiles("data/*.ogg") &&
 			resources->addFiles("data/*.ttf") 
 			))
 		{
@@ -64,20 +65,15 @@ public:
 			return -1;
 		}
 
-		// if (!(
-		// 	resources->addJsonMapFile("data/bg1.json", "tiles1") &&
-		// 	resources->addJsonMapFile("data/map1.json", "tiles1") &&
-		// 	resources->addJsonMapFile("data/map2.json", "tiles1") &&
-		// 	resources->addJsonMapFile("data/map3.json", "tiles1") &&
-		// 	resources->addJsonMapFile("data/map4.json", "tiles1") &&
-		// 	resources->addJsonMapFile("data/bg2.json", "tiles1") &&
-		// 	resources->addJsonMapFile("data/bg3.json", "tiles1") &&
-		// 	resources->addJsonMapFile("data/bg4.json", "tiles1")
-		// ))
-		// {
-		// 	allegro_message ("Error while loading resources!\n%s", resources->getErrorMsg());
-		// 	return -1;
-		// }
+		if (!(
+			resources->addJsonMapFile("data/bg1.json", "tiles1") &&
+			resources->addJsonMapFile("data/map3.json", "tiles1") &&
+			resources->addJsonMapFile("data/bg2.json", "tiles1")
+		))
+		{
+			allegro_message ("Error while loading resources!\n%s", resources->getErrorMsg());
+			return -1;
+		}
 
 		sfont = resources->getFont("DejaVuSans")->get(16);
 

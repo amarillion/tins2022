@@ -14,7 +14,6 @@ int main(int argc, const char *const *argv)
 		.setTitle("TINS 2022 Entry")
 		.setConfigFilename("tins22.cfg")
 		.setLogicIntervalMsec(MSEC_PER_TICK)
-		.setResizableWindow(true)
 		.setPreferredGameResolution(GAME_WIDTH, GAME_HEIGHT);
 
 	if (!mainloop.init(argc, argv) && !engine->init())

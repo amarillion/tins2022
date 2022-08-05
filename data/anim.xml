@@ -1,0 +1,301 @@
+<gamedata>
+
+	<anim id='Redsock' dx='40' dy='40'>
+		<frame rle='sock' hotx = '0' hoty = '0'/>
+	</anim>
+
+	<anim id='Platform' dx='64' dy='64'>
+		<frame rle='platform1' hotx = '0' hoty = '0'/>
+	</anim>
+
+	<anim id='Spidercat' dx='55' dy='55'>
+		<state>
+			<composite>
+				<part rle='Spidercat' hotx = '-4' hoty = '-32'/>
+				<part rle='bubble' hotx = '-8' hoty = '0'/>
+			</composite>
+		</state>
+		<state>
+			<composite>
+				<part rle='Spidercat' hotx = '-4' hoty = '-32'>
+					<lit r='255' g='255' b='255' alpha='255'/>
+				</part>
+				<part rle='bubble' hotx = '-8' hoty = '0'/>
+			</composite>
+		</state>
+		<state>
+			<frame rle='Spidercat' hotx = '-8' hoty = '-4'>
+				<vflip/>
+			</frame>
+		</state>
+	</anim>
+
+	<anim id='Spidercat2' dx='48' dy='28'>
+		<frame rle='Spidercat' hotx = '-8' hoty = '-4'>
+			<lit r='255' g='0' b='0' alpha='128'/>
+		</frame>
+	</anim>
+
+	<anim id='Spidercat4' dx='55' dy='55'>
+		<composite time='200'>
+			<part rle='Spidercat' hotx = '-4' hoty = '-32'>
+				<lit r='0' g='255' b='0' alpha='128'/>			
+			</part>
+			<part rle='bubble' hotx = '-8' hoty = '0'/>
+		</composite>
+		
+		<composite time='200'>
+			<part rle='Spidercat' hotx = '-4' hoty = '-32'>
+				<lit r='255' g='0' b='0' alpha='128'/>			
+			</part>
+			<part rle='bubble' hotx = '-8' hoty = '0'/>
+		</composite>
+	</anim>
+
+	<anim id='Electricat' dx='30' dy='60'>
+		<state>
+			<frame rle='Electricat' hotx = '-10' hoty = '-20' time='200'/>
+			<frame rle='Electricat2' hotx = '-20' hoty = '-20' time='200'>
+				<flip/>
+			</frame>
+		</state>
+		<state>
+			<frame rle='Electricat' hotx = '-10' hoty = '-20'>
+				<lit r='255' g='255' b='255' alpha='255'/>
+			</frame>
+		</state>
+		<state>
+			<frame rle='Electricat' hotx = '-10' hoty = '-20' time='200'>
+				<vflip/>
+			</frame>
+			<frame rle='Electricat2' hotx = '-20' hoty = '-20' time='200'>
+				<vflip/>
+				<flip/>
+			</frame>
+		</state>
+	</anim>
+	
+	<anim id='Slinkycat' dx='30' dy='60'>
+		<state>
+			<frame rle='Slinkycat' hotx = '-20' hoty = '-20' time='200'/>
+			<frame rle='Slinkycat2' hotx = '-20' hoty = '-20' time='200'/>
+			<frame rle='Slinkycat3' hotx = '-20' hoty = '-20' time='200'/>
+		</state>
+		<state>
+			<frame rle='Slinkycat' hotx = '-20' hoty = '-20'>
+				<lit r='255' g='255' b='255' alpha='255'/>
+			</frame>
+		</state>
+		<state>
+			<frame rle='Slinkycat' hotx = '-20' hoty = '-20' time='200'>
+				<vflip/>
+			</frame>
+			<frame rle='Slinkycat2' hotx = '-20' hoty = '-20' time='200'>
+				<vflip/>
+			</frame>
+			<frame rle='Slinkycat3' hotx = '-20' hoty = '-20' time='200'>
+				<vflip/>
+			</frame>
+		</state>
+	</anim>
+	
+	<anim id='Dragoncat' dx='60' dy='60'>
+		<state>
+			<frame rle='Dragoncat' hotx = '-30' hoty = '-60' time='200'/>
+			<frame rle='Dragoncat3' hotx = '-30' hoty = '-65' time='200'/>
+			<frame rle='Dragoncat5' hotx = '-30' hoty = '-25' time='200'/>
+		</state>
+		<state>
+			<frame rle='Dragoncat' hotx = '-30' hoty = '-60' time='0'>
+				<lit r='255' g='255' b='255' alpha='255'/>
+			</frame>
+		</state>
+		<state>
+			<frame rle='Dragoncat' hotx = '-30' hoty = '-60' time='200'>
+				<vflip/>
+			</frame>
+			<frame rle='Dragoncat3' hotx = '-30' hoty = '-65' time='200'>
+				<vflip/>
+			</frame>
+			<frame rle='Dragoncat5' hotx = '-30' hoty = '-25' time='200'>
+				<vflip/>
+			</frame>
+		</state>
+	</anim>
+	
+	<anim id='Raul' dx='30' dy='60'>
+		<state>
+			<dir id='right'>
+				<frame rle='Raul1_w1' hotx = '-10' hoty = '-20' time='200'/>
+				<frame rle='Raul1_st' hotx = '-10' hoty = '-20' time='200'/>
+				<frame rle='Raul1_w2' hotx = '-10' hoty = '-20' time='200'/>
+				<frame rle='Raul1_st' hotx = '-10' hoty = '-20' time='200'/>
+			</dir>
+			<dir id='left'>
+				<frame rle='Raul1_w1' hotx = '-35' hoty = '-20' time='200'>
+					<flip/>
+				</frame>
+				<frame rle='Raul1_st' hotx = '-35' hoty = '-20' time='200'>
+					<flip/>
+				</frame>
+				<frame rle='Raul1_w2' hotx = '-35' hoty = '-20' time='200'>
+					<flip/>
+				</frame>
+				<frame rle='Raul1_st' hotx = '-35' hoty = '-20' time='200'>
+					<flip/>
+				</frame>
+			</dir>
+		</state>
+		<state>
+			<dir id='right'>
+				<frame rle='Raul1_w1' hotx = '-10' hoty = '-20' time='200'>
+					<lit r='0' g='0' b='255' alpha='64'/>
+				</frame>
+				<frame rle='Raul1_st' hotx = '-10' hoty = '-20' time='200'>
+					<lit r='0' g='0' b='255' alpha='64'/>
+				</frame>
+				<frame rle='Raul1_w2' hotx = '-10' hoty = '-20' time='200'>
+					<lit r='0' g='0' b='255' alpha='64'/>
+				</frame>
+				<frame rle='Raul1_st' hotx = '-10' hoty = '-20' time='200'>
+					<lit r='0' g='0' b='255' alpha='64'/>
+				</frame>
+			</dir>
+			<dir id='left'>
+				<frame rle='Raul1_w1' hotx = '-35' hoty = '-20' time='200'>
+					<lit r='0' g='0' b='255' alpha='64'/>
+					<flip/>
+				</frame>
+				<frame rle='Raul1_st' hotx = '-35' hoty = '-20' time='200'>
+					<lit r='0' g='0' b='255' alpha='64'/>
+					<flip/>
+				</frame>
+				<frame rle='Raul1_w2' hotx = '-35' hoty = '-20' time='200'>
+					<lit r='0' g='0' b='255' alpha='64'/>
+					<flip/>
+				</frame>
+				<frame rle='Raul1_st' hotx = '-35' hoty = '-20' time='200'>
+					<lit r='0' g='0' b='255' alpha='64'/>
+					<flip/>
+				</frame>
+			</dir>
+		</state>
+		<state>
+			<dir id='right'>
+				<frame rle='Raul2_w1' hotx = '-10' hoty = '-20' time='200'/>
+				<frame rle='Raul2_st' hotx = '-10' hoty = '-20' time='200'/>
+				<frame rle='Raul2_w2' hotx = '-10' hoty = '-20' time='200'/>
+				<frame rle='Raul2_st' hotx = '-10' hoty = '-20' time='200'/>
+			</dir>
+			<dir id='left'>
+				<frame rle='Raul2_w1' hotx = '-35' hoty = '-20' time='200'>
+					<flip/>
+				</frame>
+				<frame rle='Raul2_st' hotx = '-35' hoty = '-20' time='200'>
+					<flip/>
+				</frame>
+				<frame rle='Raul2_w2' hotx = '-35' hoty = '-20' time='200'>
+					<flip/>
+				</frame>
+				<frame rle='Raul2_st' hotx = '-35' hoty = '-20' time='200'>
+					<flip/>
+				</frame>
+			</dir>
+		</state>
+		<state>
+			<dir id='right'>
+				<frame rle='Raul3_w1' hotx = '-10' hoty = '-20' time='200'/>
+				<frame rle='Raul3_st' hotx = '-10' hoty = '-20' time='200'/>
+				<frame rle='Raul3_w2' hotx = '-10' hoty = '-20' time='200'/>
+				<frame rle='Raul3_st' hotx = '-10' hoty = '-20' time='200'/>
+			</dir>
+			<dir id='left'>
+				<frame rle='Raul3_w1' hotx = '-35' hoty = '-20' time='200'>
+					<flip/>
+				</frame>
+				<frame rle='Raul3_st' hotx = '-35' hoty = '-20' time='200'>
+					<flip/>
+				</frame>
+				<frame rle='Raul3_w2' hotx = '-35' hoty = '-20' time='200'>
+					<flip/>
+				</frame>
+				<frame rle='Raul3_st' hotx = '-35' hoty = '-20' time='200'>
+					<flip/>
+				</frame>
+			</dir>
+		</state>		
+		
+		<state>
+			<dir id='right'>
+				<frame rle='Raul1_w1' hotx = '-10' hoty = '-20' time='50'>
+					<lit r='255' g='255' b='255' alpha='128'/>
+				</frame>
+				<frame rle='Raul1_w1' hotx = '-10' hoty = '-20' time='50'>
+				</frame>
+			</dir>
+			<dir id='left'>
+				<frame rle='Raul1_w1' hotx = '-35' hoty = '-20' time='50'>
+					<lit r='255' g='255' b='255' alpha='128'/>
+					<flip/>
+				</frame>
+				<frame rle='Raul1_w1' hotx = '-35' hoty = '-20' time='50'>
+					<flip/>
+				</frame>
+			</dir>
+		</state>		
+		
+
+	</anim>
+	
+	<anim id='Laser' dx='16' dy='8'>
+		<frame rle='Laser' hotx = '0' hoty = '0' time='200'/>
+		<frame rle='Laser' hotx = '0' hoty = '0' time='200'>
+			<lit r='255' g='0' b='0' alpha='128'/>
+		</frame>
+	</anim>
+	
+	<anim id='Bullet' dx='14' dy='8'>
+		<frame rle='Bullet' hotx = '0' hoty = '0'/>
+	</anim>
+	
+	<anim id='Rock' dx='12' dy='8'>
+		<frame rle='Rock' hotx = '0' hoty = '0' time='200'/>
+		<frame rle='Rock' hotx = '0' hoty = '0' time='200'>
+			<rot angle= '90'/>
+		</frame>
+		<frame rle='Rock' hotx = '0' hoty = '0' time='200'>
+			<rot angle= '180'/>
+		</frame>
+		<frame rle='Rock' hotx = '0' hoty = '0' time='200'>
+			<rot angle= '270'/>
+		</frame>
+	</anim>
+	
+	<anim id='Ice' dx='12' dy='8'>
+		<frame rle='Ice' hotx = '0' hoty = '0' time='200'/>
+		<frame rle='Ice' hotx = '0' hoty = '0' time='200'>
+			<rot angle= '90'/>
+		</frame>
+		<frame rle='Ice' hotx = '0' hoty = '0' time='200'>
+			<rot angle= '180'/>
+		</frame>
+		<frame rle='Ice' hotx = '0' hoty = '0' time='200'>
+			<rot angle= '270'/>
+		</frame>
+	</anim>
+
+	<anim id='Fire bubble' dx='17' dy='17'>
+		<frame rle='Fire bubble' hotx = '0' hoty = '0' time='200'/>
+		<frame rle='Fire bubble' hotx = '0' hoty = '0' time='200'>
+			<lit r='0' g='255' b='0' alpha='128'/>
+		</frame>
+	</anim>
+	
+	<anim id='Enemy bullet' dx='16' dy='16'>
+		<frame rle='Enemy bullet' hotx = '0' hoty = '0' time='200'/>
+		<frame rle='Enemy bullet' hotx = '0' hoty = '0' time='200'>
+			<lit r='255' g='0' b='0' alpha='128'/>
+		</frame>
+	</anim>
+
+</gamedata>
