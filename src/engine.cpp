@@ -51,6 +51,7 @@ public:
 	virtual int init() override
 	{
 		Anim::setDirectionModel (make_shared<DirectionModel>(DIRECTIONS, DIRNUM));
+		settings.getFromConfig(MainLoop::getMainLoop()->getConfig());
 		srand(time(0));
 
 		if (!(
@@ -126,7 +127,7 @@ public:
 	std::shared_ptr<ActionMenuItem> miStart;
 
 	MenuScreenPtr mMain;
-	MenuScreenPtr mKeys;
+	MenuScreenPtr mSettings;
 	MenuScreenPtr mPause;
 
 	void initMenu()
@@ -142,12 +143,11 @@ public:
 		miStart = make_shared<ActionMenuItem>(E_LEVEL_INTRO, "Start game", "");
 		mMain = MenuBuilder(this, NULL)
 			.push_back (miStart)
-			.push_back (miSound)
-			.push_back (miMusic)
-			.push_back (make_shared<ActionMenuItem>(E_TOGGLE_FULLSCREEN, "Toggle Fullscreen", "Switch fullscreen / windowed mode"))
+			.push_back (make_shared<ActionMenuItem>(E_SHOW_SETTINGS_MENU, "Settings", "Configure keys and other options"))
 			.push_back (make_shared<ActionMenuItem>(E_QUIT, "Quit", ""))
 			.build();
 		mMain->add(ClearScreen::build(BLACK).get(), FLAG_BOTTOM);
+		mMain->setFont(resources->getFont("GP32")->get(40));
 		mMain->setMargin(160, 80);
 
 		mMain->add(Text::build(GREY, ALLEGRO_ALIGN_RIGHT, string_format("v%s.%s", version.version.get(), version.buildDate.get()))
@@ -156,17 +156,19 @@ public:
 		add(mMain);
 
 		ALLEGRO_CONFIG *config = MainLoop::getMainLoop()->getConfig();
-		mKeys = MenuBuilder(this, NULL)
+		mSettings = MenuBuilder(this, NULL)
 			.push_back (make_shared<KeyMenuItem>("Up", config_keys[btnUp], getInput()[btnUp], config))
 			.push_back (make_shared<KeyMenuItem>("Down", config_keys[btnDown], getInput()[btnDown], config))
 			.push_back (make_shared<KeyMenuItem>("Left", config_keys[btnLeft], getInput()[btnLeft], config))
 			.push_back (make_shared<KeyMenuItem>("Right", config_keys[btnRight], getInput()[btnRight], config))
 			.push_back (make_shared<KeyMenuItem>("Action", config_keys[btnAction], getInput()[btnAction], config))
+			.push_back (miSound)
+			.push_back (miMusic)
 			.push_back (make_shared<ActionMenuItem>(E_TOGGLE_FULLSCREEN, "Toggle Fullscreen", "Switch fullscreen / windowed mode"))
 			.push_back (make_shared<ActionMenuItem>(E_SHOW_MAIN_MENU, "Main Menu", "Return to the main menu"))
 			.build();
-		mKeys->setFont(resources->getFont("GP32")->get(40));
-		mKeys->add(ClearScreen::build(BLACK).get(), FLAG_BOTTOM);
+		mSettings->setFont(resources->getFont("GP32")->get(32));
+		mSettings->add(ClearScreen::build(BLACK).get(), FLAG_BOTTOM);
 
 		mPause = MenuBuilder(this, NULL)
 			.push_back (make_shared<ActionMenuItem>(E_ACTION, "Resume", "Resume game"))
@@ -194,7 +196,7 @@ public:
 			break;
 
 		case E_SHOW_SETTINGS_MENU:
-			setFocus (mKeys);
+			setFocus (mSettings);
 			break;
 		case E_ACTION:
 			setFocus(game);
