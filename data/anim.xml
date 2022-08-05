@@ -1,0 +1,95 @@
+<fashionista>
+	<anim id='player' rle='sprites' regionw='32' regionh='32' dx='0' dy='0' hotx='0' hoty='0'>
+		<state originy='0'>
+			<dir id='s'>
+				<frame time='200' originx='0'/>
+				<frame time='200' originx='32'/>
+			</dir>
+			<dir id='n'>
+				<frame time='200' originx='64'/>
+				<frame time='200' originx='96'/>
+			</dir>
+			<dir id='w'>
+				<frame time='200' originx='128'/>
+				<frame time='200' originx='160'/>
+			</dir>
+			<dir id='e'>
+				<frame time='200' originx='128'><flip/></frame>
+				<frame time='200' originx='160'><flip/></frame>
+			</dir>
+		</state>
+		<state originy='64'>
+			<frame time='200' originx='32'/>
+			<frame time='200' originx='64'/>
+		</state>
+		<state originy='0'>
+			<dir id='s'>
+				<frame time='200' originx='192'/>
+				<frame time='200' originx='224'/>
+			</dir>
+			<dir id='n'>
+				<frame time='200' originx='192'/>
+				<frame time='200' originx='224'/>
+			</dir>
+			<dir id='w'>
+				<frame time='200' originx='192'/>
+				<frame time='200' originx='224'/>
+			</dir>
+			<dir id='e'>
+				<frame time='200' originx='192'><flip/></frame>
+				<frame time='200' originx='224'><flip/></frame>
+			</dir>
+		</state>
+	</anim>
+	<anim id='enemy' rle='sprites' regionw='32' regionh='32' dx='0' dy='0' hotx='0' hoty='0' originy='64'>
+		<state>
+			<dir id='s'>
+				<frame time='100' originx='96'><rot angle='270'/></frame>
+				<frame time='100' originx='128'><rot angle='270'/></frame>
+				<frame time='100' originx='160'><rot angle='270'/></frame>
+				<frame time='100' originx='192'><rot angle='270'/></frame>
+			</dir>
+			<dir id='n'>
+				<frame time='100' originx='96'><rot angle='90'/></frame>
+				<frame time='100' originx='128'><rot angle='90'/></frame>
+				<frame time='100' originx='160'><rot angle='90'/></frame>
+				<frame time='100' originx='192'><rot angle='90'/></frame>
+			</dir>
+			<dir id='e'>
+				<frame time='100' originx='96'/>
+				<frame time='100' originx='128'/>
+				<frame time='100' originx='160'/>
+				<frame time='100' originx='192'/>
+			</dir>
+			<dir id='w'>
+				<frame time='100' originx='96'><rot angle='180'/></frame>
+				<frame time='100' originx='128'><rot angle='180'/></frame>
+				<frame time='100' originx='160'><rot angle='180'/></frame>
+				<frame time='100' originx='192'><rot angle='180'/></frame>
+			</dir>
+		</state>
+	</anim>
+	<anim id='rock' rle='sprites' regionw='32' regionh='32' dx='0' dy='0' hotx='0' hoty='0' originx='0' originy='64'>
+		<state>
+			<frame/>
+		</state>
+		<state>
+			<frame time='100'><rot angle= '60'/></frame>
+			<frame time='100'><rot angle= '120'/></frame>
+			<frame time='100'><rot angle= '180'/></frame>
+		</state>
+		<state>
+			<frame time='100'><rot angle= '300'/></frame>
+			<frame time='100'><rot angle= '240'/></frame>
+			<frame time='100'><rot angle= '180'/></frame>
+		</state>
+	</anim>
+	<anim id='explosion' rle='sprites' regionw='32' regionh='32' dx='0' dy='0' hotx='0' hoty='0' originy='32'>
+		<frame time='100' originx='0'/>
+		<frame time='100' originx='32'/>
+		<frame time='100' originx='64'/>
+		<frame time='100' originx='96'/>
+		<frame time='100' originx='128'/>
+		<frame time='100' originx='160'/>
+	</anim>
+</fashionista>
