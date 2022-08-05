@@ -1,0 +1,50 @@
+<twist>
+	<anim id='monster1' dx='28' dy='28'>
+		<state>
+			<frame rle='target1' time='200' hotx='-6' hoty='-6'/>
+			<frame rle='target2' time='200' hotx='-6' hoty='-6'/>
+		</state>
+		<state>
+			<frame rle='target1' time='100' hotx='-6' hoty='-6'>
+				<lit r='255' g='255' b='255'/>
+			</frame>
+			<frame rle='target1' time='100' hotx='-6' hoty='-6'/>
+		</state>
+	</anim>
+	<anim id='monster2'  dx='28' dy='28'>
+		<state>
+			<frame rle='batice1' time='200' hotx='-6' hoty='-6'/>
+			<frame rle='batice2' time='200' hotx='-6' hoty='-6'/>
+		</state>
+		<state>
+			<frame rle='batice1' time='100' hotx='-6' hoty='-6'>
+				<lit r='255' g='255' b='255'/>
+			</frame>
+			<frame rle='batice1' time='100' hotx='-6' hoty='-6'/>
+		</state>
+	</anim>
+	<anim id='monster3'  dx='28' dy='28'>
+		<state>
+			<frame rle='bunny1' time='200' hotx='-6' hoty='-6'/>
+			<frame rle='bunny2' time='200' hotx='-6' hoty='-6'/>
+		</state>
+		<state>
+			<frame rle='bunny1' time='100' hotx='-6' hoty='-6'>
+				<lit r='255' g='255' b='255'/>
+			</frame>
+			<frame rle='bunny1' time='100' hotx='-6' hoty='-6'/>
+		</state>
+	</anim>
+	<anim id='monster4'  dx='28' dy='28'>
+		<state>
+			<frame rle='tux1' time='200' hotx='-6' hoty='-6'/>
+			<frame rle='tux2' time='200' hotx='-6' hoty='-6'/>
+		</state>
+		<state>
+			<frame rle='tux1' time='100' hotx='-6' hoty='-6'>
+				<lit r='255' g='255' b='255'/>
+			</frame>
+			<frame rle='tux1' time='100' hotx='-6' hoty='-6'/>
+		</state>
+	</anim>
+</twist>

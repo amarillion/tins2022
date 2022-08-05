@@ -1,0 +1,298 @@
+<twist>
+	<anim id='fole_walk' rle='FoleFront1' dx='20' dy='16' regionw='40' regionh='40' originy='0' >
+		<state>
+			<dir id="up">
+				<frame originx='600' time='200'  hotx='-8' hoty='-20'/>
+				<frame originx='640' time='200'  hotx='-8' hoty='-20'/>
+			</dir>
+			<dir id="down">
+				<frame originx='520' time='200'  hotx='-8' hoty='-20'/>
+				<frame originx='560' time='200'  hotx='-8' hoty='-20'/>
+			</dir>
+			<dir id="left">
+				<frame originx='440' time='200'  hotx='-8' hoty='-20'/>
+				<frame originx='480' time='200'  hotx='-8' hoty='-20'/>
+			</dir>
+			<dir id="right">
+				<frame originx='440' time='200' hotx='-8' hoty='-20'><flip/></frame>
+				<frame originx='480' time='200' hotx='-8' hoty='-20'><flip/></frame>
+			</dir>
+		</state>
+		<state>
+			<frame originx='680' time='200'  hotx='-8' hoty='-20'/>
+			<frame originx='720' time='200'  hotx='-8' hoty='-20'/>
+			<frame originx='760' time='200'  hotx='-8' hoty='-20'/>
+			<frame originx='800' time='200'  hotx='-8' hoty='-20'/>
+			<frame originx='840' time='200'  hotx='-8' hoty='-20'/>
+		</state>
+	</anim>
+	<anim id='raul_walk' rle='FoleFront1' dx='20' dy='16' regionw='40' regionh='40' originy='0' >
+		<state>
+			<dir id="up">
+				<frame originx='160' time='200'  hotx='-8' hoty='-20'/>
+				<frame originx='200' time='200'  hotx='-8' hoty='-20'/>
+			</dir>
+			<dir id="down">
+				<frame originx='80' time='200'  hotx='-8' hoty='-20'/>
+				<frame originx='120' time='200'  hotx='-8' hoty='-20'/>
+			</dir>
+			<dir id="left">
+				<frame originx='0' time='200'  hotx='-8' hoty='-20'/>
+				<frame originx='40' time='200'  hotx='-8' hoty='-20'/>
+			</dir>
+			<dir id="right">
+				<frame originx='0' time='200'  hotx='-8' hoty='-20'><flip/></frame>
+				<frame originx='40' time='200'  hotx='-8' hoty='-20'><flip/></frame>
+			</dir>
+		</state>
+		<state>
+			<frame originx='240' time='200'  hotx='-8' hoty='-20'/>
+			<frame originx='280' time='200'  hotx='-8' hoty='-20'/>
+			<frame originx='320' time='200'  hotx='-8' hoty='-20'/>
+			<frame originx='360' time='200'  hotx='-8' hoty='-20'/>
+			<frame originx='400' time='200'  hotx='-8' hoty='-20'/>
+		</state>
+	</anim>
+	<anim id='teleport' rle='teleport' dx='24' dy='24' hotx='-4' hoty='-4' regionw='32' regionh='32'>
+		<frame originx='0' time='200'/>
+		<frame originx='32' time='200'/>
+		<frame originx='64' time='200'/>
+	</anim>
+	<anim id='bullet' rle='bullets' dx='16' dy='16' regionw='40' regionh='40'>
+		<state>
+			<frame originx='40' time='0' hotx='-12' hoty='-12'/>
+		</state>
+		<state>
+			<frame originx='80' time='0' hotx='-12' hoty='-12'/>
+		</state>
+	</anim>
+	<anim rle='FlowerPink' id='FlowerOrange' dx='30' dy='40' regionw='60' regionh='60' hotx='-15' hoty='-18'>
+		<state>
+			<frame originx='120' time='200'/>
+			<frame originx='300' time='200'/>
+		</state>
+		<state>
+			<frame originx='0' time='100'>
+				<lit r='255' g='255' b='255'/>
+			</frame>
+			<frame originx='60' time='100'/>
+		</state>
+		<state rle='EnemyDeath' regionw='60' regionh='60'>
+			<frame originx='0' time='200'/>
+			<frame originx='60' time='200'/>
+			<frame originx='120' time='200'/>
+		</state>
+		<state>
+			<frame originx='60' time='200'/>
+			<frame originx='180' time='200'/>
+		</state>
+		<state>
+			<frame originx='0' time='200'/>
+			<frame originx='240' time='200'/>
+		</state>
+	</anim>
+	<anim rle='FlowerBlue' id='FlowerBlue' dx='30' dy='40' regionw='60' regionh='60' hotx='-15' hoty='-18'>
+		<state>
+			<frame originx='120' time='200'/>
+			<frame originx='300' time='200'/>
+		</state>
+		<state>
+			<frame originx='0' time='100'>
+				<lit r='255' g='255' b='255'/>
+			</frame>
+			<frame originx='60' time='100'/>
+		</state>
+		<state rle='EnemyDeath' regionw='60' regionh='60'>
+			<frame originx='0' time='200'/>
+			<frame originx='60' time='200'/>
+			<frame originx='120' time='200'/>
+		</state>
+		<state>
+			<frame originx='60' time='200'/>
+			<frame originx='180' time='200'/>
+		</state>
+		<state>
+			<frame originx='0' time='200'/>
+			<frame originx='240' time='200'/>
+		</state>
+	</anim>
+	<anim rle='BellBlue' id='BellBlue' dx='40' dy='40' regionw='60' regionh='60' hotx='-12' hoty='-18'>
+		<state>
+			<frame originx='0' time='200'/>
+			<frame originx='60' time='200'/>
+		</state>
+		<state>
+			<frame originx='0' time='100'>
+				<lit r='255' g='255' b='255'/>
+			</frame>
+			<frame originx='60' time='100'/>
+		</state>
+		<state rle='EnemyDeath' regionw='60' regionh='60'>
+			<frame originx='0' time='200'/>
+			<frame originx='60' time='200'/>
+			<frame originx='120' time='200'/>
+		</state>
+		<state>
+			<frame originx='0' time='200'/>
+			<frame originx='60' time='200'/>
+		</state>
+		<state>
+			<frame originx='0' time='200'/>
+			<frame originx='60' time='200'/>
+		</state>
+	</anim>
+	<anim rle='BellOrange' id='BellOrange' dx='40' dy='40' regionw='60' regionh='60' hotx='-12' hoty='-18'>
+		<state>
+			<frame originx='0' time='200'/>
+			<frame originx='60' time='200'/>
+		</state>
+		<state>
+			<frame originx='0' time='100'>
+				<lit r='255' g='255' b='255'/>
+			</frame>
+			<frame originx='60' time='100'/>
+		</state>
+		<state rle='EnemyDeath' regionw='60' regionh='60'>
+			<frame originx='0' time='200'/>
+			<frame originx='60' time='200'/>
+			<frame originx='120' time='200'/>
+		</state>
+		<state>
+			<frame originx='0' time='200'/>
+			<frame originx='60' time='200'/>
+		</state>
+		<state>
+			<frame originx='0' time='200'/>
+			<frame originx='60' time='200'/>
+		</state>
+	</anim>
+	<anim rle='BugBlue' id='BugBlue' dx='20' dy='20' regionw='30' regionh='30'>
+		<state>
+			<frame originx='0' time='200' hotx='-5' hoty='-5'/>
+			<frame originx='30' time='200' hotx='-5' hoty='-5'/>
+		</state>
+		<state>
+			<frame originx='0' time='100' hotx='-5' hoty='-5'>
+				<lit r='255' g='255' b='255'/>
+			</frame>
+			<frame originx='30' time='100' hotx='-5' hoty='-5'/>
+		</state>
+		<state>
+			<frame originx='0' time='100'>
+				<lit r='255' g='0' b='0'/>
+			</frame>
+		</state>
+		<state>
+			<frame originx='0' time='200' hotx='-5' hoty='-5'/>
+			<frame originx='30' time='200' hotx='-5' hoty='-5'/>
+		</state>
+		<state>
+			<frame originx='0' time='200' hotx='-5' hoty='-5'/>
+			<frame originx='30' time='200' hotx='-5' hoty='-5'/>
+		</state>
+	</anim>
+	<anim rle='BugRed' id='BugRed' dx='20' dy='20' regionw='30' regionh='30'>
+		<state>
+			<frame originx='0' time='200' hotx='-5' hoty='-5'/>
+			<frame originx='30' time='200' hotx='-5' hoty='-5'/>
+		</state>
+		<state>
+			<frame originx='0' time='100' hotx='-5' hoty='-5'>
+				<lit r='255' g='255' b='255'/>
+			</frame>
+			<frame originx='30' time='100' hotx='-5' hoty='-5'/>
+		</state>
+		<state>
+			<frame originx='0' time='100'>
+				<lit r='255' g='0' b='0'/>
+			</frame>
+		</state>
+		<state>
+			<frame originx='0' time='200' hotx='-5' hoty='-5'/>
+			<frame originx='30' time='200' hotx='-5' hoty='-5'/>
+		</state>
+		<state>
+			<frame originx='0' time='200' hotx='-5' hoty='-5'/>
+			<frame originx='30' time='200' hotx='-5' hoty='-5'/>
+		</state>
+	</anim>
+	<anim rle='BugGreen' id='BugGreen' dx='20' dy='20' regionw='30' regionh='30'>
+		<state>
+			<frame originx='0' time='200' hotx='-5' hoty='-5'/>
+			<frame originx='30' time='200' hotx='-5' hoty='-5'/>
+		</state>
+		<state>
+			<frame originx='0' time='100' hotx='-5' hoty='-5'>
+				<lit r='255' g='255' b='255'/>
+			</frame>
+			<frame originx='30' time='100' hotx='-5' hoty='-5'/>
+		</state>
+		<state>
+			<frame originx='0' time='100'>
+				<lit r='255' g='0' b='0'/>
+			</frame>
+		</state>
+		<state>
+			<frame originx='0' time='200' hotx='-5' hoty='-5'/>
+			<frame originx='30' time='200' hotx='-5' hoty='-5'/>
+		</state>
+		<state>
+			<frame originx='0' time='200' hotx='-5' hoty='-5'/>
+			<frame originx='30' time='200' hotx='-5' hoty='-5'/>
+		</state>
+	</anim>
+	<anim id="banana" rle='pickups' dx='16' dy='36' regionw='40' regionh='40' originx='120' originy='0'>
+		<frame time='0' hotx='-12' hoty='-4'/>
+	</anim>
+	<anim id="key" rle='pickups' dx='12' dy='24' regionw='40' regionh='40' originx='80' originy='0'>
+		<frame time='0' hotx='-12' hoty='-8'/>
+	</anim>
+	<anim id="health" rle='pickups' dx='16' dy='16' regionw='40' regionh='40' originx='0' originy='0'>
+		<frame time='0' hotx='-12' hoty='-12'/>
+	</anim>
+	<anim id="bonus1" rle='pickups' dx='24' dy='24' regionw='40' regionh='40' originx='160' originy='0'>
+		<frame time='0' hotx='-8' hoty='-8'/>
+	</anim>
+	<anim id="bonus2" rle='pickups' dx='24' dy='24' regionw='40' regionh='40' originx='200' originy='0'>
+		<frame time='0' hotx='-8' hoty='-8'/>
+	</anim>
+	<anim id="bonus3" rle='pickups' dx='24' dy='24' regionw='40' regionh='40' originx='240' originy='0'>
+		<frame time='0' hotx='-8' hoty='-8'/>
+	</anim>
+	<anim id="bonus4" rle='pickups' dx='24' dy='24' regionw='40' regionh='40' originx='280' originy='0'>
+		<frame time='0' hotx='-8' hoty='-8'/>
+	</anim>
+	<anim id="healthcontainer" rle='pickups' dx='24' dy='24' regionw='40' regionh='40' originx='360' originy='0'>
+		<frame time='0' hotx='-6' hoty='-6'/>
+	</anim>
+	<anim id="door" dx='32' dy='32'>
+		<state>
+			<dir id="up">
+				<frame rle='door_to' time='0' hotx='-32' hoty='-32'/>
+			</dir>
+			<dir id="down">
+				<frame rle='door_bo' time='0' hotx='-32' hoty='0'/>
+			</dir>
+			<dir id="left">
+				<frame rle='door_lo' time='0' hotx='-32' hoty='-32'/>
+			</dir>
+			<dir id="right">
+				<frame rle='door_ro' time='0' hotx='0' hoty='-32'/>
+			</dir>
+		</state>
+		<state>
+			<dir id="up">
+				<frame rle='door_tc' time='0' hotx='-32' hoty='-32'/>
+			</dir>
+			<dir id="down">
+				<frame rle='door_bc' time='0' hotx='-32' hoty='0'/>
+			</dir>
+			<dir id="left">
+				<frame rle='door_lc' time='0' hotx='-32' hoty='-32'/>
+			</dir>
+			<dir id="right">
+				<frame rle='door_rc' time='0' hotx='0' hoty='-32'/>
+			</dir>
+		</state>
+	</anim>
+</twist>

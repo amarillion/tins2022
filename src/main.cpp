@@ -1,7 +1,10 @@
 #include <assert.h>
-#include "constants.h"
 #include "mainloop.h"
 #include "engine.h"
+
+const int GAME_WIDTH=640;
+const int GAME_HEIGHT=480;
+using namespace std;
 
 int main(int argc, const char *const *argv)
 {
@@ -10,17 +13,17 @@ int main(int argc, const char *const *argv)
 
 	mainloop
 		.setEngine(engine)
-		.setAppName("tins22")
-		.setTitle("TINS 2022 Entry")
-		.setConfigFilename("tins22.cfg")
-		.setLogicIntervalMsec(MSEC_PER_TICK)
-		.setResizableWindow(true)
-		.setPreferredGameResolution(GAME_WIDTH, GAME_HEIGHT);
-
+		.setAppName("flowpow")
+		.setTitle("Fole & Raul go Flower Power!")
+		.setConfigFilename("flowpow.cfg")
+		.setLogicIntervalMsec(20)
+		.setUsagiMode() // responsive, but scales screen if it gets too small. TODO: control breakpoints
+		.setPreferredGameResolution(GAME_WIDTH, GAME_HEIGHT)
+		.setPreferredDisplayResolution(GAME_WIDTH * 2, GAME_HEIGHT * 2);
+		
 	if (!mainloop.init(argc, argv) && !engine->init())
 	{
 		mainloop.run();
-		engine->done();
 	}
 
 	return 0;

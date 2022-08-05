@@ -1,5 +1,24 @@
 #pragma once
+#include "setting.h"
 
-const int MSEC_PER_TICK = 20;
-const int GAME_WIDTH=1760;
-const int GAME_HEIGHT=960;
+struct ALLEGRO_CONFIG;
+
+class Constants
+{
+public:
+	// allow overriding start weapon type for debugging
+	Setting<int, Constants> playerStartWeaponType { this, "fole", "playerStartWeaponType", 0 };
+
+	Constants() {}
+	ALLEGRO_CONFIG *getConfig();
+
+	// game options
+//	bool fpsOn;
+//	bool windowed;
+	
+
+private:	
+//	bool soundOn;
+//	bool music;
+};
+
