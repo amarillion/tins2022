@@ -1,0 +1,21 @@
+{
+	"maps": [
+		{
+			"map": "bg1",
+			"tiles": "tiles1"
+		}, {
+			"map": "bg2",
+			"tiles": "tiles1"
+		}, {
+			"map": "map3",
+			"tiles": "tiles1"
+		}
+	],
+	"levels": [
+		{
+			"x": 0,
+			"y": 0,
+			"map": "map3"
+		}
+	]
+}

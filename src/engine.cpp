@@ -1,6 +1,6 @@
 #include "engine.h"
-#include "game.h"
 #include "resources.h"
+#include "game.h"
 #include "mainloop.h"
 #include "DrawStrategy.h" // clearscreen
 #include "color.h"
@@ -48,31 +48,39 @@ public:
 	virtual shared_ptr<Resources> getResources() override { return resources; }
 
 	virtual bool isDebug() override { return debug; }
+
+	void loadMaps() {
+		resources->addFiles("data/levelset.json");
+
+		JsonNode levelSetJson = resources->getJson("levelset");
+		for (auto const &level : levelSetJson["maps"].asArray()) {
+			resources->addJsonMapFile(
+				"data/" + level.getString("map") + ".json",
+				level.getString("tiles")
+			);
+		}
+	}
+
 	virtual int init() override
 	{
 		Anim::setDirectionModel (make_shared<DirectionModel>(DIRECTIONS, DIRNUM));
 		settings.getFromConfig(MainLoop::getMainLoop()->getConfig());
 		srand(time(0));
 
-		if (!(
-			resources->addFiles("data/*.png") &&
-			resources->addFiles("data/*.tll") &&
-			resources->addFiles("data/*.xml") &&
-			resources->addFiles("data/*.ogg") &&
-			resources->addFiles("data/*.ttf") 
-			))
-		{
-			allegro_message ("Error while loading resources!\n%s", resources->getErrorMsg());
+		try {
+			resources->addFiles("data/*.png");
+			resources->addFiles("data/*.tll");
+			resources->addFiles("data/*.xml");
+			resources->addFiles("data/*.ogg");
+			resources->addFiles("data/*.ttf");
+			loadMaps();
+		}
+		catch(ResourceException e) {
+			allegro_message ("Error while loading resources!\n%s", e.what());
 			return -1;
 		}
-
-		if (!(
-			resources->addJsonMapFile("data/bg1.json", "tiles1") &&
-			resources->addJsonMapFile("data/map3.json", "tiles1") &&
-			resources->addJsonMapFile("data/bg2.json", "tiles1")
-		))
-		{
-			allegro_message ("Error while loading resources!\n%s", resources->getErrorMsg());
+		catch(JsonException e) {
+			allegro_message ("Error while loading resources!\n%s", e.what());
 			return -1;
 		}
 
