@@ -15,7 +15,7 @@ node {
 		}
 
 		stage('Build Linux') {
-			docker.image('amarillion/alleg5-plus-buildenv:latest') {
+			docker.image('amarillion/alleg5-plus-buildenv:latest').inside() {
 				sh "make all BUILD=STATIC" 
 				sh "./gather-so.sh"
 			}
