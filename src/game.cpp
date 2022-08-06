@@ -98,6 +98,8 @@ public:
 	// per-game, initialized in init
 	int lives;
 	int bonusCollected = 0;
+	int globalWaterLevel = 15; //TODO: json
+	int localWaterLevel;
 
 	void updateObjects();
 
@@ -316,6 +318,13 @@ void GameImpl::draw (const GraphicsContext &gc)
 		al_draw_textf (gamefont, GREEN, 0, 16, ALLEGRO_ALIGN_LEFT, "%i sprites", (int)sprites.size());
 	}
 #endif
+
+	// draw water
+	al_draw_filled_rectangle(
+		0, localWaterLevel - 16 + gc2.yofst,
+		GAME_WIDTH, GAME_HEIGHT,
+		al_map_rgba(0,0,255,64)
+	);
 }
 
 void GameImpl::initGame()
@@ -361,6 +370,7 @@ void GameImpl::initMap()
 	player = new Player(this, pos.x(), pos.y());
 	addSprite (player);
 
+	localWaterLevel = (globalWaterLevel - currentMap->bounds.y()) * 32;
 	for (int mx = 0; mx < map->w; ++mx)
 	{
 		for (int my = 0; my < map->h; ++my)
