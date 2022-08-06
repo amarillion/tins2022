@@ -34,13 +34,14 @@ protected:
 	bool awake, alive, visible;
 	int counter;
 	double x, y;
-	int w, h;
-
+	
+	int w = 47; /* dummy value */
+	int h = 47;
 	IMotionPtr motion;
 
 	Game* parent;
 	Anim *anim;
-	int state;
+	int state; // animation state
 	int dir;
 	int animStart;
 	bool blockedByTiles; /* means that this object can not move through solid tiles */
@@ -60,7 +61,7 @@ public:
 	int getTileStackFlags(int mx, int my);
 	int try_move (double dx, double dy, int push_force = 0);
 	Sprite (Game * game, int amx, int amy);
-	void setAnim (Anim *_anim) { anim = _anim; }
+	void setAnim (Anim *_anim);
 	virtual ~Sprite () {}
 
 	void setMotion(const IMotionPtr &value) { motion = value; }
@@ -93,8 +94,6 @@ const int MAX_JUMPTIMER = 13; // number of ticks a jump can be sustained /* PRIM
 const float MAX_Y = 13.0; // maximum vertical speed, both up and down /* PRIME */
 const float JUMP_SPEED = 13.0; // constant speed while pressing jump button /* PRIME */
 const float AIR_HSPEED = 7.0; /* PRIME */
-const int DEFAULT_SPRITE_W = 47; /* PRIME */
-const int DEFAULT_SPRITE_H = 47; /* PRIME */
 const double BAZOOKA_ACC = 0.3;
 const int PLAYER_HP = 31; /* PRIME */
 

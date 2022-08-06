@@ -6,7 +6,8 @@
 enum SpriteType
 {
 	ST_PLAYER, ST_ENEMY, ST_SCORE, ST_TILE, ST_BOUNDS, ST_FLOOR,
-	ST_BULLET, ST_ENEMY_BULLET, ST_PLATFORM, ST_REDSOCK
+	ST_BULLET, ST_ENEMY_BULLET, ST_PLATFORM, ST_BONUS,
+	ST_TELEPORTER, ST_SWITCH
 };
 
 class SpriteEx : public Sprite
@@ -24,8 +25,7 @@ protected:
 public:
 	int getPushForce() { return pushForce; }
 	enum { DIR_UP = 1, DIR_DOWN = 2, DIR_LEFT = 4, DIR_RIGHT = 8, BLOCKED_BY_TILE = 16 };
-	enum { ELECTRICAT, SLINKYCAT, SPIDERCAT, DRAGONCAT, GENERATOR }; // TODO: make member of Enemy
-	SpriteEx(Game *, SpriteType st, int x, int y, int _w = DEFAULT_SPRITE_W, int _h = DEFAULT_SPRITE_H, int subtype = 0);
+	SpriteEx(Game *, SpriteType st, int x, int y, int subtype = 0);
 	virtual void draw(const GraphicsContext &gc) override;
 	virtual void update() override;
 	int onPush (double dx, double dy);
@@ -110,6 +110,8 @@ public:
 	void update3();
 	void update4();
 	void update5();
+
+	enum { ELECTRICAT, SLINKYCAT, SPIDERCAT, DRAGONCAT, GENERATOR };
 };
 
 class Bonus : public SpriteEx
@@ -118,13 +120,29 @@ class Bonus : public SpriteEx
 public:
 	Bonus (Game *, int x, int y, int bonusType);
 	virtual void onCol (SpriteType st, Sprite *s, int dir);
+	
+	enum { ONEUP, SOCK, RING };
+};
+
+class Switch : public SpriteEx {
+	int state;
+public:
+	Switch (Game *, int x, int y);
+	virtual void onCol (SpriteType st, Sprite *s, int dir);
+};
+
+class Teleporter : public SpriteEx {
+public:
+	Teleporter (Game *, int x, int y);
+	virtual void onCol (SpriteType st, Sprite *s, int dir);
 };
 
 class Platform : public SpriteEx
 {
 public:
-	Platform (Game *, int x, int y);
+	Platform (Game *, int x, int y, int subtype);
 	virtual void onCol (SpriteType st, Sprite *s, int dir);
+	enum { FALLING, CRATE, SMALLCRATE };
 };
 
 class Explosion : public Sprite

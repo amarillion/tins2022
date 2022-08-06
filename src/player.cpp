@@ -15,7 +15,7 @@
 
 using namespace std;
 
-SpriteEx::SpriteEx (Game *game, SpriteType st, int x, int y, int _w, int _h, int _subtype) : Sprite (game, x, y)
+SpriteEx::SpriteEx(Game *game, SpriteType st, int x, int y, int _subtype) : Sprite (game, x, y)
 {
 	subtype = _subtype;
 	hp = 0;
@@ -24,8 +24,6 @@ SpriteEx::SpriteEx (Game *game, SpriteType st, int x, int y, int _w, int _h, int
 	air = true;
 	spriteType = st;
 	gravity = true;
-	w = _w;
-	h = _h;
 	unpassable = false;
 	pushForce = 0;
 
@@ -38,11 +36,11 @@ SpriteEx::SpriteEx (Game *game, SpriteType st, int x, int y, int _w, int _h, int
 		unpassable = true;
 		switch (subtype % 5)
 		{
-			case ELECTRICAT: setAnim(anims["Electricat"]); break;
-			case SLINKYCAT: setAnim(anims["Slinkycat"]); break;
-			case SPIDERCAT: setAnim(anims["Spidercat"]); break;
-			case DRAGONCAT: setAnim(anims["Dragoncat"]); break;
-			case GENERATOR: /* TODO */ break;
+			case Enemy::ELECTRICAT: setAnim(anims["Electricat"]); break;
+			case Enemy::SLINKYCAT: setAnim(anims["Slinkycat"]); break;
+			case Enemy::SPIDERCAT: setAnim(anims["Spidercat"]); break;
+			case Enemy::DRAGONCAT: setAnim(anims["Dragoncat"]); break;
+			case Enemy::GENERATOR: /* TODO */ break;
 		}
 		break;
 	case ST_BULLET:
@@ -61,23 +59,8 @@ SpriteEx::SpriteEx (Game *game, SpriteType st, int x, int y, int _w, int _h, int
 			case EBullet::ENERGY: setAnim(anims["Enemy bullet"]); break;
 		}
 		break;
-	case ST_PLATFORM:
-		unpassable = true;
-		pushForce = 10; // pushes everything else
-		setAnim(anims["Platform"]);
-		break;
-	case ST_REDSOCK:
-		setAnim(anims["Redsock"]);
-		break;
 	default: /* do nothing */ break;
 	}
-
-	if (anim != NULL)
-	{
-		w = anim->sizex;
-		h = anim->sizey;
-	}
-
 }
 
 void SpriteEx::update()
@@ -182,12 +165,12 @@ void Player::hit(int subtype, double delta)
 
 	switch (subtype)
 	{
-	case ELECTRICAT:
-	case SLINKYCAT:
-	case SPIDERCAT:
+	case Enemy::ELECTRICAT:
+	case Enemy::SLINKYCAT:
+	case Enemy::SPIDERCAT:
 		hp -= 4;
 		break;
-	case DRAGONCAT:
+	case Enemy::DRAGONCAT:
 		hp -= 6;
 		break;
 	case EBullet::ENERGY:
@@ -432,10 +415,9 @@ void Player::draw(const GraphicsContext &gc)
 	draw_textf_with_background (parent->gamefont, CYAN, BLACK, MAIN_WIDTH, 0, ALLEGRO_ALIGN_RIGHT, "HP: %02i", hp);
 }
 
-
 const int MAX_ENEMY_TYPE = 5;
 
-Enemy::Enemy (Game *game, int x, int y, int _type) : SpriteEx (game, ST_ENEMY, x, y, 0, 0, _type)
+Enemy::Enemy (Game *game, int x, int y, int _type) : SpriteEx(game, ST_ENEMY, x, y, _type)
 {
 	enemyType = (_type % MAX_ENEMY_TYPE);
 	hittimer = 0;
@@ -819,7 +801,7 @@ void Enemy::onCol (SpriteType st, Sprite *s, int dir)
 }
 
 EBullet::EBullet(Game * game, int type, int x, int y, double _dx, double _dy)
-	: SpriteEx (game, ST_ENEMY_BULLET, x, y, DEFAULT_SPRITE_W, DEFAULT_SPRITE_H, type),
+	: SpriteEx (game, ST_ENEMY_BULLET, x, y, type),
 	  timer (0)
 {
 	dx = _dx;
@@ -866,8 +848,16 @@ void EBullet::onCol (SpriteType st, Sprite *s, int dir)
 	}
 }
 
-Platform::Platform(Game * game, int x, int y) : SpriteEx (game, ST_PLATFORM, x, y)
+Platform::Platform(Game * game, int x, int y, int type) : SpriteEx(game, ST_PLATFORM, x, y)
 {
+	unpassable = true;
+	pushForce = 10; // pushes everything else
+
+	switch(type) {
+		case FALLING: setAnim(anims["Platform"]); break;
+		case CRATE: setAnim(anims["BigCrate"]); break;
+		case SMALLCRATE: setAnim(anims["SmallCrate"]); break;
+	}
 	IMotionPtr ptr = IMotionPtr(new Lissajous(100, 5, 50, 0));
 	gravity = false;
 	setMotion(ptr);
@@ -878,6 +868,7 @@ void Platform::onCol(SpriteType st, Sprite *s, int dir)
 	switch (st)
 	{
 		case ST_PLAYER:
+			// make player move with platform
 			if ((dir & SpriteEx::DIR_DOWN) > 0)
 				s->try_move (dx, dy);
 			break;
@@ -887,7 +878,7 @@ void Platform::onCol(SpriteType st, Sprite *s, int dir)
 }
 
 Bullet::Bullet(Game * game, int type, int x, int y, double _dx, double _dy)
-	: SpriteEx (game, ST_BULLET, x, y, DEFAULT_SPRITE_W, DEFAULT_SPRITE_H, type)
+	: SpriteEx (game, ST_BULLET, x, y, type)
 {
 	dx = _dx;
 	dy = _dy;
@@ -1001,9 +992,14 @@ void Explosion::update()
 }
 
 
-Bonus::Bonus (Game * parent, int x, int y, int index) : SpriteEx (parent, ST_REDSOCK, x, y), index(index)
+Bonus::Bonus (Game * parent, int x, int y, int index) : SpriteEx (parent, ST_BONUS, x, y), index(index)
 {
 	gravity = false;
+	switch(index) {
+		case SOCK: setAnim(anims["Redsock"]); break;
+		case RING: setAnim(anims["Ring"]); break;
+		case ONEUP: setAnim(anims["1UP"]); break;
+	}
 }
 
 void Bonus::onCol (SpriteType st, Sprite *s, int dir)
@@ -1012,5 +1008,30 @@ void Bonus::onCol (SpriteType st, Sprite *s, int dir)
 	{
 		parent->collectBonus(index);
 		kill(); // disappear
+	}
+}
+
+Switch::Switch (Game *game, int x, int y) : SpriteEx(game, ST_SWITCH, x, y) {
+	gravity = false;
+	setAnim(anims["Switch"]);
+}
+
+void Switch::onCol (SpriteType st, Sprite *s, int dir) {
+	if (st == ST_PLAYER)
+	{
+		if (state == 0) state = 1; else state = 0; 
+		//TODO: change water level
+	}
+}
+
+Teleporter::Teleporter (Game *game, int x, int y) : SpriteEx(game, ST_TELEPORTER, x, y) {
+	// gravity = false;
+	setAnim(anims["Teleporter"]);
+}
+
+void Teleporter::onCol (SpriteType st, Sprite *s, int dir) {
+	if (st == ST_PLAYER)
+	{
+		//TODO: teleport player
 	}
 }

@@ -257,3 +257,12 @@ int Sprite::try_move (double dx, double dy, int push_force)
 	}
 	return result;
 }
+
+void Sprite::setAnim(Anim *_anim) { 
+	anim = _anim;
+	if (anim != nullptr)
+	{
+		w = anim->sizex;
+		h = anim->sizey;
+	}
+}

@@ -20,8 +20,21 @@
 		<frame rle='crates' originx='80' hotx='0' hoty='0'/>
 	</anim>
 
-	<anim id='Platform' dx='64' dy='16'>
+	<anim id='Platform' dx='64' dy='16' regionw='80' regionh='80' originy='0'>
 		<frame rle='crates' originx='160' hotx='0' hoty='0'/>
+	</anim>
+
+	<anim id='Teleporter' dx='64' dy='160'>
+		<frame rle='teleporter' hotx='-32' hoty='0'/>
+	</anim>
+
+	<anim id='Switch' dx='64' dy='24' rle='switch' originy='0' regionw='80' regionh='80' hotx='-8' hoty='-8'>
+		<state>
+			<frame originx='0'/>
+		</state>
+		<state>
+			<frame originx='80'/>
+		</state>
 	</anim>
 
 	<anim id='Spidercat' dx='55' dy='55'>
