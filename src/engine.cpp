@@ -75,11 +75,11 @@ public:
 			resources->addFiles("data/*.ttf");
 			loadMaps();
 		}
-		catch(ResourceException e) {
+		catch(const ResourceException &e) {
 			allegro_message ("Error while loading resources!\n%s", e.what());
 			return -1;
 		}
-		catch(JsonException e) {
+		catch(const JsonException &e) {
 			allegro_message ("Error while loading resources!\n%s", e.what());
 			return -1;
 		}
