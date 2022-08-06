@@ -13,6 +13,7 @@
 #include "textstyle.h"
 #include "tilemap.h"
 #include "mainloop.h"
+#include "enemy.h"
 
 using namespace std;
 
