@@ -33,6 +33,7 @@ private:
 	void shoot(); // shoot a bullet
 	void setState(bool hit); // set proper player state
 	void hit(int attackDamage, double delta);
+	bool swimming = false;
 public:
 	virtual void kill ();
 	double getdir() { return dir; }
@@ -43,6 +44,8 @@ public:
 	bool control = true;
 	Player(Game *, int x, int y);
 	virtual void update();
+	void updateLand();
+	void updateWater();
 	virtual void onCol (SpriteType st, Sprite *s, int dir);
 	virtual void draw(const GraphicsContext &gc);
 

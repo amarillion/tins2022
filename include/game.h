@@ -30,6 +30,7 @@ public:
 	virtual Engine *getParent() = 0;
 	virtual void exitMap(int dir, int y) = 0;
 	virtual void updateWaterLevel() = 0;
+	virtual int getLocalWaterLevel() = 0;
 
 	// per-level, initialized in initLevel
 	// TODO: accessor

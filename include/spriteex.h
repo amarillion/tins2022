@@ -34,4 +34,5 @@ public:
 	int getSubType() { return subtype; }
 	int getAttackDamage() { return damage; }
 	bool isUnpassable() { return unpassable; }
+	bool isUnderWater();
 };

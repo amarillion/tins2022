@@ -19,14 +19,18 @@ void Player::setState (bool hit)
 {
 	if (hit)
 		state = 4;
-	else
-		switch (currentWeapon)
-		{
-		case Bullet::WPN_ROCK: state = 0; break;
-		case Bullet::WPN_ICE: state = 1; break;
-		case Bullet::WPN_BAZOOKA: state = 3; break;
-		case Bullet::WPN_LASER: state = 2; break;
+	else {
+		if (swimming) { state = 5; }
+		else {
+			switch (currentWeapon)
+			{
+			case Bullet::WPN_ROCK: state = 0; break;
+			case Bullet::WPN_ICE: state = 1; break;
+			case Bullet::WPN_BAZOOKA: state = 3; break;
+			case Bullet::WPN_LASER: state = 2; break;
+			}
 		}
+	}
 }
 
 void Player::hit(int attackDamage, double delta)
@@ -156,36 +160,70 @@ void Player::die()
 	kill(); // kill this sprite
 }
 
-void Player::update()
-{
-	if (control) {
-		//	float speed = air ? AIR_HSPEED : LAND_HSPEED;
-		if (btn[btnLeft].getState() && hitTimer == 0)
-		{
+void Player::updateWater() {
+	
+	// switch from land to water
+	if (!swimming) {
+		swimming = true;
+		gravity = false;
+		setState(false);
+	}
+
+	if (hitTimer == 0) {
+
+		if (btn[btnLeft].getState()) {
 			dx = -AIR_HSPEED;
 			dir = 0;
 		}
-		else if (btn[btnRight].getState() && hitTimer == 0)
-		{
+		else if (btn[btnRight].getState()) {
 			dx = AIR_HSPEED;
 			dir = 1;
 		}
-		else if (hitTimer == 0)
-		{
+		else {
+			dx = 0;
+		}
+		
+		if (btn[btnUp].getState()) {
+			dy = -AIR_HSPEED;
+		}
+		else if (btn[btnDown].getState()) {
+			dy = AIR_HSPEED;
+		}
+		else {
+			dy = 0;
+		}
+	}
+}
+
+void Player::updateLand() {
+	
+	// switch from water to land
+	if (swimming) {
+		swimming = false;
+		gravity = true;
+		if (btn[btnUp].getState() && hitTimer == 0) {
+			// short jump out of water
+			jumpTimer = MAX_JUMPTIMER_FROM_WATER;
+			air = true;
+		}
+		setState(false);
+	}
+
+	//	float speed = air ? AIR_HSPEED : LAND_HSPEED;
+	if (hitTimer == 0) {
+		if (btn[btnLeft].getState()) {
+			dx = -AIR_HSPEED;
+			dir = 0;
+		}
+		else if (btn[btnRight].getState()) {
+			dx = AIR_HSPEED;
+			dir = 1;
+		}
+		else {
 			dx = 0;
 		}
 
-		if (hitTimer > 0)
-		{
-			hitTimer--;
-			if (hitTimer == 0)
-			{
-				setState (false);
-			}
-		}
-
-		if (btn[btnUp].getState() && hitTimer == 0)
-		{
+		if (btn[btnUp].getState()) {
 			if (!air)
 			{
 				parent->getParent()->playSample("Sound4");
@@ -206,17 +244,33 @@ void Player::update()
 			jumpTimer = 0;
 		}
 	}
-	
-	SpriteEx::update();
 
+	// handle shooting
+	if (shootTimer > 0) shootTimer--;
+	if (btn[btnAction].justPressed() && shootTimer == 0 && hitTimer == 0) {
+		shoot();
+	}
+}
+
+void Player::update()
+{
 	if (control) {
-		// handle shooting
-		if (shootTimer > 0) shootTimer--;
-		if (btn[btnAction].justPressed() && shootTimer == 0 && hitTimer == 0)
-		{
-			shoot();
+		if (isUnderWater()) {
+			updateWater();
+		}
+		else {
+			updateLand();
 		}
 	}
+
+	if (hitTimer > 0) {
+		hitTimer--;
+		if (hitTimer == 0) {
+			setState (false);
+		}
+	}
+
+	SpriteEx::update();
 }
 
 void Player::shoot()

@@ -167,6 +167,10 @@ public:
 		add(animator);
 	}
 
+	virtual int getLocalWaterLevel() {
+		return localWaterLevel;
+	}
+
 private:
 	std::vector<MapLayout> maps;
 

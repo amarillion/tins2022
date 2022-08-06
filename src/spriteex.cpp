@@ -91,5 +91,8 @@ void SpriteEx::onCol(SpriteType st, Sprite *s, int dir)
 		// we died
 		kill();
 	}
+}
 
+bool SpriteEx::isUnderWater() {
+	return gety() > parent->getLocalWaterLevel();
 }

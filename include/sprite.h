@@ -90,6 +90,7 @@ const int START_LIVES = 3; /* PRIME */
 // player movement constants
 const int CEIL = 0;
 const float GRAVITY_ACC = 1.0;
+const int MAX_JUMPTIMER_FROM_WATER = 5; // number of ticks a jump can be sustained when getting out of water /* PRIME */
 const int MAX_JUMPTIMER = 13; // number of ticks a jump can be sustained /* PRIME */
 const float MAX_Y = 13.0; // maximum vertical speed, both up and down /* PRIME */
 const float JUMP_SPEED = 13.0; // constant speed while pressing jump button /* PRIME */
