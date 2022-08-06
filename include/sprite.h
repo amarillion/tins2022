@@ -93,6 +93,7 @@ const float GRAVITY_ACC = 1.0;
 const int MAX_JUMPTIMER_FROM_WATER = 5; // number of ticks a jump can be sustained when getting out of water /* PRIME */
 const int MAX_JUMPTIMER = 13; // number of ticks a jump can be sustained /* PRIME */
 const float MAX_Y = 13.0; // maximum vertical speed, both up and down /* PRIME */
+const float MAX_Y_UNDERWATER = 5.0; // maximum vertical speed, both up and down /* PRIME */
 const float JUMP_SPEED = 13.0; // constant speed while pressing jump button /* PRIME */
 const float AIR_HSPEED = 7.0; /* PRIME */
 const double BAZOOKA_ACC = 0.3;

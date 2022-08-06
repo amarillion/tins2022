@@ -80,7 +80,7 @@ class Platform : public SpriteEx
 {
 public:
 	Platform (Game *, int x, int y, int subtype);
-	virtual void onCol (SpriteType st, Sprite *s, int dir);
+	virtual void onCol(SpriteType st, Sprite *s, int dir) override;
 	enum { FALLING, CRATE, SMALLCRATE };
 };
 

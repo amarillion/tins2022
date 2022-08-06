@@ -400,7 +400,7 @@ void GameImpl::initMap()
 			int flags = map->tilelist->tiles[tile].flags;
 
 			int xx = mx * map->tilelist->tilew;
-			int yy = my * map->tilelist->tileh - 64;
+			int yy = my * map->tilelist->tileh; //TODO: take into account animation size when positioning object...
 			SpriteEx *e = NULL;
 			switch (flags)
 			{
@@ -422,7 +422,7 @@ void GameImpl::initMap()
 				addSprite (e); break;
 			case 12: e = new Bonus(this, xx, yy, Bonus::ONEUP);
 				addSprite (e); break;
-			case 13: e = new Teleporter(this, xx, yy);
+			case 13: e = new Teleporter(this, xx, yy - 64 /* TODO: HACK */); 
 				addSprite (e); break;
 			case 14: e = new Platform(this, xx, yy, Platform::CRATE);
 				addSprite (e); break;

@@ -387,13 +387,24 @@ Platform::Platform(Game * game, int x, int y, int type) : SpriteEx(game, ST_PLAT
 	pushForce = 10; // pushes everything else
 
 	switch(type) {
-		case FALLING: setAnim(anims["Platform"]); break;
-		case CRATE: setAnim(anims["BigCrate"]); break;
-		case SMALLCRATE: setAnim(anims["SmallCrate"]); break;
+		case FALLING: {
+			setAnim(anims["Platform"]); 
+			gravity = false;
+			IMotionPtr ptr = IMotionPtr(new Lissajous(100, 5, 50, 0));
+			setMotion(ptr);
+		}
+		break;
+		case CRATE: 
+			setAnim(anims["BigCrate"]); 
+			gravity = true;
+			buoyant = true;
+			break;
+		case SMALLCRATE: 
+			gravity = true;
+			buoyant = true;
+			setAnim(anims["SmallCrate"]); 
+			break;
 	}
-	IMotionPtr ptr = IMotionPtr(new Lissajous(100, 5, 50, 0));
-	gravity = false;
-	setMotion(ptr);
 }
 
 void Platform::onCol(SpriteType st, Sprite *s, int dir)

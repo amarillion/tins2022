@@ -14,6 +14,7 @@ class SpriteEx : public Sprite
 protected:
 	bool air;
 	bool gravity;
+	bool buoyant = false; // float on water? -> gravity works in reverse while under water
 	float dy;
 	float dx;
 	SpriteType spriteType;

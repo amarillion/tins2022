@@ -32,9 +32,17 @@ void SpriteEx::update()
 
 	if (gravity)
 	{
-		dy += GRAVITY_ACC;
-		if (dy > MAX_Y) dy = MAX_Y;
-		if (dy < -MAX_Y) dy = -MAX_Y;
+		if (buoyant && isUnderWater()) {
+			dy -= GRAVITY_ACC;
+			dy *= 0.8; // friction under water
+			if (dy > MAX_Y_UNDERWATER) dy = MAX_Y_UNDERWATER;
+			if (dy < -MAX_Y_UNDERWATER) dy = -MAX_Y_UNDERWATER;
+		}
+		else {
+			dy += GRAVITY_ACC;
+			if (dy > MAX_Y) dy = MAX_Y;
+			if (dy < -MAX_Y) dy = -MAX_Y;
+		}
 	}
 
 	double oldy = y;
@@ -94,5 +102,5 @@ void SpriteEx::onCol(SpriteType st, Sprite *s, int dir)
 }
 
 bool SpriteEx::isUnderWater() {
-	return gety() > parent->getLocalWaterLevel();
+	return gety() + (geth() / 2) > parent->getLocalWaterLevel();
 }
