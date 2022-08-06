@@ -8,8 +8,8 @@ node {
 		}
 
 		stage('Build W32') {
-			docker.image('amarillion/alleg5-plus-buildenv:latest-mingw-w64-i686').inside("-v $TWIST_HOME:$TWIST_HOME") {
-				sh "make all TARGET=CROSSCOMPILE WINDOWS=1 BUILD=RELEASE TWIST_HOME=$TWIST_HOME"
+			docker.image('amarillion/alleg5-plus-buildenv:latest-mingw-w64-i686').inside() {
+				sh "make all TARGET=CROSSCOMPILE WINDOWS=1 BUILD=RELEASE"
 				sh "./gather-dlls.sh"
 			}
 		}
