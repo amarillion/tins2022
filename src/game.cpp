@@ -259,7 +259,7 @@ void GameImpl::initLevel()
 	TEG_MAP *bg = NULL;
 	TEG_MAP *bg2 = NULL;
 
-	map = parent->getResources()->getJsonMap("map3")->map;
+	map = parent->getResources()->getJsonMap("mapA")->map;
 	bg2 = parent->getResources()->getJsonMap("bg2")->map;
 	bg =  parent->getResources()->getJsonMap("bg1")->map;
 

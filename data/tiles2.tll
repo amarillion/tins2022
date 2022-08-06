@@ -3,7 +3,7 @@ version=3
 tilew=32
 tileh=32
 animsteps=2
-bitmap=tiles1.png
+bitmap=tiles2.png
 0 00
 1 01
 1 02

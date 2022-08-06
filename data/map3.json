@@ -15,9 +15,9 @@
             "columns": 0,
             "imageheight": 640,
             "tilecount": 90,
-            "image": "tiles.png",
+            "image": "tiles1.png",
             "tileheight": 32,
-            "name": "tiles",
+            "name": "tiles1",
             "margin": 0
         }
     ],

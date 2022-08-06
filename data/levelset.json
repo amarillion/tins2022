@@ -7,15 +7,42 @@
 			"map": "bg2",
 			"tiles": "tiles1"
 		}, {
-			"map": "map3",
-			"tiles": "tiles1"
+			"map": "mapA",
+			"tiles": "tiles2"
+		},
+		{
+			"map": "mapB",
+			"tiles": "tiles2"
+		},
+		{
+			"map": "mapC",
+			"tiles": "tiles2"
+		},
+		{
+			"map": "mapD",
+			"tiles": "tiles2"
 		}
 	],
 	"levels": [
 		{
 			"x": 0,
 			"y": 0,
-			"map": "map3"
+			"map": "mapA"
+		},
+		{
+			"x": 0,
+			"y": 0,
+			"map": "mapB"
+		},
+		{
+			"x": 0,
+			"y": 0,
+			"map": "mapC"
+		},
+		{
+			"x": 0,
+			"y": 0,
+			"map": "mapD"
 		}
 	]
 }
