@@ -125,10 +125,11 @@ public:
 };
 
 class Switch : public SpriteEx {
-	int state;
+	int coolDown = 0;
 public:
-	Switch (Game *, int x, int y);
-	virtual void onCol (SpriteType st, Sprite *s, int dir);
+	Switch(Game *, int x, int y);
+	virtual void onCol(SpriteType st, Sprite *s, int dir) override;
+	virtual void update() override { if(coolDown > 0) coolDown--; }
 };
 
 class Teleporter : public SpriteEx {

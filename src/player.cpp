@@ -1017,9 +1017,12 @@ Switch::Switch (Game *game, int x, int y) : SpriteEx(game, ST_SWITCH, x, y) {
 }
 
 void Switch::onCol (SpriteType st, Sprite *s, int dir) {
+	if (coolDown > 0) return;
+
 	if (st == ST_PLAYER)
 	{
-		if (state == 0) state = 1; else state = 0; 
+		coolDown = 50;
+		if (state == 0) state = 1; else state = 0;
 		//TODO: change water level
 	}
 }
