@@ -1,6 +1,7 @@
 #pragma once
 
 #include "point.h"
+#include <string>
 
 class Rect
 {
@@ -45,11 +46,6 @@ public:
       */
 	bool operator==(const Rect &r) const;
 
-	bool operator>(const Rect &r) const;
-	bool operator>=(const Rect &r) const;
-	bool operator>(const Point &p) const;
-	bool operator>=(const Point &p) const;
-
 	/** */ void operator+=(const Point &p) { origin += p; }
 	/** */ void operator-=(const Point &p) { origin -= p; }
 	/** */ Rect operator+(const Point &p) const { return Rect(origin + p, dim); }
@@ -88,4 +84,11 @@ public:
          Bsic get and set functions.
       */
 	void h(int v) { dim.y(v); }
+
+	const std::string toString() const;
+
+	bool contains(const Point &p) const {
+		auto norm = p - origin;
+		return (norm.x() >= 0 && norm.y() >= 0 && norm.x() < dim.x() && norm.y() < dim.y());
+	}
 };
