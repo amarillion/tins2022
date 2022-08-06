@@ -7,7 +7,7 @@ SRC=.
 .PHONY: default
 default: all ;
 
-SPRITES=bonus switch teleporter
+SPRITES=bonus switch teleporter raul
 SHEET_FILES=$(patsubst %,$(DEST)/%.png,$(SPRITES))
 	
 $(SHEET_FILES): $(DEST)/%.png: $(SRC)/%.aseprite
