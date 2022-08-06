@@ -4,11 +4,11 @@
 # ALLEGRO_BASE=/z/prg/allegro5-git/Build/Release/lib
 # WINDOWS_BASE=/c/Windows/System32
 
-BASE_LIB=/usr/i686-w64-mingw32/lib
-BASE_BIN=/usr/i686-w64-mingw32/bin
-WINDOWS_BASE=/usr/lib/gcc/i686-w64-mingw32/9.3-posix
+BASE2=/usr/i686-w64-mingw32/lib
+BASE=/usr/i686-w64-mingw32/bin
+WINDOWS_BASE=/usr/lib/gcc/i686-w64-mingw32/10-posix
 
-arr=("$BASE_LIB" "$BASE_BIN" "$WINDOWS_BASE")
+arr=("$BASE" "$BASE2" "$WINDOWS_BASE")
 
 find_dll() {
 	find "${arr[@]}" -maxdepth 1 -type f -iname $1 | head -n 1
@@ -25,12 +25,10 @@ copy_dll() {
 	cp $DLL $DEST
 }
 
-# cp $ALLEGRO_BASE/allegro_monolith-debug-5.2.dll build/debug_win
-copy_dll allegro_monolith-5.2.dll build/release_win
-
 for DEST in "build/release_win"
 do
-	copy_dll libgcc_s_sjlj-1.dll $DEST
+	copy_dll allegro_monolith-5.2.dll $DEST
+	copy_dll libgcc_s_dw2-1.dll $DEST
 	copy_dll libstdc++-6.dll $DEST
 	copy_dll libfreetype-6.dll $DEST
 	# copy_dll libbz2-1.dll $DEST
