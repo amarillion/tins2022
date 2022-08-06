@@ -127,9 +127,10 @@ public:
 class Switch : public SpriteEx {
 	int coolDown = 0;
 public:
-	Switch(Game *, int x, int y);
+	Switch(Game *, int x, int y, int startState);
 	virtual void onCol(SpriteType st, Sprite *s, int dir) override;
 	virtual void update() override { if(coolDown > 0) coolDown--; }
+	enum { OFF = 0, ON = 1 };
 };
 
 class Teleporter : public SpriteEx {

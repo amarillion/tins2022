@@ -28,4 +28,8 @@ public:
 	void push_back(const UpdateablePtr &val) {
 		items.push_back(val);
 	}
+
+	void clear() {
+		items.clear();
+	}
 };

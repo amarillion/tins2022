@@ -29,7 +29,8 @@ public:
 	virtual void addCollision(SpriteEx *a, SpriteEx *b, int dir) = 0;
 	virtual Engine *getParent() = 0;
 	virtual void exitMap(int dir, int y) = 0;
-	
+	virtual void updateWaterLevel() = 0;
+
 	// per-level, initialized in initLevel
 	// TODO: accessor
 	Player *player; //may be NULL // TODO turn into weak ptr.

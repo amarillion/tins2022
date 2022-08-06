@@ -1,7 +1,7 @@
 #include "game.h"
 #include "constants.h"
 #include <assert.h>
-
+#include "animator.h"
 #include "engine.h"
 #include "text.h"
 #include "resources.h"
@@ -150,6 +150,20 @@ public:
 		}
 
 		setTimer(0, MSG_ENTER_MAP); // unwind stack before calling initMap()
+	}
+
+	virtual void updateWaterLevel() {
+		MapLayout *currentMap = getMapAt(playerMapEntryPos);
+
+		// update global water level immediately
+		globalWaterLevel = currentMap->bounds.y2();
+
+		int newWaterLevel = (globalWaterLevel - currentMap->bounds.y()) * 32;
+		auto animator = make_shared<Animator<int>>(
+			localWaterLevel, newWaterLevel, 100,
+			[=](int val){ this->localWaterLevel = val; }
+		);
+		add(animator);
 	}
 
 private:
@@ -413,8 +427,12 @@ void GameImpl::initMap()
 				addSprite (e); break;
 			case 17: e = new Platform(this, xx, yy, Platform::FALLING);
 				addSprite (e); break;
-			case 18: e = new Switch(this, xx, yy);
+			case 18: {
+				int delta = globalWaterLevel - currentMap->bounds.y() - 1;
+				bool waterHere = (delta >= 0 && delta < currentMap->bounds.h());
+				e = new Switch(this, xx, yy, waterHere ? Switch::ON : Switch::OFF);
 				addSprite (e); break;
+			}
 			default:
 				log ("unrecognised flags %i for tile %i at (%i, %i)", flags, tile, mx, my);
 				//TODO: would be good to have a more interesting assert implementation that allows logging as well.
@@ -437,13 +455,12 @@ void GameImpl::collectBonus (int index)
 void GameImpl::killAll()
 {
 	Container::killAll();
-	list<Sprite*>::iterator i;
-	for (i = sprites.begin(); i != sprites.end(); ++i)
-	{
-		delete (*i);
-		(*i) = NULL;
+	for (auto &i : sprites) {
+		delete i;
 	}
+	list<Sprite*>::iterator i;
 	sprites.clear();
+	updateables.clear(); // especially to clear water level animator
 }
 
 void GameImpl::addSprite(Sprite *o)

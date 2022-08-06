@@ -1011,8 +1011,9 @@ void Bonus::onCol (SpriteType st, Sprite *s, int dir)
 	}
 }
 
-Switch::Switch (Game *game, int x, int y) : SpriteEx(game, ST_SWITCH, x, y) {
+Switch::Switch (Game *game, int x, int y, int startState) : SpriteEx(game, ST_SWITCH, x, y) {
 	gravity = false;
+	state = startState;
 	setAnim(anims["Switch"]);
 }
 
@@ -1022,8 +1023,10 @@ void Switch::onCol (SpriteType st, Sprite *s, int dir) {
 	if (st == ST_PLAYER)
 	{
 		coolDown = 50;
-		if (state == 0) state = 1; else state = 0;
-		//TODO: change water level
+		if (state == Switch::OFF) {
+			state = Switch::ON;
+			parent->updateWaterLevel();
+		}
 	}
 }
 

@@ -30,10 +30,10 @@
 
 	<anim id='Switch' dx='64' dy='24' rle='switch' originy='0' regionw='80' regionh='80' hotx='-8' hoty='-8'>
 		<state>
-			<frame originx='0'/>
+			<frame originx='80'/>
 		</state>
 		<state>
-			<frame originx='80'/>
+			<frame originx='0'/>
 		</state>
 	</anim>
 
