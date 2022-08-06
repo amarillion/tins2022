@@ -21,7 +21,7 @@ public:
 		E_SHOW_MAIN_MENU = 100,
 		E_BACK,
 		E_LEVEL_INTRO,
-		E_LEVEL_CLEAR,
+		E_SHOW_WIN_SCREEN,
 		E_STOPGAME, /* When you press stop from the pause menu */
 		E_CODE_ENTERED, /* When user entered code in passcode menu */
 		E_SHOW_SETTINGS_MENU,

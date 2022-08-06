@@ -23,26 +23,38 @@
 			"tiles": "tiles2"
 		}
 	],
-	"levels": [
+	"start": {
+		"x": 5,
+		"y": 10
+	},
+	"layout": [
 		{
 			"x": 0,
 			"y": 0,
-			"map": "mapA"
+			"map": "mapA",
+			"bg1": "bg1",
+			"bg2": "bg2"
 		},
 		{
-			"x": 0,
+			"x": 50,
 			"y": 0,
-			"map": "mapB"
+			"map": "mapB",
+			"bg1": "bg1",
+			"bg2": "bg2"
 		},
 		{
-			"x": 0,
+			"x": 75,
 			"y": 0,
-			"map": "mapC"
+			"map": "mapC",
+			"bg1": "bg1",
+			"bg2": "bg2"
 		},
 		{
-			"x": 0,
-			"y": 0,
-			"map": "mapD"
+			"x": 75,
+			"y": 15,
+			"map": "mapD",
+			"bg1": "bg1",
+			"bg2": "bg2"
 		}
 	]
 }

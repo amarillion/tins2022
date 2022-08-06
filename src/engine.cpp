@@ -223,7 +223,7 @@ public:
 			setFocus(mMain);
 			break;
 		case E_LEVEL_INTRO: {
-				game->initLevel();
+				game->initGame();
 				ContainerPtr intro = make_shared<Container>();
 				add(intro);
 				intro->add(ClearScreen::build(BLACK).get());
@@ -236,7 +236,7 @@ public:
 				setTimer(50, EngineImpl::E_ACTION);
 			}
 			break;
-		case E_LEVEL_CLEAR:
+		case E_SHOW_WIN_SCREEN:
 			{
 				ContainerPtr intro = make_shared<Container>();
 				add(intro);

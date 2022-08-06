@@ -1,5 +1,5 @@
 #include "game.h"
-
+#include "constants.h"
 #include <assert.h>
 
 #include "engine.h"
@@ -31,6 +31,13 @@ public:
 	}
 };
 
+struct MapLayout {
+	TEG_MAP *map;
+	TEG_MAP *bg1;
+	TEG_MAP *bg2;
+	Rect bounds;
+};
+
 class GameImpl : public Game
 {
 	Engine *parent;
@@ -50,6 +57,34 @@ public:
 		gamefont = res->getFont("megaman_2")->get(24);
 		smallfont = res->getFont("megaman_2")->get(16);
 		Sprite::anims = res->getAnims();
+		parseMaps(res->getJson("levelset"));
+	}
+
+	void parseMaps(const JsonNode &json) {
+		try {
+			auto res = parent->getResources();
+			for (auto &node : json.getArray("layout")) {
+				MapLayout map;
+				map.map = res->getJsonMap(node.getString("map"))->map;
+				map.bg1 = res->getJsonMap(node.getString("bg1"))->map;
+				map.bg2 = res->getJsonMap(node.getString("bg2"))->map;
+				map.bounds = Rect(
+					node.getInt("x"),
+					node.getInt("y"),
+					map.map->w,
+					map.map->h
+				);
+				maps.push_back(map);
+			}
+			playerFirstStart = Point(
+				json["start"].getInt("x"),
+				json["start"].getInt("y")
+			);
+		}
+		catch (JsonException e) {
+			allegro_message("Error parsing map layout, %s", e.what());
+			assert(false);
+		}
 	}
 
 	virtual void done() override {
@@ -58,9 +93,7 @@ public:
 
 	TEG_MAP *map;
 	std::shared_ptr<ViewPort> aViewPort;
-
 	std::list <Sprite*> sprites;
-
 
 	// per-game, initialized in init
 	int lives;
@@ -78,8 +111,8 @@ public:
 
 	virtual void killAll();
 	
-	virtual void initLevel() override;
-	void initGame();
+	virtual void initMap() override;
+	virtual void initGame() override;
 
 	virtual std::list<Sprite*> &getSprites() { return sprites; }
 	virtual void addSprite(Sprite *o);
@@ -94,6 +127,44 @@ public:
 	virtual Engine *getParent() override { return parent; }
 	virtual TEG_MAP *getMap() override { return map; }
 
+	virtual void exitMap(int dir, int y) override {
+		// update player pos
+		MapLayout *currentMap = getMapAt(playerMapEntryPos);
+		if (dir == SpriteEx::DIR_RIGHT) {
+			playerMapEntryPos = Point(
+				currentMap->bounds.x2(),
+				(y / 32) - currentMap->bounds.y()
+			);
+		}
+		else if (dir == SpriteEx::DIR_LEFT) {
+			cout << "Exit left" << endl;
+			playerMapEntryPos = Point(
+				currentMap->bounds.x() - 1,
+				(y / 32) - currentMap->bounds.y()
+			);
+		}
+		else {
+			assert(false && "Fell out of this world?");
+		}
+
+		setTimer(0, MSG_ENTER_MAP); // unwind stack before calling initMap()
+	}
+
+private:
+	std::vector<MapLayout> maps;
+
+	Point playerMapEntryPos;
+	Point playerFirstStart; // first starting point, read from json.
+	MapLayout *getMapAt(Point pos) {
+		cout << "Getting map at " << pos.x() << ", " << pos.y() << endl;
+		for (auto &mapLayout: maps) {
+			if (mapLayout.bounds.contains(pos)) {
+				return &mapLayout;
+			}
+		}
+		// TODO: just reset to origin if this happens
+		assert(false && "You're out of bounds! Couldn't find a map");
+	}
 };
 
 void GameImpl::addCollision(SpriteEx *a, SpriteEx *b, int dir)
@@ -251,20 +322,21 @@ void GameImpl::initGame()
 {
 	lives = START_LIVES;
 	bonusCollected = 0;
+	cout << "Reset player map entry pos" << endl;
+	playerMapEntryPos = playerFirstStart;
+	initMap();
 }
 
-void GameImpl::initLevel()
+void GameImpl::initMap()
 {
+	MapLayout *currentMap = getMapAt(playerMapEntryPos);
+	assert(currentMap && "out of level bounds");
+
 	killAll();
-	TEG_MAP *bg = NULL;
-	TEG_MAP *bg2 = NULL;
 
-	map = parent->getResources()->getJsonMap("mapA")->map;
-	bg2 = parent->getResources()->getJsonMap("bg2")->map;
-	bg =  parent->getResources()->getJsonMap("bg1")->map;
-
-	assert (bg);
-	assert (bg2);
+	map = currentMap->map;
+	TEG_MAP *bg2 = currentMap->bg2;
+	TEG_MAP *bg =  currentMap->bg1;
 
 	add(ClearScreen::build(al_map_rgb (170, 170, 255)).get());
 
@@ -285,7 +357,8 @@ void GameImpl::initLevel()
 
 	aView->add(TileMap::build(map).get()); // TODO: tilemap not animated
 
-	player = new Player(this, 128, 128);
+	auto pos = (playerMapEntryPos - currentMap->bounds.topLeft()) * TILE_SIZE; 
+	player = new Player(this, pos.x(), pos.y());
 	addSprite (player);
 
 	for (int mx = 0; mx < map->w; ++mx)
@@ -371,8 +444,11 @@ bool GameImpl::onHandleMessage(ComponentPtr src, int event)
 			pushMsg(Engine::E_LEVEL_INTRO);
 		}
 		return true;
-	case MSG_PLAYER_WINLEVEL:
-		pushMsg(Engine::E_LEVEL_CLEAR);
+	case MSG_ENTER_MAP:
+		initMap();
+		return true;
+	case MSG_PLAYER_WIN:
+		pushMsg(Engine::E_SHOW_WIN_SCREEN);
 		return true;
 	}
 	return false;

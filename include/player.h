@@ -19,7 +19,7 @@ protected:
 	SpriteType spriteType;
 	int subtype;
 	int hp;
-	bool unpassable;
+	bool unpassable; // can not overlap with other unpassable objects
 	int pushForce;
 public:
 	int getPushForce() { return pushForce; }
@@ -62,17 +62,17 @@ private:
 	Input *btn;
 	bool isWeaponAvailable(int wpn);
 	void die(); // player died
-	void winLevel(); // finished level
 	void shoot(); // shoot a bullet
 	void setState(bool hit); // set proper player state
 	void hit(int subtype, double delta);
 public:
 	virtual void kill ();
 	double getdir() { return dir; }
-	int jumpTimer;
-	int hitTimer;
-	int currentWeapon;
-	int shootTimer;
+	int jumpTimer = 0;
+	int hitTimer = 0;
+	int currentWeapon = 0;
+	int shootTimer = 0;
+	bool control = true;
 	Player(Game *, int x, int y);
 	virtual void update();
 	virtual void onCol (SpriteType st, Sprite *s, int dir);

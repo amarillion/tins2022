@@ -208,6 +208,8 @@ void Player::hit(int subtype, double delta)
 
 void Player::onCol(SpriteType st, Sprite *s, int dir)
 {
+	if (!control) return;
+	
 	SpriteEx *se = dynamic_cast<SpriteEx *>(s);
 	switch (st)
 	{
@@ -230,12 +232,21 @@ void Player::onCol(SpriteType st, Sprite *s, int dir)
 			jumpTimer = 0;
 		}
 		break;
-	case ST_BOUNDS:
-		if (dir == DIR_RIGHT)
-		{
-			winLevel();
-		}
+	case ST_BOUNDS: {
+		cout << "Hit bounds" << endl;
+		control = false;
+		gravity = false;
+		
+		// we're going to moonwalk out of the level...
+		dy = 0;
+		dx = dir == DIR_LEFT ? -AIR_HSPEED: AIR_HSPEED;
+		int yy = gety();
+
+		parent->setTimer(20, [=](){
+			parent->exitMap(dir, yy);
+		});
 		break;
+	}
 	default: /* do nothing */ break;
 	}
 }
@@ -283,15 +294,13 @@ Player::Player (Game *game, int x, int y) : SpriteEx (game, ST_PLAYER, x, y)
 {
 	gravity = true;
 	state = 0;
-	hitTimer = 0;
-	currentWeapon = 0;
-	shootTimer = 0;
 	hp = PLAYER_HP;
 	btn = game->getParent()->getInput();
 }
 
 void Player::kill()
 {
+	cout << "Player killed" << endl;
 	SpriteEx::kill();
 	parent->player = NULL;
 }
@@ -305,68 +314,66 @@ void Player::die()
 	kill(); // kill this sprite
 }
 
-void Player::winLevel()
-{
-	// create a timer
-	parent->setTimer(50, Game::MSG_PLAYER_WINLEVEL);
-}
-
 void Player::update()
 {
-	//	float speed = air ? AIR_HSPEED : LAND_HSPEED;
-	if (btn[btnLeft].getState() && hitTimer == 0)
-	{
-		dx = -AIR_HSPEED;
-		dir = 0;
-	}
-	else if (btn[btnRight].getState() && hitTimer == 0)
-	{
-		dx = AIR_HSPEED;
-		dir = 1;
-	}
-	else if (hitTimer == 0)
-	{
-		dx = 0;
-	}
-
-	if (hitTimer > 0)
-	{
-		hitTimer--;
-		if (hitTimer == 0)
+	if (control) {
+		//	float speed = air ? AIR_HSPEED : LAND_HSPEED;
+		if (btn[btnLeft].getState() && hitTimer == 0)
 		{
-			setState (false);
+			dx = -AIR_HSPEED;
+			dir = 0;
 		}
-	}
-
-	if (btn[btnUp].getState() && hitTimer == 0)
-	{
-		if (!air)
+		else if (btn[btnRight].getState() && hitTimer == 0)
 		{
-			parent->getParent()->playSample("Sound4");
-			jumpTimer = MAX_JUMPTIMER;
-			air = true;
+			dx = AIR_HSPEED;
+			dir = 1;
+		}
+		else if (hitTimer == 0)
+		{
+			dx = 0;
 		}
 
-		// while jump timer is counting
-		if (jumpTimer > 0)
+		if (hitTimer > 0)
 		{
-			// constant acceleration
-			dy = -JUMP_SPEED;
-			jumpTimer--;
+			hitTimer--;
+			if (hitTimer == 0)
+			{
+				setState (false);
+			}
+		}
+
+		if (btn[btnUp].getState() && hitTimer == 0)
+		{
+			if (!air)
+			{
+				parent->getParent()->playSample("Sound4");
+				jumpTimer = MAX_JUMPTIMER;
+				air = true;
+			}
+
+			// while jump timer is counting
+			if (jumpTimer > 0)
+			{
+				// constant acceleration
+				dy = -JUMP_SPEED;
+				jumpTimer--;
+			}
+		}
+		else
+		{
+			jumpTimer = 0;
 		}
 	}
-	else
-	{
-		jumpTimer = 0;
-	}
-
+	
 	SpriteEx::update();
 
-	// handle shooting
-	if (shootTimer > 0) shootTimer--;
-	if (btn[btnAction].justPressed() && shootTimer == 0 && hitTimer == 0)
-	{
-		shoot();
+	if (control) {
+		// handle shooting
+		if (shootTimer > 0) shootTimer--;
+		if (btn[btnAction].justPressed() && shootTimer == 0 && hitTimer == 0)
+		{
+			shoot();
+		}
 	}
 }
 
@@ -758,7 +765,7 @@ void Enemy::kill()
 	SpriteEx::kill();
 	if (subtype == DRAGONCAT)
 	{
-		parent->setTimer(50, Game::MSG_PLAYER_WINLEVEL);
+		parent->setTimer(50, Game::MSG_PLAYER_WIN);
 	}
 }
 

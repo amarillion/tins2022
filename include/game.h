@@ -15,7 +15,8 @@ public:
 	// used in engine
 	virtual void init() = 0;
 	virtual void done() = 0;
-	virtual void initLevel() = 0;
+	virtual void initGame() = 0;
+	virtual void initMap() = 0;
 	virtual int getLives() = 0;
 
 	static std::shared_ptr<Game> newInstance(Engine *parent);
@@ -27,6 +28,7 @@ public:
 	virtual void addSprite(Sprite *o) = 0;
 	virtual void addCollision(SpriteEx *a, SpriteEx *b, int dir) = 0;
 	virtual Engine *getParent() = 0;
+	virtual void exitMap(int dir, int y) = 0;
 	
 	// per-level, initialized in initLevel
 	// TODO: accessor
@@ -34,6 +36,6 @@ public:
 	ALLEGRO_FONT *gamefont;
 	ALLEGRO_FONT *smallfont;
 
-	enum { MSG_PLAYER_DIED = 4001, MSG_PLAYER_WINLEVEL }; /* PRIME */
+	enum { MSG_PLAYER_DIED = 4001, MSG_ENTER_MAP, MSG_PLAYER_WIN }; /* PRIME */
 
 };
