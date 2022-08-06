@@ -121,7 +121,8 @@ MainLoop::MainLoop() :
 	fpsOn = true;
 #else
 	// default in release version
-	screenMode = FULLSCREEN_WINDOW;
+	// screenMode = FULLSCREEN_WINDOW;
+	screenMode = WINDOWED; // temporarily default in release mode...
 	fpsOn = false;
 #endif
 	instance = this;
