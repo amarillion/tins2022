@@ -1,7 +1,7 @@
 <gamedata>
 
-	<anim id='Redsock' dx='40' dy='40'>
-		<frame rle='sock' hotx = '0' hoty = '0'/>
+	<anim id='Redsock' dx='40' dy='40' >
+		<frame rle='bonus' originx='40' originy='0' hotx='0' hoty='0'/>
 	</anim>
 
 	<anim id='Platform' dx='64' dy='64'>
@@ -123,127 +123,74 @@
 		</state>
 	</anim>
 	
-	<anim id='Raul' dx='30' dy='60'>
+	<anim id='Raul' rle='raul' dx='30' dy='60' regionw='80' regionh='80' originy='0'>
 		<state>
 			<dir id='right'>
-				<frame rle='Raul1_w1' hotx = '-10' hoty = '-20' time='200'/>
-				<frame rle='Raul1_st' hotx = '-10' hoty = '-20' time='200'/>
-				<frame rle='Raul1_w2' hotx = '-10' hoty = '-20' time='200'/>
-				<frame rle='Raul1_st' hotx = '-10' hoty = '-20' time='200'/>
+				<frame originx='000' hotx='-10' hoty='-20' time='200'/>
+				<frame originx='160' hotx='-10' hoty='-20' time='200'/>
+				<frame originx='080' hotx='-10' hoty='-20' time='200'/>
+				<frame originx='160' hotx='-10' hoty='-20' time='200'/>
 			</dir>
 			<dir id='left'>
-				<frame rle='Raul1_w1' hotx = '-35' hoty = '-20' time='200'>
-					<flip/>
-				</frame>
-				<frame rle='Raul1_st' hotx = '-35' hoty = '-20' time='200'>
-					<flip/>
-				</frame>
-				<frame rle='Raul1_w2' hotx = '-35' hoty = '-20' time='200'>
-					<flip/>
-				</frame>
-				<frame rle='Raul1_st' hotx = '-35' hoty = '-20' time='200'>
-					<flip/>
-				</frame>
+				<frame originx='000' hotx='-35' hoty='-20' time='200'><flip/></frame>
+				<frame originx='160' hotx='-35' hoty='-20' time='200'><flip/></frame>
+				<frame originx='080' hotx='-35' hoty='-20' time='200'><flip/></frame>
+				<frame originx='160' hotx='-35' hoty='-20' time='200'><flip/></frame>
 			</dir>
 		</state>
 		<state>
 			<dir id='right'>
-				<frame rle='Raul1_w1' hotx = '-10' hoty = '-20' time='200'>
-					<lit r='0' g='0' b='255' alpha='64'/>
-				</frame>
-				<frame rle='Raul1_st' hotx = '-10' hoty = '-20' time='200'>
-					<lit r='0' g='0' b='255' alpha='64'/>
-				</frame>
-				<frame rle='Raul1_w2' hotx = '-10' hoty = '-20' time='200'>
-					<lit r='0' g='0' b='255' alpha='64'/>
-				</frame>
-				<frame rle='Raul1_st' hotx = '-10' hoty = '-20' time='200'>
-					<lit r='0' g='0' b='255' alpha='64'/>
-				</frame>
+				<frame originx='000' hotx='-10' hoty='-20' time='200'><lit r='0' g='0' b='255' alpha='64'/></frame>
+				<frame originx='160' hotx='-10' hoty='-20' time='200'><lit r='0' g='0' b='255' alpha='64'/></frame>
+				<frame originx='080' hotx='-10' hoty='-20' time='200'><lit r='0' g='0' b='255' alpha='64'/></frame>
+				<frame originx='160' hotx='-10' hoty='-20' time='200'><lit r='0' g='0' b='255' alpha='64'/></frame>
 			</dir>
 			<dir id='left'>
-				<frame rle='Raul1_w1' hotx = '-35' hoty = '-20' time='200'>
-					<lit r='0' g='0' b='255' alpha='64'/>
-					<flip/>
-				</frame>
-				<frame rle='Raul1_st' hotx = '-35' hoty = '-20' time='200'>
-					<lit r='0' g='0' b='255' alpha='64'/>
-					<flip/>
-				</frame>
-				<frame rle='Raul1_w2' hotx = '-35' hoty = '-20' time='200'>
-					<lit r='0' g='0' b='255' alpha='64'/>
-					<flip/>
-				</frame>
-				<frame rle='Raul1_st' hotx = '-35' hoty = '-20' time='200'>
-					<lit r='0' g='0' b='255' alpha='64'/>
-					<flip/>
-				</frame>
+				<frame originx='000' hotx='-35' hoty='-20' time='200'><lit r='0' g='0' b='255' alpha='64'/><flip/></frame>
+				<frame originx='160' hotx='-35' hoty='-20' time='200'><lit r='0' g='0' b='255' alpha='64'/><flip/></frame>
+				<frame originx='080' hotx='-35' hoty='-20' time='200'><lit r='0' g='0' b='255' alpha='64'/><flip/></frame>
+				<frame originx='160' hotx='-35' hoty='-20' time='200'><lit r='0' g='0' b='255' alpha='64'/><flip/></frame>
 			</dir>
 		</state>
 		<state>
 			<dir id='right'>
-				<frame rle='Raul2_w1' hotx = '-10' hoty = '-20' time='200'/>
-				<frame rle='Raul2_st' hotx = '-10' hoty = '-20' time='200'/>
-				<frame rle='Raul2_w2' hotx = '-10' hoty = '-20' time='200'/>
-				<frame rle='Raul2_st' hotx = '-10' hoty = '-20' time='200'/>
+				<frame originx='240' hotx='-10' hoty='-20' time='200'/>
+				<frame originx='400' hotx='-10' hoty='-20' time='200'/>
+				<frame originx='320' hotx='-10' hoty='-20' time='200'/>
+				<frame originx='400' hotx='-10' hoty='-20' time='200'/>
 			</dir>
 			<dir id='left'>
-				<frame rle='Raul2_w1' hotx = '-35' hoty = '-20' time='200'>
-					<flip/>
-				</frame>
-				<frame rle='Raul2_st' hotx = '-35' hoty = '-20' time='200'>
-					<flip/>
-				</frame>
-				<frame rle='Raul2_w2' hotx = '-35' hoty = '-20' time='200'>
-					<flip/>
-				</frame>
-				<frame rle='Raul2_st' hotx = '-35' hoty = '-20' time='200'>
-					<flip/>
-				</frame>
+				<frame originx='240' hotx='-35' hoty='-20' time='200'><flip/></frame>
+				<frame originx='400' hotx='-35' hoty='-20' time='200'><flip/></frame>
+				<frame originx='320' hotx='-35' hoty='-20' time='200'><flip/></frame>
+				<frame originx='400' hotx='-35' hoty='-20' time='200'><flip/></frame>
 			</dir>
 		</state>
 		<state>
 			<dir id='right'>
-				<frame rle='Raul3_w1' hotx = '-10' hoty = '-20' time='200'/>
-				<frame rle='Raul3_st' hotx = '-10' hoty = '-20' time='200'/>
-				<frame rle='Raul3_w2' hotx = '-10' hoty = '-20' time='200'/>
-				<frame rle='Raul3_st' hotx = '-10' hoty = '-20' time='200'/>
+				<frame originx='480' hotx = '-10' hoty = '-20' time='200'/>
+				<frame originx='640' hotx = '-10' hoty = '-20' time='200'/>
+				<frame originx='480' hotx = '-10' hoty = '-20' time='200'/>
+				<frame originx='640' hotx = '-10' hoty = '-20' time='200'/>
 			</dir>
 			<dir id='left'>
-				<frame rle='Raul3_w1' hotx = '-35' hoty = '-20' time='200'>
-					<flip/>
-				</frame>
-				<frame rle='Raul3_st' hotx = '-35' hoty = '-20' time='200'>
-					<flip/>
-				</frame>
-				<frame rle='Raul3_w2' hotx = '-35' hoty = '-20' time='200'>
-					<flip/>
-				</frame>
-				<frame rle='Raul3_st' hotx = '-35' hoty = '-20' time='200'>
-					<flip/>
-				</frame>
+				<frame originx='480' hotx = '-35' hoty = '-20' time='200'><flip/></frame>
+				<frame originx='640' hotx = '-35' hoty = '-20' time='200'><flip/></frame>
+				<frame originx='480' hotx = '-35' hoty = '-20' time='200'><flip/></frame>
+				<frame originx='640' hotx = '-35' hoty = '-20' time='200'><flip/></frame>
 			</dir>
-		</state>		
+		</state>
 		
 		<state>
 			<dir id='right'>
-				<frame rle='Raul1_w1' hotx = '-10' hoty = '-20' time='50'>
-					<lit r='255' g='255' b='255' alpha='128'/>
-				</frame>
-				<frame rle='Raul1_w1' hotx = '-10' hoty = '-20' time='50'>
-				</frame>
+				<frame originx='0' hotx='-10' hoty='-20' time='50'><lit r='255' g='255' b='255' alpha='128'/></frame>
+				<frame originx='0' hotx='-10' hoty='-20' time='50'></frame>
 			</dir>
 			<dir id='left'>
-				<frame rle='Raul1_w1' hotx = '-35' hoty = '-20' time='50'>
-					<lit r='255' g='255' b='255' alpha='128'/>
-					<flip/>
-				</frame>
-				<frame rle='Raul1_w1' hotx = '-35' hoty = '-20' time='50'>
-					<flip/>
-				</frame>
+				<frame originx='0' hotx='-35' hoty='-20' time='50'><lit r='255' g='255' b='255' alpha='128'/><flip/></frame>
+				<frame originx='0' hotx='-35' hoty='-20' time='50'><flip/></frame>
 			</dir>
-		</state>		
-		
+		</state>
 
 	</anim>
 	
