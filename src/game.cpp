@@ -133,14 +133,14 @@ public:
 		if (dir == SpriteEx::DIR_RIGHT) {
 			playerMapEntryPos = Point(
 				currentMap->bounds.x2(),
-				(y / 32) - currentMap->bounds.y()
+				(y / 32) + currentMap->bounds.y()
 			);
 		}
 		else if (dir == SpriteEx::DIR_LEFT) {
 			cout << "Exit left" << endl;
 			playerMapEntryPos = Point(
 				currentMap->bounds.x() - 1,
-				(y / 32) - currentMap->bounds.y()
+				(y / 32) + currentMap->bounds.y()
 			);
 		}
 		else {
