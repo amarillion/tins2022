@@ -64,9 +64,10 @@ void Pattern::draw(const GraphicsContext &gc)
 	}
 }
 
-TileMap::TileMap(const TEG_MAP *tilemap)
+TileMap::TileMap(const TEG_MAP *_tilemap, int _layer)
 {
-	this->tilemap = tilemap;
+	layer = _layer;
+	tilemap = _tilemap;
 	setDimension(teg_pixelw(tilemap), teg_pixelh(tilemap));
 }
 
@@ -87,12 +88,12 @@ void TileMap::draw(const GraphicsContext &gc)
 	// TODO: right now, frame interval is hardcoded at 500 msec. Make customizable.
 	int frame = (MSEC_FROM_TICKS(counter) / 500) % tilemap->tilelist->animsteps;
 //	teg_draw_frame (tilemap, 0, xofst, yofst, frame);
-	teg_draw_repeated(gc.buffer, tilemap, 0, -xofst, -yofst, frame);
+	teg_draw_repeated(gc.buffer, tilemap, layer, -xofst, -yofst, frame);
 }
 
-ComponentBuilder<TileMap> TileMap::build(TEG_MAP *map)
+ComponentBuilder<TileMap> TileMap::build(TEG_MAP *map, int layer)
 {
-	return ComponentBuilder<TileMap>(make_shared<TileMap>(map));
+	return ComponentBuilder<TileMap>(make_shared<TileMap>(map, layer));
 }
 
 void BitmapComp::draw (const GraphicsContext &gc)

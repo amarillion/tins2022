@@ -101,11 +101,12 @@ public:
 class TileMap : public Component
 {
 	int counter = 0;
+	int layer = 0;
 public:
-	TileMap(const TEG_MAP *tilemap);
+	TileMap(const TEG_MAP *tilemap, int layer = 0);
 	virtual void draw(const GraphicsContext &gc) override;
 	virtual void update() override { counter++; }
-	static ComponentBuilder<TileMap> build(TEG_MAP *map);
+	static ComponentBuilder<TileMap> build(TEG_MAP *map, int _layer = 0);
 	virtual std::string const className() const override { return "TileMap"; }
 private:
 	const TEG_MAP *tilemap;
