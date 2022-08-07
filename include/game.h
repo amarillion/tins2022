@@ -34,7 +34,7 @@ public:
 
 	// per-level, initialized in initLevel
 	// TODO: accessor
-	Player *player; //may be NULL // TODO turn into weak ptr.
+	Player *player; //may be nullptr // TODO turn into weak ptr.
 	ALLEGRO_FONT *gamefont;
 	ALLEGRO_FONT *smallfont;
 

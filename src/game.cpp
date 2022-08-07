@@ -204,6 +204,8 @@ private:
 			i->kill();
 		}
 		updateables.killAll(); // especially to clear water level animator
+
+		player = nullptr; // avoid illegal access to player
 	}
 
 };
@@ -255,7 +257,7 @@ void GameImpl::onUpdate ()
 {
 	updateObjects();
 
-	if (player != NULL)
+	if (player != nullptr)
 	{
 		int lookat = player->getx() + ((player->getdir() == 1) ? 300 : -300);
 		int x = lookat + aViewPort->getXofst();

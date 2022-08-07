@@ -2,5 +2,5 @@
 /build/
 version.inc
 /data/version.ini
-allegro.log
+*.log
 TODO.txt
