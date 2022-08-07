@@ -21,6 +21,7 @@ ifeq ($(TARGET),CROSSCOMPILE)
 else
 	CXX = g++
 	LD = g++
+	WINDRES = windres
 endif
 
 CFLAGS = -std=c++11 -Iinclude -I$(TWIST_HOME)/include -W -Wall -Wno-unused -DUSE_MOUSE
