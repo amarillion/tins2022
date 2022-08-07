@@ -69,4 +69,6 @@ public:
 	virtual ALLEGRO_AUDIO_STREAM *getMusic (const std::string &id) = 0;
 	virtual void addStream(const std::string &id, const std::string &filename) = 0;
 	virtual ~Resources() {}
+
+	virtual void refreshModifiedFiles() = 0;
 };

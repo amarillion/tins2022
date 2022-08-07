@@ -10,6 +10,8 @@ class Tilemap {
 public:
 	JsonNode rawData;
 	TEG_MAP *map;
+	std::string filename;
+	time_t lastModified;
 
 	~Tilemap();
 };

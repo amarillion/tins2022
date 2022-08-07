@@ -522,6 +522,10 @@ void MainLoop::pumpMessages()
 				done = true;
 				break;
 			}
+			case ALLEGRO_EVENT_DISPLAY_SWITCH_IN: {
+				rootPane->handleEvent (event);
+				break;
+			}
 			case ALLEGRO_EVENT_DISPLAY_RESIZE: {
 				al_acknowledge_resize(event.display.source);
 				w = al_get_display_width(display);

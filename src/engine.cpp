@@ -47,6 +47,15 @@ public:
 
 	virtual shared_ptr<Resources> getResources() override { return resources; }
 
+#ifdef DEBUG
+	virtual void handleEvent(ALLEGRO_EVENT &event) override {
+		if (event.type == ALLEGRO_EVENT_DISPLAY_SWITCH_IN) {
+			resources->refreshModifiedFiles();
+		}
+		Engine::handleEvent(event);
+	}
+#endif
+
 	virtual bool isDebug() override { return debug; }
 
 	void loadMaps() {

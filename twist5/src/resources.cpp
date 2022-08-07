@@ -415,6 +415,26 @@ public:
 		return samples[id];
 	}
 
+	virtual void refreshModifiedFiles() {
+		for (auto &i: jsonMaps) {
+
+			Tilemap *tilemap = i.second;
+			ALLEGRO_FS_ENTRY *entry = al_create_fs_entry(tilemap->filename.c_str());
+			time_t lastModified = al_get_fs_entry_mtime(entry);
+			al_destroy_fs_entry(entry);
+
+			if (lastModified > tilemap->lastModified) {
+				cout << tilemap->filename << " Has changed, updating! " << endl;
+
+				// TODO: this is a memory leak. 
+				// We can't destroy the old one yet because it's still in use
+				// But we're replacing the owning pointer
+				// Shared_ptr will solve this.
+				Tilemap *result = loadTilemap(tilemap->filename, tilemap->map->tilelist);
+				i.second = result;
+			}
+		}
+	}
 };
 
 shared_ptr<Resources> Resources::newInstance() {
