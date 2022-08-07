@@ -82,6 +82,8 @@ public:
 			resources->addFiles("data/*.xml");
 			resources->addFiles("data/*.ogg");
 			resources->addFiles("data/*.ttf");
+			resources->addStream("TankedTrinkets_above", "data/TankedTrinkets_above.ogg");
+			resources->addStream("TankedTrinkets_under", "data/TankedTrinkets_under.ogg");
 			loadMaps();
 		}
 		catch(const ResourceException &e) {
@@ -136,7 +138,11 @@ public:
 
 	void startMusic()
 	{
-		// MainLoop::getMainLoop()->playMusic(resources->getMusic("TODO"));
+		MainLoop::getMainLoop()->playMusic(
+			resources->getMusic("TankedTrinkets_above"),
+			resources->getMusic("TankedTrinkets_under"),
+			1.0
+		);
 	}
 
 	std::shared_ptr<SliderMenuItem> miSound;

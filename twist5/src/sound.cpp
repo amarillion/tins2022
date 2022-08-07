@@ -16,7 +16,6 @@ using namespace std;
 
 Sound::Sound(): inited(false), soundInstalled(true)
 {
-	currentMusic = NULL;
 	musicVolume.AddListener([=](int) {
 		updateMusicVolume();
 	});
@@ -79,91 +78,55 @@ void Sound::playSample (ALLEGRO_SAMPLE *s)
 	}
 }
 
-void Sound::playMusic (ALLEGRO_AUDIO_STREAM *duh, float volume)
+void Sound::playMusic (ALLEGRO_AUDIO_STREAM *above, 
+	ALLEGRO_AUDIO_STREAM *under, float _pan)
 {
 	if (!isSoundInstalled()) return;
     if (!(isSoundOn() && isMusicOn())) return;
-    if (currentMusic)
-    {
-        al_detach_audio_stream(currentMusic);
-        currentMusic = NULL;
-    }
-	if (!al_attach_audio_stream_to_mixer(duh, mixer)) {
+	
+	stopMusic();
+	
+	if (!al_attach_audio_stream_to_mixer(above, mixer)) {
        allegro_message("al_attach_audio_stream_to_mixer failed.\n"); //TODO: log error.
     }
-	currentMusic = duh;
-	al_set_audio_stream_gain(currentMusic, volume * musicVolume.get());
+	if (!al_attach_audio_stream_to_mixer(under, mixer)) {
+       allegro_message("al_attach_audio_stream_to_mixer failed.\n"); //TODO: log error.
+    }
+	musicAbove = above;
+	musicUnder = under;
+	pan = _pan;
+	al_set_audio_stream_gain(musicAbove, pan * musicVolume.get());
+	al_set_audio_stream_gain(musicUnder, (1.0 - pan) * musicVolume.get());
 }
 
 void Sound::updateMusicVolume() {
 	if (!isSoundInstalled()) return;
 
-	if (currentMusic) {
-		al_set_audio_stream_gain(currentMusic, musicVolume.get());
+	if (musicAbove && musicUnder) {
+		al_set_audio_stream_gain(musicAbove, pan * musicVolume.get());
+		al_set_audio_stream_gain(musicUnder, (1.0 - pan) * musicVolume.get());
 	}
 }
-		
+
+void Sound::setPan(float _pan) {
+	pan = _pan;
+	updateMusicVolume();
+}
+
 void Sound::stopMusic ()
 {
-    if (currentMusic)
-    {
-    	al_detach_audio_stream(currentMusic);
-        currentMusic = NULL;
-    }
+	if (musicAbove) {
+		al_detach_audio_stream(musicAbove);
+		musicAbove = nullptr;
+	}
+	if (musicUnder) {
+		al_detach_audio_stream(musicUnder);
+		musicUnder = nullptr;
+	}
 }
-
-#ifdef USE_ALSPC
-void Sound::playMusic (ALSPC_DATA *alspc_data)
-{
-	if (!isSoundInstalled()) return;
-	currentMusic = alspc_data;
-    if (!(isSoundOn() && isMusicOn())) return;
-    assert (alspc_data); // fails if requested SPC is not in datafile.
-    stopMusic();
-    alspc_player = alspc_start (alspc_data, hifi ? 44100 : 22050, 255, 128, stereo, hifi);
-}
-
-void Sound::pollMusic()
-{
-	assert (inited);
-	if (alspc_player) alspc_poll (alspc_player);
-}
-
-void Sound::setHifiOn(bool value)
-{
-    if (value != hifi)
-    {
-        hifi = value;
-        //TODO: reset music playing
-    }
-}
-
-void Sound::setStereoOn(bool value)
-{
-    if (value != stereo)
-    {
-        stereo = value;
-        //TODO: reset music playing
-    }
-}
-
-void Sound::stopMusic()
-{
-    if (alspc_player)
-    {
-        alspc_stop(alspc_player);
-        alspc_player = NULL;
-    }
-}
-
-#endif
 
 void Sound::doneSound()
 {
 	stopMusic();
-#ifdef USE_ALSPC
-	stopMusic();
-    alspc_uninstall();
-#endif
 }
 

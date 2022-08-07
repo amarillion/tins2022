@@ -32,14 +32,10 @@ private:
 	bool soundInstalled;
 
 	ALLEGRO_VOICE *voice;
-	ALLEGRO_AUDIO_STREAM *currentMusic;
+	ALLEGRO_AUDIO_STREAM *musicAbove = nullptr;
+	ALLEGRO_AUDIO_STREAM *musicUnder = nullptr;
 	ALLEGRO_MIXER *mixer;
-#ifdef USE_ALSPC
-    bool stereo;
-    bool hifi;
-    ALSPC_DATA *currentMusic;
-    ALSPC_PLAYER *alspc_player;
-#endif
+	float pan = 1.0;
 	void updateMusicVolume();
 	
 public:
@@ -55,9 +51,10 @@ public:
 	RangeModel<float> musicVolume {0.5, 0.0, 1.0};
 
 	void doneSound();
-	void playMusic (ALLEGRO_AUDIO_STREAM *duh, float volume = 1.0f);
+	void playMusic (ALLEGRO_AUDIO_STREAM *above, 
+		ALLEGRO_AUDIO_STREAM *under, float volume = 1.0f);
 	void stopMusic ();
-	
+	void setPan(float _pan);
 #ifdef USE_ALSPC
 	void playMusic (ALSPC_DATA *alspc_data);
 	void stopMusic ();

@@ -365,6 +365,26 @@ void GameImpl::onUpdate ()
 		int xofst = bound (0, newx, teg_pixelw(map) - MAIN_WIDTH);
 		int yofst = bound (0, newy, teg_pixelh(map) - MAIN_HEIGHT);
 		aViewPort->setOfst (-xofst, -yofst);
+
+		// pan music...
+		static bool aboveMusic = true;
+		int aboveWater = (localWaterLevel - player->gety());
+		if (aboveMusic && aboveWater < -200) {
+			aboveMusic = false;
+			cout << "Going to fade under" << endl;
+			auto animator = make_shared<Animator<float>>(
+				1.0, 0.0, 50, [=](float val){ MainLoop::getMainLoop()->setPan(val); } 
+			);
+			add(animator);
+		}
+		else if (!aboveMusic && aboveWater > -50) {
+			aboveMusic = true;
+			cout << "Going to fade above" << endl;
+			auto animator = make_shared<Animator<float>>(
+				0.0, 1.0, 50, [=](float val){ MainLoop::getMainLoop()->setPan(val); } 
+			);
+			add(animator);
+		}
 	}
 
 	if (bEsc.justPressed())
