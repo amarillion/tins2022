@@ -176,7 +176,7 @@ public:
 
 	// per-game, initialized in init
 	int lives;
-	int bonusCollected = 0;
+	int ringsCollected = 0;
 	int redSocksCollected = 0;
 
 	int globalWaterLevel = 0;
@@ -259,7 +259,6 @@ private:
 	Point playerMapEntryPos;
 	Point playerFirstStart; // first starting point, read from json.
 	MapLayout *getMapAt(Point pos) {
-		cout << "Getting map at " << pos.x() << ", " << pos.y() << endl;
 		for (auto &mapLayout: maps) {
 			if (mapLayout.bounds.contains(pos)) {
 				return &mapLayout;
@@ -446,7 +445,8 @@ void GameImpl::draw (const GraphicsContext &gc)
 void GameImpl::initGame()
 {
 	lives = START_LIVES;
-	bonusCollected = 0;
+	ringsCollected = 0;
+	redSocksCollected = 0;
 	cout << "Reset player map entry pos" << endl;
 	playerMapEntryPos = playerFirstStart;
 	initMap();
@@ -459,6 +459,7 @@ void GameImpl::initMap()
 
 	killAll();
 
+	cout << "Initializing map " << currentMap->mapId << endl;
 	auto res = parent->getResources();
 	map = res->getJsonMap(currentMap->mapId)->map;
 
@@ -545,15 +546,20 @@ void GameImpl::initMap()
 	}
 
 	aView->resizeToChildren();
-
-	repr(0, cout);
 }
 
 void GameImpl::collectBonus (int index)
 {
-	bonusCollected++;
-	if (index = Bonus::SOCK) {
-		redSocksCollected++;
+	switch(index) {
+		case Bonus::SOCK:
+			redSocksCollected++;
+			break;
+		case Bonus::ONEUP:
+			lives++;
+			break;
+		case Bonus::RING:
+			ringsCollected++;
+			break;
 	}
 }
 
