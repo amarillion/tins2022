@@ -47,6 +47,9 @@ enum TileIndexes {
 	TIDX_UNUSED = 31,
 	TIDX_ENEMY5 = 39,
 	TIDX_ENEMY6 = 47,
+	TIDX_TELECAT = 135,
+	TIDX_ROLLINGCAT = 143,
+	TIDX_SHARK = 151,
 	TIDX_SOCK = 152,
 	TIDX_ONEUP = 153,
 	TIDX_TELEPORTER = 154,
@@ -496,16 +499,22 @@ void GameImpl::initMap()
 		SpriteEx *e = NULL;
 		switch (tile)
 		{
-		case TIDX_ENEMY1: e = new Enemy(this, xx, yy, 0);
+		case TIDX_ENEMY1: e = new Enemy(this, xx, yy, Enemy::ELECTRICAT);
 			addSprite (e); break;
-		case TIDX_ENEMY2: e = new Enemy(this, xx, yy, 1);
+		case TIDX_ENEMY2: e = new Enemy(this, xx, yy, Enemy::SLINKYCAT);
 			addSprite (e); break;
-		case TIDX_ENEMY3: e = new Enemy(this, xx, yy, 2);
+		case TIDX_ENEMY3: e = new Enemy(this, xx, yy, Enemy::SPIDERCAT);
 			addSprite (e); break;
 		case TIDX_UNUSED: break;
-		case TIDX_ENEMY5: e = new Enemy(this, xx, yy, 3);
+		case TIDX_ENEMY5: e = new Enemy(this, xx, yy, Enemy::DRAGONCAT);
 			addSprite (e); break;
-		case TIDX_ENEMY6: e = new Enemy(this, xx, yy, 4);
+		case TIDX_ENEMY6: e = new Enemy(this, xx, yy, Enemy::GENERATOR);
+			addSprite (e); break;
+		case TIDX_ROLLINGCAT: e = new Enemy(this, xx, yy, Enemy::ROLLINGCAT);
+			addSprite (e); break;
+		case TIDX_SHARK: e = new Enemy(this, xx, yy, Enemy::SHARKCAT);
+			addSprite (e); break;
+		case TIDX_TELECAT: e = new Enemy(this, xx, yy, Enemy::TELECAT);
 			addSprite (e); break;
 		case TIDX_SOCK: e = new Bonus(this, xx, yy, Bonus::SOCK, [=](){ sprInit->collected = true; });
 			addSprite (e); break;

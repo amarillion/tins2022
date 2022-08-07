@@ -7,12 +7,13 @@
 #include "engine.h"
 #include "mainloop.h"
 
-const int MAX_ENEMY_TYPE = 5;
+const int MAX_ENEMY_TYPE = 8;
 
 Enemy::Enemy(Game *game, int x, int y, int _type) : SpriteEx(game, ST_ENEMY, x, y, _type)
 {
 	unpassable = true;
-	enemyType = (_type % MAX_ENEMY_TYPE);
+	enemyType = _type;
+	assert (enemyType < MAX_ENEMY_TYPE);
 	switch (enemyType)
 	{
 		case ELECTRICAT: setAnim(anims["Electricat"]); break;
@@ -20,6 +21,9 @@ Enemy::Enemy(Game *game, int x, int y, int _type) : SpriteEx(game, ST_ENEMY, x, 
 		case SPIDERCAT: setAnim(anims["Spidercat"]); break;
 		case DRAGONCAT: setAnim(anims["Dragoncat"]); break;
 		case GENERATOR: /* TODO */ break;
+		case TELECAT: setAnim(anims["Telecat"]); break;
+		case ROLLINGCAT: setAnim(anims["Rollingcat"]); break;
+		case SHARKCAT: setAnim(anims["Sharkcat"]); break;
 	}
 
 	hittimer = 0;
@@ -72,6 +76,24 @@ Enemy::Enemy(Game *game, int x, int y, int _type) : SpriteEx(game, ST_ENEMY, x, 
 		gravity = false;
 		blockedByTiles = false;
 		period = 31; /* PRIME */
+		break;
+	case TELECAT:
+		hp = 7; /* PRIME */
+		gravity = true;
+		damage = 4;
+		blockedByTiles = true;
+		break;
+	case ROLLINGCAT:
+		hp = 3; /* PRIME */
+		gravity = false;
+		damage = 2;
+		blockedByTiles = false;
+		break;
+	case SHARKCAT:
+		hp = 31; /* PRIME */
+		gravity = false;
+		damage = 7;
+		blockedByTiles = true;
 		break;
 	}
 
@@ -351,7 +373,7 @@ void Enemy::update()
 void Enemy::kill()
 {
 	SpriteEx::kill();
-	if (subtype == DRAGONCAT)
+	if (subtype == DRAGONCAT || subtype == SHARKCAT)
 	{
 		parent->setTimer(50, Game::MSG_PLAYER_WIN);
 	}
