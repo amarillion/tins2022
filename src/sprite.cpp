@@ -90,12 +90,12 @@ int Sprite::getTileStackFlags(int mx, int my)
 	{
 		int i1, i2, f1, f2;
 		i1 = teg_mapget (map, 0, mx, my);
-		i2 = teg_mapget (map, 1, mx, my);
+		// i2 = teg_mapget (map, 1, mx, my);
 		if (i1 >= 0) f1 = map->tilelist->tiles[i1].flags; else f1 = 0;
-		if (i2 >= 0) f2 = map->tilelist->tiles[i2].flags; else f2 = 0;
+		// if (i2 >= 0) f2 = map->tilelist->tiles[i2].flags; else f2 = 0;
 
 		// check for solids
-		if (f1 == 1 || f2 == 1) result |= TS_SOLID;
+		if (f1 == 1 /* || f2 == 1 */) result |= TS_SOLID;
 
 		return result;
 	}

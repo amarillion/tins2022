@@ -504,6 +504,7 @@ void GameImpl::initMap()
 	aViewPort->setChild(aView);
 
 	aView->add(TileMap::build(map).get()); // TODO: tilemap not animated
+	aView->add(TileMap::build(map, 1).get());
 
 	auto pos = (playerMapEntryPos - currentMap->bounds.topLeft()) * TILE_SIZE; 
 	player = new Player(this, pos.x(), pos.y());

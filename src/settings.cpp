@@ -16,7 +16,7 @@ Settings::Settings()
 	button[btnRight].setScancode (ALLEGRO_KEY_RIGHT);
 	button[btnJump].setScancode (ALLEGRO_KEY_SPACE);
 	button[btnAction].setScancode (ALLEGRO_KEY_LCTRL);
-	button[btnAction].setAltcode (ALLEGRO_KEY_LSHIFT);
+	button[btnAction].setAltcode (ALLEGRO_KEY_RCTRL);
 }
 
 void Settings::getFromConfig(ALLEGRO_CONFIG *config)
