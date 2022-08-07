@@ -140,18 +140,58 @@
 			</frame>
 		</state>
 		<state>
-			<frame rle='Dragoncat' hotx='-30' hoty='-60' time='200'>
-				<vflip/>
-			</frame>
-			<frame rle='Dragoncat3' hotx='-30' hoty='-65' time='200'>
-				<vflip/>
-			</frame>
-			<frame rle='Dragoncat5' hotx='-30' hoty='-25' time='200'>
-				<vflip/>
-			</frame>
+			<frame rle='Dragoncat' hotx='-30' hoty='-60' time='200'><vflip/></frame>
 		</state>
 	</anim>
-	
+
+	<anim id='Rollingcat' rle='Rollingcat' dx='32' dy='32'>
+		<frame hotx='0' hoty='0' time='200'/>
+		<frame hotx='0' hoty='0' time='200'><rot angle= '90'/></frame>
+		<frame hotx='0' hoty='0' time='200'><rot angle= '180'/></frame>
+		<frame hotx='0' hoty='0' time='200'><rot angle= '270'/></frame>
+	</anim>
+
+	<anim id='Shark' rle='Fole_Shark' dx='60' dy='40' originy='0' regionw='120' regionh='120'>
+		<state>
+			<frame originx='360' hotx='-50' hoty='-20' time='200'/>
+			<frame originx='480' hotx='-50' hoty='-20' time='200'/>
+			<frame originx='600' hotx='-50' hoty='-20' time='200'/>
+			<frame originx='480' hotx='-50' hoty='-20' time='200'/>
+		</state>
+		<state>
+			<frame originx='360' hotx='-50' hoty='-20' time='0'><lit r='255' g='255' b='255' alpha='255'/></frame>
+		</state>
+		<state>
+			<frame originx='360' hotx='-50' hoty='-20' time='200'><vflip/></frame>
+		</state>
+		<state>
+			<frame originx='0' hotx='-50' hoty='-20' time='100'/>
+			<frame originx='120' hotx='-50' hoty='-20' time='100'/>
+		</state>
+	</anim>
+
+	<anim id='Telecat' rle='Fole_portal' dx='30' dy='60' originy='0' regionw='80' regionh='80'>
+		<state>
+			<frame originx='000' hotx='-10' hoty='-20' time='200'/>
+			<frame originx='160' hotx='-10' hoty='-20' time='200'/>
+			<frame originx='080' hotx='-10' hoty='-20' time='200'/>
+			<frame originx='160' hotx='-10' hoty='-20' time='200'/>
+		</state>
+		<state>
+			<frame originx='0' hotx='-10' hoty='-20' time='0'><lit r='255' g='255' b='255' alpha='255'/></frame>
+		</state>
+		<state>
+			<frame originx='0' hotx='-10' hoty='-20' time='200'><vflip/></frame>
+		</state>
+		<state>
+			<frame originx='400' hotx='-10' hoty='-20' time='100'/>
+			<frame originx='480' hotx='-10' hoty='-20' time='100'/>
+			<frame originx='560' hotx='-10' hoty='-20' time='100'/>
+			<frame originx='640' hotx='-10' hoty='-20' time='100'/>
+			<frame originx='720' hotx='-10' hoty='-20' time='100'/>
+		</state>
+	</anim>
+
 	<anim id='Raul' rle='raul' dx='30' dy='60' regionw='80' regionh='80' originy='0'>
 		<state>
 			<dir id='right'>
