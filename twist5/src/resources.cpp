@@ -295,42 +295,24 @@ public:
 
 	virtual ~ResourcesImpl()
 	{
-		{
-			map<string, ALLEGRO_BITMAP*>::iterator i;
-			for (i = sprites.begin(); i != sprites.end(); i++)
-			{
-				al_destroy_bitmap (i->second);
-			}
+		for(auto &i : sprites) {
+			al_destroy_bitmap(i.second);
 		}
-		{
-			map<string, Anim*>::iterator i;
-			for (i = animlist.begin(); i != animlist.end(); i++)
-			{
-				delete (i->second);
-			}
+		for(auto &i : animlist) {
+			delete(i.second);
 		}
-		{
-			map<string, ALLEGRO_AUDIO_STREAM*>::iterator i;
-			for (i = duhlist.begin(); i != duhlist.end(); i++)
-			{
-				al_destroy_audio_stream(i->second);
-			}
+		for(auto &i : duhlist) {
+			al_destroy_audio_stream(i.second);
 		}
-			{
-				map<string, TEG_TILELIST*>::iterator i;
-				for (i = tilelists.begin(); i != tilelists.end(); i++)
-				{
-					teg_destroytiles (i->second);
-				}
-			}
-			{
-				map<string, ALLEGRO_SAMPLE *>::iterator i;
-				for (i = samples.begin(); i != samples.end(); i++)
-				{
-					al_destroy_sample (i->second);
-				}
-			}
-
+		for(auto &i : tilelists) {
+			teg_destroytiles (i.second);
+		}
+		for(auto &i : samples) {
+			al_destroy_sample (i.second);
+		}
+		for(auto &i : jsonMaps) {
+			delete (i.second);
+		}
 	}
 
 	virtual string getTextFile (const string &id) override {

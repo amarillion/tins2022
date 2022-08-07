@@ -7,3 +7,10 @@ ALLEGRO_CONFIG *VersionLoader::getConfig() {
 	}
 	return config;
 }
+
+VersionLoader::~VersionLoader() {
+	if (config) {
+		al_destroy_config(config);
+		config = nullptr;
+	}
+}
