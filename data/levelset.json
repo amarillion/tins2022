@@ -6,55 +6,43 @@
 		}, {
 			"map": "bg2",
 			"tiles": "tiles1"
-		}, {
-			"map": "mapA",
-			"tiles": "tiles2"
 		},
-		{
-			"map": "mapB",
-			"tiles": "tiles2"
-		},
-		{
-			"map": "mapC",
-			"tiles": "tiles2"
-		},
-		{
-			"map": "mapD",
-			"tiles": "tiles2"
-		}
+		{ "map": "map1", "tiles": "tiles2" },
+		{ "map": "map2", "tiles": "tiles2" },
+		{ "map": "map3", "tiles": "tiles2" },
+		{ "map": "map4", "tiles": "tiles2" },
+		{ "map": "map5", "tiles": "tiles2" },
+		{ "map": "map6", "tiles": "tiles2" },
+		{ "map": "map7", "tiles": "tiles2" },
+		{ "map": "map8", "tiles": "tiles2" },
+		{ "map": "map9", "tiles": "tiles2" },
+		{ "map": "map10", "tiles": "tiles2" },
+		{ "map": "map11", "tiles": "tiles2" },
+		{ "map": "map12", "tiles": "tiles2" },
+		{ "map": "map13", "tiles": "tiles2" },
+		{ "map": "map14", "tiles": "tiles2" },
+		{ "map": "map15", "tiles": "tiles2" }
 	],
 	"start": {
 		"x": 5,
-		"y": 10
+		"y": 85,
+		"waterLevel": 105
 	},
 	"layout": [
-		{
-			"x": 0,
-			"y": 0,
-			"map": "mapA",
-			"bg1": "bg1",
-			"bg2": "bg2"
-		},
-		{
-			"x": 50,
-			"y": 0,
-			"map": "mapB",
-			"bg1": "bg1",
-			"bg2": "bg2"
-		},
-		{
-			"x": 75,
-			"y": 0,
-			"map": "mapC",
-			"bg1": "bg1",
-			"bg2": "bg2"
-		},
-		{
-			"x": 75,
-			"y": 15,
-			"map": "mapD",
-			"bg1": "bg1",
-			"bg2": "bg2"
-		}
+		{ "x":   0, "y":  60, "map":  "map1", "bg1": "bg1", "bg2": "bg2" },
+		{ "x":  50, "y":   0, "map":  "map2", "bg1": "bg1", "bg2": "bg2" },
+		{ "x":   0, "y":  30, "map":  "map3", "bg1": "bg1", "bg2": "bg2" },
+		{ "x":  75, "y":  30, "map":  "map4", "bg1": "bg1", "bg2": "bg2" },
+		{ "x":  20, "y":  15, "map":  "map5", "bg1": "bg1", "bg2": "bg2" },
+		{ "x":  75, "y":  60, "map":  "map6", "bg1": "bg1", "bg2": "bg2" },
+		{ "x": 125, "y":  30, "map":  "map7", "bg1": "bg1", "bg2": "bg2" },
+		{ "x": 100, "y":  45, "map":  "map8", "bg1": "bg1", "bg2": "bg2" },
+		{ "x":  50, "y":  75, "map":  "map9", "bg1": "bg1", "bg2": "bg2" },
+		{ "x":  95, "y":  90, "map": "map10", "bg1": "bg1", "bg2": "bg2" },
+		{ "x": 150, "y":  90, "map": "map11", "bg1": "bg1", "bg2": "bg2" },
+		{ "x": 150, "y":  45, "map": "map12", "bg1": "bg1", "bg2": "bg2" },
+		{ "x": 150, "y":  30, "map": "map13", "bg1": "bg1", "bg2": "bg2" },
+		{ "x": 100, "y":   0, "map": "map14", "bg1": "bg1", "bg2": "bg2" },
+		{ "x":  75, "y":  15, "map": "map15", "bg1": "bg1", "bg2": "bg2" }
 	]
 }

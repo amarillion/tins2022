@@ -154,6 +154,7 @@ public:
 				json["start"].getInt("x"),
 				json["start"].getInt("y")
 			);
+			globalWaterLevel = json["start"].getInt("waterLevel");
 		}
 		catch (JsonException &e) {
 			allegro_message("Error parsing map layout, %s", e.what());
@@ -174,7 +175,7 @@ public:
 	int bonusCollected = 0;
 	int redSocksCollected = 0;
 
-	int globalWaterLevel = 15; //TODO: json
+	int globalWaterLevel = 0;
 	int localWaterLevel;
 
 	void updateObjects();
