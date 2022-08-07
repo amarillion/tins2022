@@ -58,7 +58,7 @@ enum TileIndexes {
 };
 
 struct MapLayout {
-	TEG_MAP *map;
+	string mapId; // for refreshing
 	TEG_MAP *bg1;
 	TEG_MAP *bg2;
 	Rect bounds;
@@ -109,8 +109,9 @@ public:
 			auto res = parent->getResources();
 			for (auto &node : json.getArray("layout")) {
 				MapLayout mapLayout;
-				TEG_MAP *map = res->getJsonMap(node.getString("map"))->map;
-				mapLayout.map = map;
+				string mapId = node.getString("map");;
+				TEG_MAP *map = res->getJsonMap(mapId)->map;
+				mapLayout.mapId = mapId;
 				mapLayout.bg1 = res->getJsonMap(node.getString("bg1"))->map;
 				mapLayout.bg2 = res->getJsonMap(node.getString("bg2"))->map;
 				mapLayout.bounds = Rect(
@@ -455,7 +456,9 @@ void GameImpl::initMap()
 
 	killAll();
 
-	map = currentMap->map;
+	auto res = parent->getResources();
+	map = res->getJsonMap(currentMap->mapId)->map;
+
 	TEG_MAP *bg2 = currentMap->bg2;
 	TEG_MAP *bg =  currentMap->bg1;
 
