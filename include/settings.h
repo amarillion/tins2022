@@ -2,8 +2,8 @@
 
 #include "input.h"
 
-const int NUM_BUTTONS = 5;
-enum {	btnUp = 0, btnDown, btnLeft, btnRight, btnAction };
+const int NUM_BUTTONS = 6;
+enum {	btnUp = 0, btnDown, btnLeft, btnRight, btnJump, btnAction };
 
 extern const char *config_keys[NUM_BUTTONS];
 

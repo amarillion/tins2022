@@ -4,9 +4,8 @@
 #include <string.h>
 #include "util.h"
 
-const char *config_keys[NUM_BUTTONS] = 
-{
-	"key_up", "key_down", "key_left", "key_right", "key_action"
+const char *config_keys[NUM_BUTTONS] = {
+	"key_up", "key_down", "key_left", "key_right", "key_jump", "key_action"
 };
 
 Settings::Settings()
@@ -15,8 +14,9 @@ Settings::Settings()
 	button[btnDown].setScancode (ALLEGRO_KEY_DOWN);
 	button[btnLeft].setScancode (ALLEGRO_KEY_LEFT);
 	button[btnRight].setScancode (ALLEGRO_KEY_RIGHT);
-	button[btnAction].setScancode (ALLEGRO_KEY_SPACE);
-	button[btnAction].setAltcode (ALLEGRO_KEY_ENTER);
+	button[btnJump].setScancode (ALLEGRO_KEY_SPACE);
+	button[btnAction].setScancode (ALLEGRO_KEY_LCTRL);
+	button[btnAction].setAltcode (ALLEGRO_KEY_LSHIFT);
 }
 
 void Settings::getFromConfig(ALLEGRO_CONFIG *config)

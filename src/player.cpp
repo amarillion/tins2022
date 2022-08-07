@@ -200,8 +200,9 @@ void Player::updateLand() {
 	if (swimming) {
 		swimming = false;
 		gravity = true;
-		if (btn[btnUp].getState() && hitTimer == 0) {
+		if (btn[btnJump].getState() && hitTimer == 0) {
 			// short jump out of water
+			parent->getParent()->playSample("Sound4");
 			jumpTimer = MAX_JUMPTIMER_FROM_WATER;
 			air = true;
 		}
@@ -222,7 +223,7 @@ void Player::updateLand() {
 			dx = 0;
 		}
 
-		if (btn[btnUp].getState()) {
+		if (btn[btnJump].getState()) {
 			if (!air)
 			{
 				parent->getParent()->playSample("Sound4");

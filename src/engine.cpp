@@ -169,6 +169,7 @@ public:
 			.push_back (make_shared<KeyMenuItem>("Down", config_keys[btnDown], getInput()[btnDown], config))
 			.push_back (make_shared<KeyMenuItem>("Left", config_keys[btnLeft], getInput()[btnLeft], config))
 			.push_back (make_shared<KeyMenuItem>("Right", config_keys[btnRight], getInput()[btnRight], config))
+			.push_back (make_shared<KeyMenuItem>("Jump", config_keys[btnJump], getInput()[btnJump], config))
 			.push_back (make_shared<KeyMenuItem>("Action", config_keys[btnAction], getInput()[btnAction], config))
 			.push_back (miSound)
 			.push_back (miMusic)
