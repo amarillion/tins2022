@@ -32,7 +32,7 @@ public:
 	void update3();
 	void update4();
 	void update5();
-
+	void update6();
 	enum { ELECTRICAT, SLINKYCAT, SPIDERCAT, 
 		DRAGONCAT, GENERATOR, TELECAT, ROLLINGCAT, SHARKCAT };
 };

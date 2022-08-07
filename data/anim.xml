@@ -145,10 +145,20 @@
 	</anim>
 
 	<anim id='Rollingcat' rle='Rollingcat' dx='32' dy='32'>
-		<frame hotx='0' hoty='0' time='200'/>
-		<frame hotx='0' hoty='0' time='200'><rot angle= '90'/></frame>
-		<frame hotx='0' hoty='0' time='200'><rot angle= '180'/></frame>
-		<frame hotx='0' hoty='0' time='200'><rot angle= '270'/></frame>
+		<state>
+			<frame hotx='0' hoty='0' time='100'/>
+			<frame hotx='0' hoty='0' time='100'><rot angle= '90'/></frame>
+			<frame hotx='0' hoty='0' time='100'><rot angle= '180'/></frame>
+			<frame hotx='0' hoty='0' time='100'><rot angle= '270'/></frame>
+		</state>
+		<state>
+			<frame hotx='0' hoty='0' time='0'>
+				<lit r='255' g='255' b='255' alpha='255'/>
+			</frame>
+		</state>
+		<state>
+			<frame hotx='0' hoty='0' time='0'><vflip/></frame>
+		</state>
 	</anim>
 
 	<anim id='Shark' rle='Fole_Shark' dx='60' dy='40' originy='0' regionw='120' regionh='120'>

@@ -87,7 +87,7 @@ Enemy::Enemy(Game *game, int x, int y, int _type) : SpriteEx(game, ST_ENEMY, x, 
 		hp = 3; /* PRIME */
 		gravity = false;
 		damage = 2;
-		blockedByTiles = false;
+		// blockedByTiles = false;
 		break;
 	case SHARKCAT:
 		hp = 31; /* PRIME */
@@ -249,6 +249,53 @@ void Enemy::update5()
 	}
 }
 
+void Enemy::update6() {
+	// using estate as dir...
+	// using jumpTimer for turning
+
+	int w = getw();
+	int h = geth();
+
+	TEG_MAP *map = parent->getMap();
+	int tx = map->tilelist->tilew;
+	int ty = map->tilelist->tileh;
+
+	int zdx, zdy;
+	switch (estate) {
+		case 0: zdx = 0; zdy = h + 1; break;
+		case 1: zdx = -1; zdy = 0; break;
+		case 2: zdx = w; zdy = -1; break;
+		case 3: zdx = w + 1; zdy = h; break;
+		default: assert(false);
+	}
+	
+	int mx = (getx() + zdx) / tx;
+	int my = (gety() + zdy) / ty;
+
+	if (jumpTimer == 0) {
+		if ((getTileStackFlags(mx, my) & TS_SOLID) == 0) {
+			estate = (estate + 1) % 4;
+			jumpTimer = 15; // comes very precise.
+		}
+	}
+	else {
+		jumpTimer--;
+	}
+
+	int speed = 4;
+	int ddx, ddy;
+	switch (estate) {
+		case 0: ddx =  1; ddy = 0; break;
+		case 1: ddx =  0; ddy = 1; break;
+		case 2: ddx = -1; ddy = 0; break;
+		case 3: ddx = 0; ddy = -1; break;
+		default: assert(false);
+	}
+
+	dx = ddx * speed;
+	dy = ddy * speed;
+}
+
 void Enemy::update4()
 {
 	if (state == 2)
@@ -349,22 +396,19 @@ void Enemy::update()
 	phase = (phase + 1) % period;
 
 	SpriteEx::update();
+
+	if (state == 2) return;
+
 	switch (enemyType)
 	{
-	case 0:
-		update1();
-		break;
-	case 1:
-		update2();
-		break;
-	case 2:
-		update3();
-		break;
-	case 3:
-		update4();
-		break;
-	case 4:
-		update5();
+	case Enemy::ELECTRICAT: update1(); break;
+	case Enemy::SLINKYCAT: update2(); break;
+	case Enemy::SPIDERCAT: update3(); break;
+	case Enemy::DRAGONCAT: update4(); break;
+	case Enemy::GENERATOR: update5(); break;
+	case Enemy::TELECAT: /* TODO */ break;
+	case Enemy::ROLLINGCAT:	update6(); break;
+	case Enemy::SHARKCAT: /* TODO */ break;
 	}
 
 	return;
@@ -411,7 +455,10 @@ void Enemy::onCol (SpriteType st, Sprite *s, int dir)
 	}
 	else if (st == ST_TILE || st == ST_BOUNDS || st == ST_ENEMY || st == ST_PLATFORM)
 	{
-		if (subtype != DRAGONCAT)
+		if (subtype == ROLLINGCAT) {
+			estate = (estate + 3) % 4; // turn the other direction
+		}
+		else if (subtype != DRAGONCAT)
 		{
 			if ((dir & (DIR_LEFT | DIR_RIGHT)) > 0)
 			{
