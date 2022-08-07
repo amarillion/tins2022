@@ -235,7 +235,7 @@ public:
 		MapLayout *currentMap = getMapAt(playerMapEntryPos);
 
 		// update global water level immediately
-		globalWaterLevel = currentMap->bounds.y2();
+		globalWaterLevel = currentMap->bounds.y() + 15;
 
 		int newWaterLevel = (globalWaterLevel - currentMap->bounds.y()) * 32;
 		auto animator = make_shared<Animator<int>>(
