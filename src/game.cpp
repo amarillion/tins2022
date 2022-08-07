@@ -50,7 +50,16 @@ public:
 	{}
 
 	virtual ~GameImpl() {
-		killAll();
+		//TODO: should be done by Container destructor, right?
+		Container::killAll();
+		Container::purge();
+		updateables.clear(); 
+
+		for (auto &i : sprites) {
+			delete i;
+		}
+		list<Sprite*>::iterator i;
+		sprites.clear();
 	}
 
 	virtual void init() override {
@@ -82,7 +91,7 @@ public:
 				json["start"].getInt("y")
 			);
 		}
-		catch (JsonException e) {
+		catch (JsonException &e) {
 			allegro_message("Error parsing map layout, %s", e.what());
 			assert(false);
 		}
@@ -112,8 +121,6 @@ public:
 public:
 	void collectBonus (int index);
 
-	virtual void killAll();
-	
 	virtual void initMap() override;
 	virtual void initGame() override;
 
@@ -150,7 +157,7 @@ public:
 			assert(false && "Fell out of this world?");
 		}
 
-		setTimer(0, MSG_ENTER_MAP); // unwind stack before calling initMap()
+		pushMsg(Engine::E_ENTER_MAP); // unwind stack before calling initMap()
 	}
 
 	virtual void updateWaterLevel() {
@@ -186,6 +193,19 @@ private:
 		// TODO: just reset to origin if this happens
 		assert(false && "You're out of bounds! Couldn't find a map");
 	}
+
+	/** marks all objects as killed, but does not immediately delete
+	 * so you can call this safely from inside the game loop
+	 */
+	virtual void killAll() override {
+		Container::killAll();
+		
+		for (auto &i : sprites) {
+			i->kill();
+		}
+		updateables.killAll(); // especially to clear water level animator
+	}
+
 };
 
 void GameImpl::addCollision(SpriteEx *a, SpriteEx *b, int dir)
@@ -457,17 +477,6 @@ void GameImpl::collectBonus (int index)
 	bonusCollected++;
 }
 
-void GameImpl::killAll()
-{
-	Container::killAll();
-	for (auto &i : sprites) {
-		delete i;
-	}
-	list<Sprite*>::iterator i;
-	sprites.clear();
-	updateables.clear(); // especially to clear water level animator
-}
-
 void GameImpl::addSprite(Sprite *o)
 {
 	sprites.push_back (o);
@@ -487,9 +496,6 @@ bool GameImpl::onHandleMessage(ComponentPtr src, int event)
 		{
 			pushMsg(Engine::E_LEVEL_INTRO);
 		}
-		return true;
-	case MSG_ENTER_MAP:
-		initMap();
 		return true;
 	case MSG_PLAYER_WIN:
 		pushMsg(Engine::E_SHOW_WIN_SCREEN);

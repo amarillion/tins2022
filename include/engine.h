@@ -22,6 +22,7 @@ public:
 		E_BACK,
 		E_LEVEL_INTRO,
 		E_SHOW_WIN_SCREEN,
+		E_ENTER_MAP, /* switch maps, which must be called from outside game loop */
 		E_STOPGAME, /* When you press stop from the pause menu */
 		E_CODE_ENTERED, /* When user entered code in passcode menu */
 		E_SHOW_SETTINGS_MENU,

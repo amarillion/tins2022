@@ -32,4 +32,8 @@ public:
 	void clear() {
 		items.clear();
 	}
+
+	void killAll() {
+		for (auto &i : items) { i->kill(); }
+	}
 };

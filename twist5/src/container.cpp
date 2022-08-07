@@ -280,17 +280,13 @@ public:
 void Container::purge()
 {
 	// remove all that are not alive!
-	children.remove_if (MyComponentRemover());
+	children.remove_if(MyComponentRemover());
 }
 
-void Container::killAll()
-{
-	list<ComponentPtr>::iterator i;
-	for (i = children.begin(); i != children.end(); ++i)
-	{
-		(*i)->kill();
+void Container::killAll() {
+	for (auto &i : children) {
+		i->kill();
 	}
-	purge();
 }
 
 void Container::repr(int indent, std::ostream &out) const

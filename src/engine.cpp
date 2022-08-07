@@ -218,6 +218,10 @@ public:
 		case E_SHOW_MAIN_MENU:
 			setFocus(mMain);
 			break;
+		case E_ENTER_MAP:
+			// make sure initMap is called from outside the game loop
+			game->initMap();
+			break;
 		case E_STOPGAME:
 			game->killAll();
 			setFocus(mMain);

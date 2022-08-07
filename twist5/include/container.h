@@ -35,7 +35,9 @@ public:
 	DEPRECATED void setTimer(int msec, int event);
 	void setTimer(int msec, ActionFunc event, bool repeating = false);
 	virtual void purge();
-	virtual void killAll();
+	
+	/* mark all children as killed */
+	virtual void killAll(); 
 	virtual void add (ComponentPtr item, int flags = 0);
 	virtual void add (UpdateablePtr item);
 	void setFocus(ComponentPtr _focus);

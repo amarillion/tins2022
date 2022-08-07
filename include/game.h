@@ -38,6 +38,6 @@ public:
 	ALLEGRO_FONT *gamefont;
 	ALLEGRO_FONT *smallfont;
 
-	enum { MSG_PLAYER_DIED = 4001, MSG_ENTER_MAP, MSG_PLAYER_WIN }; /* PRIME */
+	enum { MSG_PLAYER_DIED = 4001, MSG_PLAYER_WIN }; /* PRIME */
 
 };
