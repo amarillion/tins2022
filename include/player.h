@@ -54,8 +54,9 @@ public:
 class Bonus : public SpriteEx
 {
 	int index; // index in RedSock array
+	std::function<void()> onCollected;
 public:
-	Bonus (Game *, int x, int y, int bonusType);
+	Bonus (Game *, int x, int y, int bonusType, std::function<void()> onCollected);
 	virtual void onCol (SpriteType st, Sprite *s, int dir);
 	
 	enum { ONEUP, SOCK, RING };
@@ -71,8 +72,9 @@ public:
 };
 
 class Teleporter : public SpriteEx {
+	Point globalTargetPos;
 public:
-	Teleporter (Game *, int x, int y);
+	Teleporter (Game *, int x, int y, Point globalTargetPos);
 	virtual void onCol (SpriteType st, Sprite *s, int dir);
 };
 

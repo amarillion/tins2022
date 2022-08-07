@@ -262,7 +262,11 @@ void Sprite::setAnim(Anim *_anim) {
 	anim = _anim;
 	if (anim != nullptr)
 	{
+		int oldh = h;
 		w = anim->sizex;
 		h = anim->sizey;
+		
+		// adjust y position so the _bottom_ stays in place
+		y += (oldh - h);
 	}
 }

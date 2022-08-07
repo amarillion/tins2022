@@ -32,11 +32,37 @@ public:
 	}
 };
 
+struct SpriteInitializer {
+	int mx;
+	int my;
+	int code;
+	bool collected = false;
+	Point teleporterTarget = Point(0,0);
+};
+
+enum TileIndexes {
+	TIDX_ENEMY1 = 7,
+	TIDX_ENEMY2 = 15,
+	TIDX_ENEMY3 = 23,
+	TIDX_UNUSED = 31,
+	TIDX_ENEMY5 = 39,
+	TIDX_ENEMY6 = 47,
+	TIDX_SOCK = 152,
+	TIDX_ONEUP = 153,
+	TIDX_TELEPORTER = 154,
+	TIDX_CRATE = 155,
+	TIDX_SMALL_CRATE = 156,
+	TIDX_RING = 157, 
+	TIDX_FALLING_PLATFORM = 158, 
+	TIDX_SWITCH = 159
+};
+
 struct MapLayout {
 	TEG_MAP *map;
 	TEG_MAP *bg1;
 	TEG_MAP *bg2;
 	Rect bounds;
+	vector<shared_ptr<SpriteInitializer>> spriteInitializers;
 };
 
 class GameImpl : public Game
@@ -65,26 +91,64 @@ public:
 	virtual void init() override {
 		auto res = parent->getResources();
 		gamefont = res->getFont("megaman_2")->get(24);
-		smallfont = res->getFont("megaman_2")->get(16);
+		smallfont = res->getFont("megaman_2")->get(8);
 		Sprite::anims = res->getAnims();
 		parseMaps(res->getJson("levelset"));
 	}
 
+	int totalRedSocks;
+
 	void parseMaps(const JsonNode &json) {
+		totalRedSocks = 0;
+
+		// quick & dirty: works for one pair of teleporters
+		shared_ptr<SpriteInitializer> otherTeleporter = nullptr;
+		Point otherTeleporterPos;
+
 		try {
 			auto res = parent->getResources();
 			for (auto &node : json.getArray("layout")) {
-				MapLayout map;
-				map.map = res->getJsonMap(node.getString("map"))->map;
-				map.bg1 = res->getJsonMap(node.getString("bg1"))->map;
-				map.bg2 = res->getJsonMap(node.getString("bg2"))->map;
-				map.bounds = Rect(
+				MapLayout mapLayout;
+				TEG_MAP *map = res->getJsonMap(node.getString("map"))->map;
+				mapLayout.map = map;
+				mapLayout.bg1 = res->getJsonMap(node.getString("bg1"))->map;
+				mapLayout.bg2 = res->getJsonMap(node.getString("bg2"))->map;
+				mapLayout.bounds = Rect(
 					node.getInt("x"),
 					node.getInt("y"),
-					map.map->w,
-					map.map->h
+					map->w,
+					map->h
 				);
-				maps.push_back(map);
+
+				for (int mx = 0; mx < map->w; ++mx) {
+					for (int my = 0; my < map->h; ++my) {
+						int tile = teg_mapget(map, 2, mx, my);
+						if (tile < 0) continue;
+
+						auto sprInit = make_shared<SpriteInitializer>();
+						sprInit->mx = mx;
+						sprInit->my = my;
+						sprInit->code = tile;
+						mapLayout.spriteInitializers.push_back(sprInit);
+
+						if (tile == TIDX_TELEPORTER) {
+							Point absolutePos = mapLayout.bounds.topLeft() + Point(mx, my);
+							if (otherTeleporter == nullptr) {
+								otherTeleporter = sprInit;
+								otherTeleporterPos = absolutePos;
+							}
+							else {
+								otherTeleporter->teleporterTarget = absolutePos;
+								sprInit->teleporterTarget = otherTeleporterPos;
+							}
+						}
+						else if (tile == TIDX_SOCK) {
+							totalRedSocks++;
+						}
+					}
+				}
+
+				maps.push_back(mapLayout);
 			}
 			playerFirstStart = Point(
 				json["start"].getInt("x"),
@@ -108,6 +172,8 @@ public:
 	// per-game, initialized in init
 	int lives;
 	int bonusCollected = 0;
+	int redSocksCollected = 0;
+
 	int globalWaterLevel = 15; //TODO: json
 	int localWaterLevel;
 
@@ -137,27 +203,31 @@ public:
 	virtual Engine *getParent() override { return parent; }
 	virtual TEG_MAP *getMap() override { return map; }
 
+	virtual void teleport(Point targetPos) override {
+		playerMapEntryPos = targetPos;
+		pushMsg(Engine::E_ENTER_MAP);
+	}
+	
 	virtual void exitMap(int dir, int y) override {
-		// update player pos
+		int my = ((y + 31) / 32); // always round up
 		MapLayout *currentMap = getMapAt(playerMapEntryPos);
 		if (dir == SpriteEx::DIR_RIGHT) {
 			playerMapEntryPos = Point(
 				currentMap->bounds.x2(),
-				(y / 32) + currentMap->bounds.y()
+				my + currentMap->bounds.y()
 			);
 		}
 		else if (dir == SpriteEx::DIR_LEFT) {
-			cout << "Exit left" << endl;
 			playerMapEntryPos = Point(
 				currentMap->bounds.x() - 1,
-				(y / 32) + currentMap->bounds.y()
+				my + currentMap->bounds.y()
 			);
 		}
 		else {
 			assert(false && "Fell out of this world?");
 		}
 
-		pushMsg(Engine::E_ENTER_MAP); // unwind stack before calling initMap()
+		pushMsg(Engine::E_ENTER_MAP);
 	}
 
 	virtual void updateWaterLevel() {
@@ -412,60 +482,52 @@ void GameImpl::initMap()
 	addSprite (player);
 
 	localWaterLevel = (globalWaterLevel - currentMap->bounds.y()) * 32;
-	for (int mx = 0; mx < map->w; ++mx)
-	{
-		for (int my = 0; my < map->h; ++my)
+
+	for (auto &sprInit : currentMap->spriteInitializers) {
+		if (sprInit->collected) continue;
+
+		int tile = sprInit->code;
+		int xx = sprInit->mx * map->tilelist->tilew;
+		int yy = (sprInit->my + 1) * map->tilelist->tileh;
+		SpriteEx *e = NULL;
+		switch (tile)
 		{
-			int tile = teg_mapget(map, 2, mx, my);
-			if (tile < 0) continue;
-
-			int flags = map->tilelist->tiles[tile].flags;
-
-			int xx = mx * map->tilelist->tilew;
-			int yy = my * map->tilelist->tileh; //TODO: take into account animation size when positioning object...
-			SpriteEx *e = NULL;
-			switch (flags)
-			{
-			case 0: case 1: case 2: case 3: case 4:
-				/** these values have a very different meaning */
-				break;
-			case 5: e = new Enemy(this, xx, yy, 0);
-				addSprite (e); break;
-			case 6: e = new Enemy(this, xx, yy, 1);
-				addSprite (e); break;
-			case 7: e = new Enemy(this, xx, yy, 2);
-				addSprite (e); break;
-			case 9: break;
-			case 8: e = new Enemy(this, xx, yy, 3);
-				addSprite (e); break;
-			case 10: e = new Enemy(this, xx, yy, 4);
-				addSprite (e); break;
-			case 11: e = new Bonus(this, xx, yy, Bonus::SOCK);
-				addSprite (e); break;
-			case 12: e = new Bonus(this, xx, yy, Bonus::ONEUP);
-				addSprite (e); break;
-			case 13: e = new Teleporter(this, xx, yy - 64 /* TODO: HACK */); 
-				addSprite (e); break;
-			case 14: e = new Platform(this, xx, yy, Platform::CRATE);
-				addSprite (e); break;
-			case 15: e = new Platform(this, xx, yy, Platform::SMALLCRATE);
-				addSprite (e); break;
-			case 16: e = new Bonus(this, xx, yy, Bonus::RING);
-				addSprite (e); break;
-			case 17: e = new Platform(this, xx, yy, Platform::FALLING);
-				addSprite (e); break;
-			case 18: {
-				int delta = globalWaterLevel - currentMap->bounds.y() - 1;
-				bool waterHere = (delta >= 0 && delta < currentMap->bounds.h());
-				e = new Switch(this, xx, yy, waterHere ? Switch::ON : Switch::OFF);
-				addSprite (e); break;
-			}
-			default:
-				log ("unrecognised flags %i for tile %i at (%i, %i)", flags, tile, mx, my);
-				//TODO: would be good to have a more interesting assert implementation that allows logging as well.
-				assert (false); /* unimplemented */
-				break;
-			}
+		case TIDX_ENEMY1: e = new Enemy(this, xx, yy, 0);
+			addSprite (e); break;
+		case TIDX_ENEMY2: e = new Enemy(this, xx, yy, 1);
+			addSprite (e); break;
+		case TIDX_ENEMY3: e = new Enemy(this, xx, yy, 2);
+			addSprite (e); break;
+		case TIDX_UNUSED: break;
+		case TIDX_ENEMY5: e = new Enemy(this, xx, yy, 3);
+			addSprite (e); break;
+		case TIDX_ENEMY6: e = new Enemy(this, xx, yy, 4);
+			addSprite (e); break;
+		case TIDX_SOCK: e = new Bonus(this, xx, yy, Bonus::SOCK, [=](){ sprInit->collected = true; });
+			addSprite (e); break;
+		case TIDX_ONEUP: e = new Bonus(this, xx, yy, Bonus::ONEUP, [=](){ sprInit->collected = true; });
+			addSprite (e); break;
+		case TIDX_TELEPORTER: e = new Teleporter(this, xx, yy, sprInit->teleporterTarget); 
+			addSprite (e); break;
+		case TIDX_CRATE: e = new Platform(this, xx, yy, Platform::CRATE);
+			addSprite (e); break;
+		case TIDX_SMALL_CRATE: e = new Platform(this, xx, yy, Platform::SMALLCRATE);
+			addSprite (e); break;
+		case TIDX_RING: e = new Bonus(this, xx, yy, Bonus::RING, [=](){ sprInit->collected = true; });
+			addSprite (e); break;
+		case TIDX_FALLING_PLATFORM: e = new Platform(this, xx, yy, Platform::FALLING);
+			addSprite (e); break;
+		case TIDX_SWITCH: {
+			int delta = globalWaterLevel - currentMap->bounds.y() - 1;
+			bool waterHere = (delta >= 0 && delta < currentMap->bounds.h());
+			e = new Switch(this, xx, yy, waterHere ? Switch::ON : Switch::OFF);
+			addSprite (e); break;
+		}
+		default:
+			log ("unrecognised tile %i at (%i, %i)", tile, sprInit->mx, sprInit->my);
+			//TODO: would be good to have a more interesting assert implementation that allows logging as well.
+			assert (false); /* unimplemented */
+			break;
 		}
 	}
 
@@ -477,6 +539,9 @@ void GameImpl::initMap()
 void GameImpl::collectBonus (int index)
 {
 	bonusCollected++;
+	if (index = Bonus::SOCK) {
+		redSocksCollected++;
+	}
 }
 
 void GameImpl::addSprite(Sprite *o)

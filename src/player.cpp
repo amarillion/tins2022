@@ -84,8 +84,7 @@ void Player::onCol(SpriteType st, Sprite *s, int dir)
 		// we're going to moonwalk out of the level...
 		dy = 0;
 		dx = dir == DIR_LEFT ? -AIR_HSPEED: AIR_HSPEED;
-		int yy = gety();
-
+		int yy = gety() + geth();
 		parent->setTimer(20, [=](){
 			parent->exitMap(dir, yy);
 		});
@@ -129,7 +128,7 @@ void SpriteEx::draw(const GraphicsContext &gc)
 	if (parent->getParent()->isDebug())
 	{
 		al_draw_rectangle (x, y, x + w, y + h, color, 1.0);
-		al_draw_textf(parent->smallfont, GREEN, x, y - 16, ALLEGRO_ALIGN_LEFT, "hp: %i", hp);
+		draw_shaded_textf(parent->smallfont, WHITE, BLACK, x, y - 32, ALLEGRO_ALIGN_LEFT, "%i %i %ix%i", (int)getx(), (int)gety(), w, h);
 	}
 #endif
 }
@@ -540,7 +539,8 @@ void Explosion::update()
 }
 
 
-Bonus::Bonus (Game * parent, int x, int y, int index) : SpriteEx (parent, ST_BONUS, x, y), index(index)
+Bonus::Bonus (Game * parent, int x, int y, int index, function<void()> onCollected) 
+	: SpriteEx (parent, ST_BONUS, x, y), index(index), onCollected(onCollected)
 {
 	gravity = false;
 	switch(index) {
@@ -554,6 +554,7 @@ void Bonus::onCol (SpriteType st, Sprite *s, int dir)
 {
 	if (st == ST_PLAYER)
 	{
+		onCollected();
 		parent->collectBonus(index);
 		kill(); // disappear
 	}
@@ -578,14 +579,21 @@ void Switch::onCol (SpriteType st, Sprite *s, int dir) {
 	}
 }
 
-Teleporter::Teleporter (Game *game, int x, int y) : SpriteEx(game, ST_TELEPORTER, x, y) {
+Teleporter::Teleporter (Game *game, int x, int y, Point globalTargetPos) 
+	: SpriteEx(game, ST_TELEPORTER, x, y), globalTargetPos(globalTargetPos) 
+{
 	// gravity = false;
 	setAnim(anims["Teleporter"]);
 }
 
 void Teleporter::onCol (SpriteType st, Sprite *s, int dir) {
+	static int globalCoolDown = 0;
+	if (globalCoolDown > 0) { globalCoolDown--; return; } 
+	
 	if (st == ST_PLAYER)
 	{
-		//TODO: teleport player
+		// TODO: animation
+		parent->teleport(globalTargetPos);
+		globalCoolDown = 200;
 	}
 }

@@ -29,6 +29,7 @@ public:
 	virtual void addCollision(SpriteEx *a, SpriteEx *b, int dir) = 0;
 	virtual Engine *getParent() = 0;
 	virtual void exitMap(int dir, int y) = 0;
+	virtual void teleport(Point targetPos) = 0;
 	virtual void updateWaterLevel() = 0;
 	virtual int getLocalWaterLevel() = 0;
 

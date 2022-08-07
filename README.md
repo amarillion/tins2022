@@ -1,4 +1,12 @@
-TINS 2022 Competition entry 
+# Laundry Day 2: Operation White Wash  #
+
+Our submission for the TINS 2022 Competition
+
+### Credits ###
+
+Code: Amarillion
+Gfx: Max
+Music: AniCator
 
 ### Rules ###
 

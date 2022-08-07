@@ -35,8 +35,8 @@ protected:
 	int counter;
 	double x, y;
 	
-	int w = 47; /* dummy value */
-	int h = 47;
+	int w = 0;
+	int h = 0;
 	IMotionPtr motion;
 
 	Game* parent;
