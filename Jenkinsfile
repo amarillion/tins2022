@@ -14,6 +14,13 @@ node {
 			}
 		}
 
+		stage('Build W32 Debug') {
+			docker.image('amarillion/alleg5-plus-buildenv:latest-mingw-w64-i686').inside() {
+				sh "make all TARGET=CROSSCOMPILE WINDOWS=1 BUILD=DEBUG"
+				sh "./gather-dlls.sh"
+			}
+		}
+
 		stage('Build Linux') {
 			docker.image('amarillion/alleg5-plus-buildenv:latest').inside() {
 				sh "make all BUILD=STATIC" 
@@ -22,9 +29,9 @@ node {
 		}
 		
 		stage('Package') {
-			
 			sh "zipper -f tgz src-linux"
 			sh "zipper -f zip win"
+			sh "zipper -f zip win-debug"
 			archiveArtifacts artifacts: 'dist/*.tar.gz,dist/*.zip'
 			sh "cp dist/*.tar.gz dist/*.zip /srv/smbshare/builds"
 

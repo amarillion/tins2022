@@ -25,9 +25,11 @@ copy_dll() {
 	cp $DLL $DEST
 }
 
-for DEST in "build/release_win"
+copy_dll allegro_monolith-5.2.dll "build/release_win"
+copy_dll allegro_monolith-debug-5.2.dll "build/debug_win"
+
+for DEST in "build/release_win" "build/debug_win"
 do
-	copy_dll allegro_monolith-5.2.dll $DEST
 	copy_dll libgcc_s_dw2-1.dll $DEST
 	copy_dll libstdc++-6.dll $DEST
 	copy_dll libfreetype-6.dll $DEST
