@@ -447,6 +447,7 @@ void Enemy::update7() {
 				desty = parent->player->gety();
 			}
 			moveTo (destx, desty, 12); // set attack vector, but don't update it
+			parent->getParent()->playSample("Sound5");
 		}
 		break;
 	case 4: 
@@ -524,12 +525,14 @@ void Enemy::hit(int damage) {
 	hp -= damage;
 	if (hp <= 0)
 	{
+		parent->getParent()->playSample("Sound8");
 		blockedByTiles = false;
 		gravity = true;
 		state = 2;
 	}
 	else
 	{
+		parent->getParent()->playSample("Sound7");
 		state = 1;
 		hittimer = 5;
 	}

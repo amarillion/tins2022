@@ -36,6 +36,7 @@ void Player::setState (bool hit)
 
 void Player::hit(int attackDamage, double delta)
 {
+	parent->getParent()->playSample("Sound1");
 	setState (true);
 	hitTimer = HIT_ANIM_LENGTH;
 
@@ -164,16 +165,24 @@ void Player::die()
 	parent->setTimer(50, Game::MSG_PLAYER_DIED);
 	Explosion *e = new Explosion(parent, getx(), gety(), 100);
 	parent->addSprite (e);
+	parent->getParent()->playSample("Victory_2");
 	kill(); // kill this sprite
 }
 
 void Player::updateWater() {
-	
+	// static int splashCoolDown = 0;
+	// if (splashCoolDown > 0) { splashCoolDown--; }
+
 	// switch from land to water
 	if (!swimming) {
 		swimming = true;
 		gravity = false;
 		setState(false);
+
+		// if (splashCoolDown == 0) {
+			parent->getParent()->playSample("Splash");
+		// 	splashCoolDown = 20;
+		// }
 	}
 
 	if (hitTimer == 0) {
@@ -591,6 +600,8 @@ void Switch::onCol (SpriteType st, Sprite *s, int dir) {
 		if (state == Switch::OFF) {
 			state = Switch::ON;
 			parent->updateWaterLevel();
+			parent->getParent()->playSample("Debug_transition_enter");
+			parent->getParent()->playSample("Flush");
 		}
 	}
 }
@@ -610,6 +621,7 @@ void Teleporter::onCol (SpriteType st, Sprite *s, int dir) {
 	{
 		// TODO: animation
 		parent->teleport(globalTargetPos);
+		parent->getParent()->playSample("AlienSiren");
 		globalCoolDown = 200;
 	}
 }

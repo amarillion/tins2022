@@ -106,6 +106,7 @@ public:
 	}
 
 	void parseMaps(const JsonNode &json) {
+		maps.clear();
 		totalRedSocks = 0;
 
 		// quick & dirty: works for one pair of teleporters
@@ -587,12 +588,15 @@ void GameImpl::collectBonus (int index)
 	switch(index) {
 		case Bonus::SOCK:
 			redSocksCollected++;
+			parent->playSample("Pick_up_key_1");
 			break;
 		case Bonus::ONEUP:
 			lives++;
+			parent->playSample("Pick_up_key_1");
 			break;
 		case Bonus::RING:
 			ringsCollected++;
+			parent->playSample("Pick_up_key_2");
 			break;
 	}
 }
