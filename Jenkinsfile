@@ -32,6 +32,7 @@ node {
 			sh "zipper -f tgz src-linux"
 			sh "zipper -f zip win"
 			sh "zipper -f zip win-debug"
+			sh "zipper -f zip win-debug-src"
 			archiveArtifacts artifacts: 'dist/*.tar.gz,dist/*.zip'
 			sh "cp dist/*.tar.gz dist/*.zip /srv/smbshare/builds"
 
