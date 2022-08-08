@@ -25,6 +25,9 @@ copy_dll() {
 	cp $DLL $DEST
 }
 
+mkdir -p build/release_win
+mkdir -p build/debug_win
+
 copy_dll allegro_monolith-5.2.dll "build/release_win"
 copy_dll allegro_monolith-debug-5.2.dll "build/debug_win"
 
