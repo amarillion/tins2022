@@ -24,7 +24,7 @@ else
 	WINDRES = windres
 endif
 
-CFLAGS = -std=c++20 -fcoroutines -Iinclude -I$(TWIST_HOME)/include -W -Wall -Wno-unused -DUSE_MOUSE
+CFLAGS = -std=c++11 -Iinclude -I$(TWIST_HOME)/include -W -Wall -Wno-unused -DUSE_MOUSE
 LIBS = 
 
 WANT_CURL = ON

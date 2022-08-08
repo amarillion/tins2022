@@ -28,7 +28,6 @@ Enemy::Enemy(Game *game, int x, int y, int _type) : SpriteEx(game, ST_ENEMY, x, 
 		case TELECAT: setAnim(anims["Telecat"]); break;
 		case ROLLINGCAT: setAnim(anims["Rollingcat"]); break;
 		case SHARKCAT: 
-			update7(&handle); // initialize coroutine
 			setAnim(anims["Shark"]); 
 			break;
 	}
@@ -384,37 +383,47 @@ void Enemy::update4()
 	}
 }
 
-ReturnObject Enemy::update7(std::coroutine_handle<> *continuation_out) {
-	Awaiter a{continuation_out};
-	
-	while(true) {
+void Enemy::update7() {
+	switch(estate) {
+	case 0:
 		// move back to center of map
-		int dstx = teg_pixelw(parent->getMap()) / 2;
-		int dsty = teg_pixelh(parent->getMap()) / 2;	
-		while(!nearDest()) {
-			moveTo (dstx, dsty, 4);
-			if (dx < 0) dir = 0; else dir = 1;
-			co_await a;
+		destx = teg_pixelw(parent->getMap()) / 2;
+		desty = teg_pixelh(parent->getMap()) / 2;
+		estate = 1;
+		moveTo (destx, desty, 4);
+		if (dx < 0) dir = 0; else dir = 1;
+		break;
+	case 1:
+		if(!nearDest()) {
+			moveTo (destx, desty, 4);
 		}
-
-		int remain = 200 + rand() % 400;
+		else {
+			jumpTimer = 200 + rand() % 400;
+			bulletTimer = 100;
+			estate = 2;
+			dx = -1; dy = 0;
+		}
+		break;
+	case 2:
+		dir = dx < 0 ? 0 : 1;
 		// swim slowly back and forth...
-		dx = -1; dy = 0;
-		while(remain > 0) {
-			dir = dx < 0 ? 0 : 1;
-			for (int j = 0; j < 200; ++j) {
-				if (--remain < 0) break;
-				co_await a;
+		if (--jumpTimer > 0) {
+			if (--bulletTimer < 0) {
+				// turn around
+				dx = -dx;
+				bulletTimer = 100;
 			}
-			dx = -dx;
 		}
-
-		// signal attack...
-		state = 3;
-		dx = 0; dy = 0;
-		for (unsigned i = 0; i < 40; ++i) {
-			co_await a;
-
+		else {
+			// signal attack...
+			estate = 3;
+			state = 3; // set animation
+			dx = 0; dy = 0;
+			jumpTimer = 40;
+		}
+		break;
+	case 3: // anticipation
+		if (--jumpTimer > 0) {
 			// turn towards player...
 			if (parent->player->getx() - getx() > 0) {
 				dir = 1;
@@ -423,28 +432,33 @@ ReturnObject Enemy::update7(std::coroutine_handle<> *continuation_out) {
 				dir = 0;
 			}
 		}
-		state = 0;
-
-		if (parent->player == nullptr)
-		{
-			dstx = teg_pixelw(parent->getMap()) / 2;
-			dsty = teg_pixelh(parent->getMap()) / 2;
+		else {
+			state = 0; // back to regular animation
+			estate = 4;
+			jumpTimer = 35;
+			if (parent->player == nullptr)
+			{
+				destx = teg_pixelw(parent->getMap()) / 2;
+				desty = teg_pixelh(parent->getMap()) / 2;
+			}
+			else
+			{
+				destx = parent->player->getx();
+				desty = parent->player->gety();
+			}
+			moveTo (destx, desty, 12); // set attack vector, but don't update it
 		}
-		else
-		{
-			dstx = parent->player->getx();
-			dsty = parent->player->gety();
-		}
-
+		break;
+	case 4: 
 		// dive towards player with overshoot...
 		// set vector one time only...
-		moveTo (dstx, dsty, 12);
-		for (unsigned i = 0; i < 35; ++i) {
-			// keep moving for N cycles
-			co_await a;
-			if (hittimer > 0) break; // bail immediately
+		if (--jumpTimer > 0) {
+			if (hittimer > 0) jumpTimer = 0; // bail immediately
 		}
-
+		else {
+			estate = 0;
+		} 
+		break;
 	}
 }
 
@@ -489,7 +503,7 @@ void Enemy::update()
 				hit(10);
 				hittimer = 10; // override default value
 			}
-			handle();
+			update7();
 			break;
 		}
 	}
