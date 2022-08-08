@@ -89,6 +89,8 @@ Enemy::Enemy(Game *game, int x, int y, int _type) : SpriteEx(game, ST_ENEMY, x, 
 		gravity = true;
 		damage = 4;
 		blockedByTiles = true;
+		dx = 4;
+		dy = 0;
 		break;
 	case ROLLINGCAT:
 		hp = 3; /* PRIME */

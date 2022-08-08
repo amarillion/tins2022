@@ -614,7 +614,8 @@ bool GameImpl::onHandleMessage(ComponentPtr src, int event)
 		}
 		else
 		{
-			pushMsg(Engine::E_LEVEL_INTRO);
+			playerHp = PLAYER_HP;
+			pushMsg(Engine::E_ENTER_MAP);
 		}
 		return true;
 	case MSG_PLAYER_WIN:
