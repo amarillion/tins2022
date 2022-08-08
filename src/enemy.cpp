@@ -6,6 +6,10 @@
 #include "textstyle.h"
 #include "engine.h"
 #include "mainloop.h"
+#include <coroutine>
+#include "constants.h"
+
+using namespace std;
 
 const int MAX_ENEMY_TYPE = 8;
 
@@ -23,7 +27,10 @@ Enemy::Enemy(Game *game, int x, int y, int _type) : SpriteEx(game, ST_ENEMY, x, 
 		case GENERATOR: /* TODO */ break;
 		case TELECAT: setAnim(anims["Telecat"]); break;
 		case ROLLINGCAT: setAnim(anims["Rollingcat"]); break;
-		case SHARKCAT: setAnim(anims["Sharkcat"]); break;
+		case SHARKCAT: 
+			update7(&handle); // initialize coroutine
+			setAnim(anims["Shark"]); 
+			break;
 	}
 
 	hittimer = 0;
@@ -90,7 +97,7 @@ Enemy::Enemy(Game *game, int x, int y, int _type) : SpriteEx(game, ST_ENEMY, x, 
 		// blockedByTiles = false;
 		break;
 	case SHARKCAT:
-		hp = 31; /* PRIME */
+		hp = 30;
 		gravity = false;
 		damage = 7;
 		blockedByTiles = true;
@@ -214,7 +221,7 @@ void Enemy::moveTo (double _x, double _y, double speed)
 void Enemy::draw (const GraphicsContext &gc)
 {
 	SpriteEx::draw (gc);
-	if (subtype == DRAGONCAT)
+	if (subtype == DRAGONCAT || subtype == SHARKCAT)
 	{
 		draw_textf_with_background(parent->gamefont, RED, BLACK, MAIN_WIDTH / 2, 0, ALLEGRO_ALIGN_CENTER,
 				"ENEMY: %i", hp);
@@ -342,7 +349,7 @@ void Enemy::update4()
 		moveTo (destx, desty, 4);
 		if (nearDest())
 		{
-			if (parent->player == NULL)
+			if (parent->player == nullptr)
 			{
 				destx = teg_pixelw(parent->getMap()) / 2;
 				desty = teg_pixelh(parent->getMap()) / 2;
@@ -375,17 +382,72 @@ void Enemy::update4()
 	}
 }
 
+ReturnObject Enemy::update7(std::coroutine_handle<> *continuation_out) {
+	Awaiter a{continuation_out};
+	
+	while(true) {
+		// move back to center of map
+		int dstx = teg_pixelw(parent->getMap()) / 2;
+		int dsty = teg_pixelh(parent->getMap()) / 2;	
+		while(!nearDest()) {
+			moveTo (dstx, dsty, 4);
+			if (dx < 0) dir = 0; else dir = 1;
+			co_await a;
+		}
+
+		int remain = 200 + rand() % 400;
+		// swim slowly back and forth...
+		dx = -1; dy = 0;
+		while(remain > 0) {
+			dir = dx < 0 ? 0 : 1;
+			for (int j = 0; j < 200; ++j) {
+				if (--remain < 0) break;
+				co_await a;
+			}
+			dx = -dx;
+		}
+
+		// signal attack...
+		state = 3;
+		dx = 0; dy = 0;
+		for (unsigned i = 0; i < 40; ++i) {
+			co_await a;
+
+			// turn towards player...
+			if (parent->player->getx() - getx() > 0) {
+				dir = 1;
+			}
+			else {
+				dir = 0;
+			}
+		}
+		state = 0;
+
+		if (parent->player == nullptr)
+		{
+			dstx = teg_pixelw(parent->getMap()) / 2;
+			dsty = teg_pixelh(parent->getMap()) / 2;
+		}
+		else
+		{
+			dstx = parent->player->getx();
+			dsty = parent->player->gety();
+		}
+
+		// dive towards player with overshoot...
+		// set vector one time only...
+		moveTo (dstx, dsty, 12);
+		for (unsigned i = 0; i < 35; ++i) {
+			// keep moving for N cycles
+			co_await a;
+			if (hittimer > 0) break; // bail immediately
+		}
+
+	}
+}
+
 void Enemy::update()
 {
-	if (hittimer > 0)
-	{
-		hittimer--;
-		if (hittimer == 0)
-		{
-			state = 0;
-		}
-	}
-
 	if (parent->player != NULL)
 	{
 		double delta = x - parent->player->getx();
@@ -399,6 +461,15 @@ void Enemy::update()
 
 	if (state == 2) return;
 
+	if (hittimer > 0)
+	{
+		hittimer--;
+		if (hittimer == 0)
+		{
+			state = 0;
+		}
+	}
+
 	switch (enemyType)
 	{
 	case Enemy::ELECTRICAT: update1(); break;
@@ -406,9 +477,19 @@ void Enemy::update()
 	case Enemy::SPIDERCAT: update3(); break;
 	case Enemy::DRAGONCAT: update4(); break;
 	case Enemy::GENERATOR: update5(); break;
-	case Enemy::TELECAT: /* TODO */ break;
+	case Enemy::TELECAT: update1(); /* TODO same as electricat for now */ break;
 	case Enemy::ROLLINGCAT:	update6(); break;
-	case Enemy::SHARKCAT: /* TODO */ break;
+	case Enemy::SHARKCAT: {
+			int mx = (getx() + getw() / 2) / TILE_SIZE;
+			int my = (gety() + geth() / 2) / TILE_SIZE;
+			int flags = getTileStackFlags(mx, my);
+			if (flags & TS_SPIKE) {
+				hit(10);
+				hittimer = 10; // override default value
+			}
+			handle();
+			break;
+		}
 	}
 
 	return;
@@ -420,6 +501,21 @@ void Enemy::kill()
 	if (subtype == DRAGONCAT || subtype == SHARKCAT)
 	{
 		parent->setTimer(50, Game::MSG_PLAYER_WIN);
+	}
+}
+
+void Enemy::hit(int damage) {
+	hp -= damage;
+	if (hp <= 0)
+	{
+		blockedByTiles = false;
+		gravity = true;
+		state = 2;
+	}
+	else
+	{
+		state = 1;
+		hittimer = 5;
 	}
 }
 
@@ -436,21 +532,10 @@ void Enemy::onCol (SpriteType st, Sprite *s, int dir)
 		assert (se != NULL);
 		switch (se->getSubType())
 		{
-		case Bullet::WPN_ROCK: hp -= 2; break;
-		case Bullet::WPN_ICE: hp -= 3; break;
-		case Bullet::WPN_LASER: hp -= 1; break;
-		case Bullet::WPN_BAZOOKA: hp -= 5; break;
-		}
-		if (hp <= 0)
-		{
-			blockedByTiles = false;
-			gravity = true;
-			state = 2;
-		}
-		else
-		{
-			state = 1;
-			hittimer = 5;
+		case Bullet::WPN_ROCK: hit(2); break;
+		case Bullet::WPN_ICE: hit(3); break;
+		case Bullet::WPN_LASER: hit(1); break;
+		case Bullet::WPN_BAZOOKA: hit(5); break;
 		}
 	}
 	else if (st == ST_TILE || st == ST_BOUNDS || st == ST_ENEMY || st == ST_PLATFORM)

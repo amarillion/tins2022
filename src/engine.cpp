@@ -260,14 +260,18 @@ public:
 			{
 				ContainerPtr intro = make_shared<Container>();
 				add(intro);
+				intro->SetFlag(D_DISABLE_CHILD_CLIPPING);
 				intro->add(ClearScreen::build(BLACK).get());
 				intro->add(Text::build(WHITE, "CONGRATULATIONS!")
 					.xy(getw() / 2, 130).get());
-				intro->add(Text::build(WHITE, "GAME COMPLETE!")
+				intro->add(Text::buildf(WHITE, "YOU COLLECTED %i SOCKS OUT OF %i", 
+						game->getSocksCollected(), game->getTotalSocks()
+					)
 					.center().get());
-				intro->setTimer (50, MSG_KILL);
+				int SHOWTIME = 300;
+				intro->setTimer(SHOWTIME, MSG_KILL);
 				setFocus(intro);
-				setTimer(50, EngineImpl::E_ACTION);
+				setTimer(SHOWTIME, EngineImpl::E_SHOW_MAIN_MENU);
 			}
 			break;
 		case E_SHOW_GAME_OVER:
@@ -275,11 +279,17 @@ public:
 			{
 				ContainerPtr intro = make_shared<Container>();
 				add(intro);
+				intro->SetFlag(D_DISABLE_CHILD_CLIPPING);
 				intro->add(ClearScreen::build(BLACK).get());
-				intro->add(Text::build(WHITE, "GAME OVER").center().get());
-				intro->setTimer(200, MSG_KILL);
+				intro->add(Text::build(WHITE, "GAME OVER").xy(getw() / 2, 130).get());
+				intro->add(Text::buildf(WHITE, "YOU COLLECTED %i SOCKS OUT OF %i", 
+						game->getSocksCollected(), game->getTotalSocks()
+					)
+					.center().get());
+				int SHOWTIME = 300;
+				intro->setTimer(SHOWTIME, MSG_KILL);
 				setFocus(intro);
-				setTimer(200, E_SHOW_MAIN_MENU);
+				setTimer(SHOWTIME, E_SHOW_MAIN_MENU);
 			}
 			break;
 

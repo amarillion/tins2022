@@ -18,7 +18,6 @@ Tilemap *loadTilemap (const std::string &filename, TEG_TILELIST *tiles) {
 	
 	ALLEGRO_FS_ENTRY *entry = al_create_fs_entry(filename.c_str());
 	result->lastModified = al_get_fs_entry_mtime(entry);
-	std::cout << "last modified time: " << result->lastModified << "\n";
 	al_destroy_fs_entry(entry);
 
 	int w = node.getInt("width");

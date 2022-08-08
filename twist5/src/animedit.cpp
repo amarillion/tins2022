@@ -60,7 +60,7 @@ public:
 				auto animComponent = make_shared<AnimComponent2>(aa);
 				animComponent->setLocation(xco + margin, yco + margin, aa->sizex, aa->sizey);
 				animComponent->setState(state);
-				animComponent->setDir(1);
+				animComponent->setDir(0);
 				add(animComponent);
 				xco += w;
 				if (xco > 800) { //TODO hardcoded width...

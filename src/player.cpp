@@ -12,6 +12,7 @@
 #include "settings.h"
 #include "tegel5.h"
 #include "game.h"
+#include "constants.h"
 
 using namespace std;
 
@@ -268,6 +269,13 @@ void Player::update()
 		else {
 			updateLand();
 		}
+	}
+
+	int mx = (getx() + getw() / 2) / TILE_SIZE;
+	int my = (gety() + geth() / 2) / TILE_SIZE;
+	int flags = getTileStackFlags(mx, my);
+	if (flags & TS_SPIKE) {
+		hit(3, 0);
 	}
 
 	if (hitTimer > 0) {

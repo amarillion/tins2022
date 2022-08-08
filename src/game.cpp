@@ -199,6 +199,9 @@ public:
 	virtual void initMap() override;
 	virtual void initGame() override;
 
+	virtual int getTotalSocks() override { return totalRedSocks; }
+	virtual int getSocksCollected() override { return redSocksCollected; }
+
 	virtual std::list<Sprite*> &getSprites() { return sprites; }
 	virtual void addSprite(Sprite *o);
 	virtual int getLives() { return lives; }
@@ -615,6 +618,7 @@ bool GameImpl::onHandleMessage(ComponentPtr src, int event)
 		}
 		return true;
 	case MSG_PLAYER_WIN:
+		//TODO: show win screen here so I don't have to expose stats
 		pushMsg(Engine::E_SHOW_WIN_SCREEN);
 		return true;
 	}

@@ -24,6 +24,7 @@ class GraphicsContext;
 
 // tile stack properties
 #define TS_SOLID 0x01
+#define TS_SPIKE 0x02
 #define TS_SOFT 0x04
 
 class Sprite

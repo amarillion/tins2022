@@ -96,6 +96,7 @@ int Sprite::getTileStackFlags(int mx, int my)
 
 		// check for solids
 		if (f1 == 1 /* || f2 == 1 */) result |= TS_SOLID;
+		if (f1 == 2 /* || f2 == 1 */) result |= TS_SPIKE;
 
 		return result;
 	}

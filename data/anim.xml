@@ -163,10 +163,17 @@
 
 	<anim id='Shark' rle='Fole_Shark' dx='60' dy='40' originy='0' regionw='120' regionh='120'>
 		<state>
-			<frame originx='360' hotx='-50' hoty='-20' time='200'/>
-			<frame originx='480' hotx='-50' hoty='-20' time='200'/>
-			<frame originx='600' hotx='-50' hoty='-20' time='200'/>
-			<frame originx='480' hotx='-50' hoty='-20' time='200'/>
+			<dir id='right'>
+				<frame originx='360' hotx='-50' hoty='-20' time='200'/>
+				<frame originx='480' hotx='-50' hoty='-20' time='200'/>
+				<frame originx='600' hotx='-50' hoty='-20' time='200'/>
+				<frame originx='480' hotx='-50' hoty='-20' time='200'/>
+			</dir><dir id='left'>
+				<frame originx='360' hotx='-10' hoty='-20' time='200'><flip/></frame>
+				<frame originx='480' hotx='-10' hoty='-20' time='200'><flip/></frame>
+				<frame originx='600' hotx='-10' hoty='-20' time='200'><flip/></frame>
+				<frame originx='480' hotx='-10' hoty='-20' time='200'><flip/></frame>
+			</dir>
 		</state>
 		<state>
 			<frame originx='360' hotx='-50' hoty='-20' time='0'><lit r='255' g='255' b='255' alpha='255'/></frame>
@@ -175,8 +182,13 @@
 			<frame originx='360' hotx='-50' hoty='-20' time='200'><vflip/></frame>
 		</state>
 		<state>
-			<frame originx='0' hotx='-50' hoty='-20' time='100'/>
-			<frame originx='120' hotx='-50' hoty='-20' time='100'/>
+			<dir id='right'>
+				<frame   originx='0' hotx='-50' hoty='-20' time='100'/>
+				<frame originx='120' hotx='-50' hoty='-20' time='100'/>
+			</dir><dir id='left'>
+				<frame   originx='0' hotx='-10' hoty='-20' time='100'><flip/></dir>
+				<frame originx='120' hotx='-10' hoty='-20' time='100'><flip/></dir>
+			</dir>
 		</state>
 	</anim>
 

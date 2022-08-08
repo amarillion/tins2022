@@ -33,7 +33,9 @@ public:
 	virtual void updateWaterLevel() = 0;
 	virtual int getLocalWaterLevel() = 0;
 	virtual void setPlayerHp(int val) = 0;
-
+	virtual int getTotalSocks() = 0;
+	virtual int getSocksCollected() = 0;
+	
 	// per-level, initialized in initLevel
 	// TODO: accessor
 	Player *player; //may be nullptr // TODO turn into weak ptr.
