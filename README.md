@@ -50,8 +50,9 @@ catapult doesn't work under water!
 ## Known issues ##
 
 There are a few known bugs that I didn't have time to fix
+* You can sometimes get trapped by spikes or an enemy with no way to recover.
 * Not every key can be reconfigured in the settings menu.
-* The fullscreen option does not work
+* The fullscreen option does not work.
 
 ## Competition Rules ##
 
