@@ -377,17 +377,17 @@ void GameImpl::onUpdate ()
 			aboveMusic = false;
 			cout << "Going to fade under" << endl;
 			auto animator = make_shared<Animator<float>>(
-				1.0, 0.0, 50, [=](float val){ MainLoop::getMainLoop()->setPan(val); } 
+				1.0, 0.0, 200, [=](float val){ MainLoop::getMainLoop()->setPan(val); } 
 			);
-			add(animator);
+			parent->add(animator);
 		}
 		else if (!aboveMusic && aboveWater > -10) {
 			aboveMusic = true;
 			cout << "Going to fade above" << endl;
 			auto animator = make_shared<Animator<float>>(
-				0.0, 1.0, 50, [=](float val){ MainLoop::getMainLoop()->setPan(val); } 
+				0.0, 1.0, 200, [=](float val){ MainLoop::getMainLoop()->setPan(val); } 
 			);
-			add(animator);
+			parent->add(animator);
 		}
 	}
 
