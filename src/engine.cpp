@@ -163,7 +163,8 @@ public:
 			"Music", "Press left or right to change music volume");
 		miMusic->setEnabled(MainLoop::getMainLoop()->isSoundInstalled());
 
-		miStart = make_shared<ActionMenuItem>(E_LEVEL_INTRO, "Start game", "");
+		miStart = make_shared<ActionMenuItem>(E_LEVEL_INTRO
+			, "Start game", "");
 		mMain = MenuBuilder(this, NULL)
 			.push_back (miStart)
 			.push_back (make_shared<ActionMenuItem>(E_SHOW_SETTINGS_MENU, "Settings", "Configure keys and other options"))
@@ -247,13 +248,16 @@ public:
 				ContainerPtr intro = make_shared<Container>();
 				add(intro);
 				intro->add(ClearScreen::build(BLACK).get());
-				intro->add(Text::buildf(WHITE, "LIFE %02i", game->getLives())
-					.xy(getw() / 2, 130).get());
-				intro->add(Text::build(WHITE, "GET READY!")
-					.center().get());
-				intro->setTimer (50, MSG_KILL);
+				intro->add(Text::buildf(WHITE, ALLEGRO_ALIGN_CENTER, "LIFE %02i", game->getLives())
+					.layout(Layout::LEFT_TOP_RIGHT_H, 0, 40, 0, 40).get());
+				intro->add(BitmapComp::build(resources->getBitmap("Meme_Folewars"))
+					.layout(Layout::CENTER_TOP_W_H, 0, 80, 290, 290).get());
+				intro->add(Text::build(WHITE, ALLEGRO_ALIGN_CENTER, "GET READY!")
+					.layout(Layout::LEFT_TOP_RIGHT_H, 0, 420, 0, 40).get());
+				int SHOWTIME = 200;
+				intro->setTimer (SHOWTIME, MSG_KILL);
 				setFocus(intro);
-				setTimer(50, EngineImpl::E_ACTION);
+				setTimer(SHOWTIME, EngineImpl::E_ACTION);
 			}
 			break;
 		case E_SHOW_WIN_SCREEN:
@@ -262,13 +266,22 @@ public:
 				add(intro);
 				intro->SetFlag(D_DISABLE_CHILD_CLIPPING);
 				intro->add(ClearScreen::build(BLACK).get());
-				intro->add(Text::build(WHITE, "CONGRATULATIONS!")
-					.xy(getw() / 2, 130).get());
-				intro->add(Text::buildf(WHITE, "YOU COLLECTED %i SOCKS OUT OF %i", 
-						game->getSocksCollected(), game->getTotalSocks()
-					)
-					.center().get());
-				int SHOWTIME = 300;
+				intro->add(Text::build(WHITE, ALLEGRO_ALIGN_CENTER, "CONGRATULATIONS!")
+					.layout(Layout::LEFT_TOP_RIGHT_H, 0, 30, 0, 40).get());
+				intro->add(BitmapComp::build(resources->getBitmap("Meme_FoleFocus"))
+					.layout(Layout::CENTER_TOP_W_H, 0, 60, 382, 245).get());
+				
+				intro->add(Text::build(WHITE, ALLEGRO_ALIGN_CENTER, "YOU COLLECTED:")
+					.layout(Layout::LEFT_TOP_RIGHT_H, 0, 320, 0, 40).get());
+				intro->add(Text::buildf(RED, ALLEGRO_ALIGN_CENTER, "%i RED SOCKS", game->getSocksCollected())
+					.layout(Layout::LEFT_TOP_RIGHT_H, 0, 350, 0, 40).get());
+				intro->add(Text::buildf(WHITE, ALLEGRO_ALIGN_CENTER, "OUT OF %i", game->getTotalSocks())
+					.layout(Layout::LEFT_TOP_RIGHT_H, 0, 380, 0, 40).get());
+				
+				intro->add(Text::build(CYAN, ALLEGRO_ALIGN_CENTER, "Max, AniCator and Amarillion thank you for playing!")
+					.layout(Layout::LEFT_TOP_RIGHT_H, 0, 430, 0, 40).get());
+				
+				int SHOWTIME = 400;
 				intro->setTimer(SHOWTIME, MSG_KILL);
 				setFocus(intro);
 				setTimer(SHOWTIME, EngineImpl::E_SHOW_MAIN_MENU);
@@ -281,12 +294,20 @@ public:
 				add(intro);
 				intro->SetFlag(D_DISABLE_CHILD_CLIPPING);
 				intro->add(ClearScreen::build(BLACK).get());
-				intro->add(Text::build(WHITE, "GAME OVER").xy(getw() / 2, 130).get());
-				intro->add(Text::buildf(WHITE, "YOU COLLECTED %i SOCKS OUT OF %i", 
-						game->getSocksCollected(), game->getTotalSocks()
-					)
-					.center().get());
-				int SHOWTIME = 300;
+
+				intro->add(Text::build(WHITE, ALLEGRO_ALIGN_CENTER, "GAME OVER")
+					.layout(Layout::LEFT_TOP_RIGHT_H, 0, 30, 0, 40).get());
+				intro->add(BitmapComp::build(resources->getBitmap("Meme_FoleCat"))
+					.layout(Layout::CENTER_TOP_W_H, 0, 60, 388, 192).get());
+
+				intro->add(Text::build(WHITE, ALLEGRO_ALIGN_CENTER, "YOU COLLECTED:")
+					.layout(Layout::LEFT_TOP_RIGHT_H, 0, 280, 0, 40).get());
+				intro->add(Text::buildf(RED, ALLEGRO_ALIGN_CENTER, "%i RED SOCKS", game->getSocksCollected())
+					.layout(Layout::LEFT_TOP_RIGHT_H, 0, 310, 0, 40).get());
+				intro->add(Text::buildf(WHITE, ALLEGRO_ALIGN_CENTER, "OUT OF %i", game->getTotalSocks())
+					.layout(Layout::LEFT_TOP_RIGHT_H, 0, 340, 0, 40).get());
+
+				int SHOWTIME = 400;
 				intro->setTimer(SHOWTIME, MSG_KILL);
 				setFocus(intro);
 				setTimer(SHOWTIME, E_SHOW_MAIN_MENU);
