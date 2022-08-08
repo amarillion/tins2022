@@ -96,10 +96,14 @@ public:
 		gamefont = res->getFont("megaman_2")->get(24);
 		smallfont = res->getFont("megaman_2")->get(8);
 		Sprite::anims = res->getAnims();
-		parseMaps(res->getJson("levelset"));
 	}
 
 	int totalRedSocks;
+	int playerHp;
+
+	virtual void setPlayerHp(int val) override {
+		playerHp = val;
+	}
 
 	void parseMaps(const JsonNode &json) {
 		totalRedSocks = 0;
@@ -377,7 +381,7 @@ void GameImpl::onUpdate ()
 			);
 			add(animator);
 		}
-		else if (!aboveMusic && aboveWater > -50) {
+		else if (!aboveMusic && aboveWater > -10) {
 			aboveMusic = true;
 			cout << "Going to fade above" << endl;
 			auto animator = make_shared<Animator<float>>(
@@ -464,11 +468,17 @@ void GameImpl::draw (const GraphicsContext &gc)
 
 void GameImpl::initGame()
 {
+	// reset sprite lists
+	auto res = parent->getResources();
+	parseMaps(res->getJson("levelset"));
+
 	lives = START_LIVES;
+	playerHp = PLAYER_HP;
 	ringsCollected = 0;
 	redSocksCollected = 0;
 	cout << "Reset player map entry pos" << endl;
 	playerMapEntryPos = playerFirstStart;
+	
 	initMap();
 }
 
@@ -507,7 +517,7 @@ void GameImpl::initMap()
 	aView->add(TileMap::build(map, 1).get());
 
 	auto pos = (playerMapEntryPos - currentMap->bounds.topLeft()) * TILE_SIZE; 
-	player = new Player(this, pos.x(), pos.y());
+	player = new Player(this, pos.x(), pos.y(), playerHp);
 	addSprite (player);
 
 	localWaterLevel = (globalWaterLevel - currentMap->bounds.y()) * 32;

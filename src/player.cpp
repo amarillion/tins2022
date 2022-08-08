@@ -48,7 +48,7 @@ void Player::hit(int attackDamage, double delta)
 		hp = 0;
 		die();
 	}
-
+	parent->setPlayerHp(hp);
 }
 
 void Player::onCol(SpriteType st, Sprite *s, int dir)
@@ -90,7 +90,14 @@ void Player::onCol(SpriteType st, Sprite *s, int dir)
 		});
 		break;
 	}
-	default: /* do nothing */ break;
+	case ST_BONUS: {
+			if (se->getSubType() == Bonus::RING) {
+				if (hp < PLAYER_HP) { hp++; }
+				parent->setPlayerHp(hp);
+			}
+		}
+		break;
+		default: /* do nothing */ break;
 	}
 }
 
@@ -133,13 +140,13 @@ void SpriteEx::draw(const GraphicsContext &gc)
 #endif
 }
 
-Player::Player (Game *game, int x, int y) : SpriteEx (game, ST_PLAYER, x, y)
+Player::Player (Game *game, int x, int y, int _hp = PLAYER_HP) : SpriteEx (game, ST_PLAYER, x, y)
 {
 	unpassable = true;
 	setAnim(anims["Raul"]);
 	gravity = true;
 	state = 0;
-	hp = PLAYER_HP;
+	hp = _hp;
 	btn = game->getParent()->getInput();
 }
 
@@ -540,11 +547,11 @@ void Explosion::update()
 }
 
 
-Bonus::Bonus (Game * parent, int x, int y, int index, function<void()> onCollected) 
-	: SpriteEx (parent, ST_BONUS, x, y), index(index), onCollected(onCollected)
+Bonus::Bonus (Game * parent, int x, int y, int _subtype, function<void()> onCollected) 
+	: SpriteEx (parent, ST_BONUS, x, y, _subtype), onCollected(onCollected)
 {
 	gravity = false;
-	switch(index) {
+	switch(subtype) {
 		case SOCK: setAnim(anims["Redsock"]); break;
 		case RING: setAnim(anims["Ring"]); break;
 		case ONEUP: setAnim(anims["1UP"]); break;
@@ -556,7 +563,7 @@ void Bonus::onCol (SpriteType st, Sprite *s, int dir)
 	if (st == ST_PLAYER)
 	{
 		onCollected();
-		parent->collectBonus(index);
+		parent->collectBonus(subtype);
 		kill(); // disappear
 	}
 }

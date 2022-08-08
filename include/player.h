@@ -42,7 +42,7 @@ public:
 	int currentWeapon = 0;
 	int shootTimer = 0;
 	bool control = true;
-	Player(Game *, int x, int y);
+	Player(Game *, int x, int y, int _hp);
 	virtual void update();
 	void updateLand();
 	void updateWater();
@@ -53,7 +53,6 @@ public:
 
 class Bonus : public SpriteEx
 {
-	int index; // index in RedSock array
 	std::function<void()> onCollected;
 public:
 	Bonus (Game *, int x, int y, int bonusType, std::function<void()> onCollected);

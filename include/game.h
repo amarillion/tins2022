@@ -32,6 +32,7 @@ public:
 	virtual void teleport(Point targetPos) = 0;
 	virtual void updateWaterLevel() = 0;
 	virtual int getLocalWaterLevel() = 0;
+	virtual void setPlayerHp(int val) = 0;
 
 	// per-level, initialized in initLevel
 	// TODO: accessor
