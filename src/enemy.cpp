@@ -6,7 +6,6 @@
 #include "textstyle.h"
 #include "engine.h"
 #include "mainloop.h"
-#include <coroutine>
 #include "constants.h"
 
 using namespace std;
