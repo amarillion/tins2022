@@ -2,7 +2,7 @@
 #include <allegro5/allegro.h>
 #include "color.h"
 #include <assert.h>
-#include "sound.h"
+#include "audio.h"
 #include <stdio.h>
 #include <allegro5/allegro_font.h>
 #include "util.h"
@@ -206,7 +206,7 @@ void MenuScreen::prev()
 	if (sound_cursor && sound) sound->playSample (sound_cursor);
 }
 
-MenuScreen::MenuScreen(Sound *_sound)
+MenuScreen::MenuScreen(Audio *_sound)
 {
 	sound = _sound;
 	sound_enter = NULL; sound_cursor = NULL;
@@ -266,7 +266,7 @@ const Rect MenuScreen::marginAdjustedlayout(int marginTop, int marginBottom, Com
 	return Rect(p.x(), y + (idx + 1) * dy, p.w(), dy);
 }
 
-MenuBuilder::MenuBuilder(Container *parent, Sound *sound)
+MenuBuilder::MenuBuilder(Container *parent, Audio *sound)
 {
 	result = make_shared<MenuScreen>(sound);
 	parent->add(result, Container::FLAG_SLEEP);

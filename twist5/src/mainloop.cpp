@@ -121,8 +121,7 @@ MainLoop::MainLoop() :
 	fpsOn = true;
 #else
 	// default in release version
-	// screenMode = FULLSCREEN_WINDOW;
-	screenMode = WINDOWED; // temporarily default in release mode...
+	screenMode = FULLSCREEN_WINDOW;
 	fpsOn = false;
 #endif
 	instance = this;
@@ -131,7 +130,7 @@ MainLoop::MainLoop() :
 
 void MainLoop::getFromConfig(ALLEGRO_CONFIG *config)
 {
-	getSoundFromConfig(config);
+	_audio->getSoundFromConfig(config);
 	fpsOn = get_config_int (config, "twist", "fps", fpsOn);
 	screenMode = (ScreenMode)get_config_int (config, "twist", "windowed", screenMode);
 }
@@ -144,7 +143,7 @@ void MainLoop::getFromArgs(int argc, const char *const *argv)
 	{
 		if (strcmp (argv[i], "-nosound") == 0)
 		{
-			setSoundInstalled(false);
+			_audio->setInstalled(false);
 		}
 		else if (strcmp (argv[i], "-windowed") == 0)
 		{
@@ -172,6 +171,9 @@ void MainLoop::getFromArgs(int argc, const char *const *argv)
 
 int MainLoop::init(int argc, const char *const *argv)
 {
+	// set default audio module if none was provided
+	if (!_audio) _audio = make_unique<Audio>();
+
 	if (!al_init())
 	{
 		allegro_message("al_init() failed");
@@ -242,13 +244,16 @@ int MainLoop::init(int argc, const char *const *argv)
 		allegro_message ("Could not initialize primitives addon. ");
 	}
 
+	// set default audio module if none was provided
+	if (!_audio) _audio = make_unique<Audio>();
+
 	// set_volume_per_voice (1); //TODO
-	if (isSoundInstalled())
+	if (_audio->isInstalled())
 	{
 		if (!al_install_audio())
 		{
 			// could not get sound to work
-			setSoundInstalled(false);
+			_audio->setInstalled(false);
 //			allegro_message ("Could not initialize sound. Sound is turned off.\n%s\n", allegro_error); //TODO
 			allegro_message ("Could not initialize sound. Sound is turned off.");
 		}
@@ -260,7 +265,7 @@ int MainLoop::init(int argc, const char *const *argv)
 				allegro_message ("Could not reserve samples");
 			}
 		}
-		initSound();
+		_audio->init();
 	}
 
 	if (initDisplay() == 0)
@@ -659,7 +664,7 @@ void MainLoop::run()
 	}
 
 	// stop sound - important that this is done before the ALLEGRO_AUDIO_STREAM resources are destroyed
-	doneSound();
+	_audio->done();
 }
 
 MainLoop::~MainLoop()

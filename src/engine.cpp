@@ -13,6 +13,7 @@
 #include "menubase.h"
 #include "settings.h"
 #include "keymenuitem.h"
+#include "crossfade.h"
 
 using namespace std;
 
@@ -138,7 +139,8 @@ public:
 
 	void startMusic()
 	{
-		MainLoop::getMainLoop()->playMusic(
+		auto soundEx = dynamic_cast<CrossFadeAudio*>(MainLoop::getMainLoop()->audio());
+		soundEx->playDualMusic(
 			resources->getMusic("TankedTrinkets_above"),
 			resources->getMusic("TankedTrinkets_under"),
 			1.0
@@ -155,13 +157,14 @@ public:
 
 	void initMenu()
 	{
-		miSound = make_shared<SliderMenuItem>(&MainLoop::getMainLoop()->soundVolume, 
+		auto audio = MainLoop::getMainLoop()->audio();
+		miSound = make_shared<SliderMenuItem>(&audio->soundVolume, 
 			"Sfx", "Press left or right to change sound volume");
-		miSound->setEnabled(MainLoop::getMainLoop()->isSoundInstalled());
+		miSound->setEnabled(audio->isInstalled());
 
-		miMusic = make_shared<SliderMenuItem>(&MainLoop::getMainLoop()->musicVolume, 
+		miMusic = make_shared<SliderMenuItem>(&audio->musicVolume, 
 			"Music", "Press left or right to change music volume");
-		miMusic->setEnabled(MainLoop::getMainLoop()->isSoundInstalled());
+		miMusic->setEnabled(audio->isInstalled());
 
 		miStart = make_shared<ActionMenuItem>(E_LEVEL_INTRO
 			, "Start game", "");
@@ -213,9 +216,10 @@ public:
 			pushMsg(MSG_CLOSE);
 			break;
 		case E_TOGGLE_MUSIC: {
-			bool enabled = MainLoop::getMainLoop()->isMusicOn();
+			auto audio = MainLoop::getMainLoop()->audio();
+			bool enabled = audio->isMusicOn();
 			enabled = !enabled;
-			MainLoop::getMainLoop()->musicVolume.set(enabled ? 1.0 : 0.0);
+			audio->musicVolume.set(enabled ? 1.0 : 0.0);
 			if (enabled) startMusic();
 		}
 			break;
@@ -324,7 +328,7 @@ public:
 	virtual void playSample (const char *name) override {
 		ALLEGRO_SAMPLE *sample = resources->getSampleIfExists(string(name));
 		if (sample != NULL)
-			MainLoop::getMainLoop()->playSample (sample);
+			MainLoop::getMainLoop()->audio()->playSample(sample);
 		else
 			log ("Could not play sample %s", name);
 	}

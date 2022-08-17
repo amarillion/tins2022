@@ -14,6 +14,7 @@
 #include "tilemap.h"
 #include "mainloop.h"
 #include "enemy.h"
+#include "crossfade.h"
 
 using namespace std;
 
@@ -377,11 +378,12 @@ void GameImpl::onUpdate ()
 		// pan music...
 		static bool aboveMusic = true;
 		int aboveWater = (localWaterLevel - player->gety());
+		auto audio = dynamic_cast<CrossFadeAudio*>(MainLoop::getMainLoop()->audio());
 		if (aboveMusic && aboveWater < -200) {
 			aboveMusic = false;
 			cout << "Going to fade under" << endl;
 			auto animator = make_shared<Animator<float>>(
-				1.0, 0.0, 200, [=](float val){ MainLoop::getMainLoop()->setPan(val); } 
+				1.0, 0.0, 200, [=](float val){ audio->setPan(val); } 
 			);
 			parent->add(animator);
 		}
@@ -389,7 +391,7 @@ void GameImpl::onUpdate ()
 			aboveMusic = true;
 			cout << "Going to fade above" << endl;
 			auto animator = make_shared<Animator<float>>(
-				0.0, 1.0, 200, [=](float val){ MainLoop::getMainLoop()->setPan(val); } 
+				0.0, 1.0, 200, [=](float val){ audio->setPan(val); } 
 			);
 			parent->add(animator);
 		}

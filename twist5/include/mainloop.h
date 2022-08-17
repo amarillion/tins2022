@@ -2,7 +2,7 @@
 
 #include <allegro5/allegro.h>
 #include "component.h"
-#include "sound.h"
+#include "audio.h"
 #include "timer.h"
 
 #include <string>
@@ -40,7 +40,7 @@ typedef std::chrono::high_resolution_clock Clock;
 
 class RootComponent;
 
-class MainLoop final : public Component, public Sound, public ITimer
+class MainLoop final : public Component, public ITimer
 {
 private:
 	ALLEGRO_BITMAP *buffer;
@@ -48,6 +48,7 @@ private:
 	ALLEGRO_TIMER *logicTimer;
 	ALLEGRO_DISPLAY *display;
 
+	std::unique_ptr<Audio> _audio = nullptr;
 	std::shared_ptr<RootComponent> rootPane;
 	ComponentPtr engine;
 
@@ -189,6 +190,11 @@ public:
 
 	MainLoop &setResizableWindow (bool value) { isResizableWindow = value; return *this; }
 
+	MainLoop &setAudioModule(std::unique_ptr<Audio> val) {
+		_audio = move(val);
+		return *this;
+	}
+
 	ComponentPtr getEngine() { return engine; }
 	/**
 	 * returns 0 on success, 1 on failure
@@ -211,5 +217,6 @@ public:
 
 	void pumpMessages();
 
+	Audio *audio() { return _audio.get(); }
 	static MainLoop *getMainLoop();
 };

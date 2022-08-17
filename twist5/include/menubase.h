@@ -11,7 +11,7 @@ struct ALLEGRO_BITMAP;
 struct ALLEGRO_SAMPLE;
 struct ALLEGRO_FONT;
 
-class Sound;
+class Audio;
 
 class MenuScreen;
 
@@ -96,7 +96,7 @@ private:
 	std::vector<MenuItemPtr> items;
 	ALLEGRO_SAMPLE *sound_enter;
 	ALLEGRO_SAMPLE *sound_cursor;
-	Sound *sound;
+	Audio *sound;
 	ALLEGRO_COLOR colorNormal;
 	ALLEGRO_COLOR colorFlash1;
 	ALLEGRO_COLOR colorFlash2;
@@ -110,7 +110,7 @@ private:
 	int bottomMargin;
 	void selectFirstEnabled();
 public:
-	MenuScreen(Sound *sound = NULL);
+	MenuScreen(Audio *sound = NULL);
 	virtual ~MenuScreen() {}
 	unsigned int size () { return items.size(); }
 	void push_back(MenuItemPtr item)
@@ -164,7 +164,7 @@ typedef std::shared_ptr<MenuScreen> MenuScreenPtr;
 class MenuBuilder
 {
 public:
-	MenuBuilder(Container *parent, Sound *sound);
+	MenuBuilder(Container *parent, Audio *sound);
 
 	/** by default, menu items will be in layout group 1 */
 	MenuBuilder &push_back (MenuItemPtr item, int groupId = 1)
