@@ -64,14 +64,14 @@ void Pattern::draw(const GraphicsContext &gc)
 	}
 }
 
-TileMap::TileMap(const TEG_MAP *_tilemap, int _layer)
+TileMapView::TileMapView(const TEG_MAP *_tilemap, int _layer)
 {
 	layer = _layer;
 	tilemap = _tilemap;
 	setDimension(teg_pixelw(tilemap), teg_pixelh(tilemap));
 }
 
-void TileMap::draw(const GraphicsContext &gc)
+void TileMapView::draw(const GraphicsContext &gc)
 {
 	int xofst = 0;
 	int yofst = 0;
@@ -91,9 +91,9 @@ void TileMap::draw(const GraphicsContext &gc)
 	teg_draw_repeated(gc.buffer, tilemap, layer, -xofst, -yofst, frame);
 }
 
-ComponentBuilder<TileMap> TileMap::build(TEG_MAP *map, int layer)
+ComponentBuilder<TileMapView> TileMapView::build(TEG_MAP *map, int layer)
 {
-	return ComponentBuilder<TileMap>(make_shared<TileMap>(map, layer));
+	return ComponentBuilder<TileMapView>(make_shared<TileMapView>(map, layer));
 }
 
 void BitmapComp::draw (const GraphicsContext &gc)

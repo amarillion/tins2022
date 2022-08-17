@@ -509,18 +509,18 @@ void GameImpl::initMap()
 
 	auto cViewPort = make_shared<DerivedViewPort>(aViewPort, 4);
 	add(cViewPort);
-	cViewPort->setChild(TileMap::build(bg2).get());
+	cViewPort->setChild(TileMapView::build(bg2).get());
 
 	auto bViewPort = make_shared<DerivedViewPort>(aViewPort, 2);
 	add(bViewPort);
-	bViewPort->setChild(TileMap::build(bg).get());
+	bViewPort->setChild(TileMapView::build(bg).get());
 
 	add(aViewPort);
 	auto aView = make_shared<Container>();
 	aViewPort->setChild(aView);
 
-	aView->add(TileMap::build(map).get()); // TODO: tilemap not animated
-	aView->add(TileMap::build(map, 1).get());
+	aView->add(TileMapView::build(map).get()); // TODO: tilemap not animated
+	aView->add(TileMapView::build(map, 1).get());
 
 	auto pos = (playerMapEntryPos - currentMap->bounds.topLeft()) * TILE_SIZE; 
 	player = new Player(this, pos.x(), pos.y(), playerHp);
