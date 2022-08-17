@@ -104,44 +104,6 @@ void Player::onCol(SpriteType st, Sprite *s, int dir)
 }
 
 
-void SpriteEx::draw(const GraphicsContext &gc)
-{
-	al_set_target_bitmap (gc.buffer);
-
-	ALLEGRO_COLOR color;
-	switch (spriteType)
-	{
-	case ST_PLAYER: color = YELLOW; break;
-	case ST_PLATFORM: color = GREY; break;
-	case ST_ENEMY: color = GREEN; break;
-	case ST_BULLET: color = GREY; break;
-	case ST_ENEMY_BULLET: color = RED; break;
-	default: color = BLACK; break;
-	}
-
-	int x = getx() + gc.xofst;
-	int y = gety() + gc.yofst;
-
-	int msec = MainLoop::getMainLoop()->getMsecCounter();
-
-	if (anim != NULL)
-	{
-		anim->drawFrame (state, dir, msec, x, y);
-	}
-	else
-	{
-		al_draw_filled_rectangle (x, y, x + w, y + h, color);
-	}
-
-#ifdef DEBUG
-	if (parent->getParent()->isDebug())
-	{
-		al_draw_rectangle (x, y, x + w, y + h, color, 1.0);
-		draw_shaded_textf(parent->smallfont, WHITE, BLACK, x, y - 32, ALLEGRO_ALIGN_LEFT, "%i %i %ix%i", (int)getx(), (int)gety(), w, h);
-	}
-#endif
-}
-
 Player::Player (Game *game, int x, int y, int _hp = PLAYER_HP) : SpriteEx (game, ST_PLAYER, x, y)
 {
 	unpassable = true;
