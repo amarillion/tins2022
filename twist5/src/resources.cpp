@@ -51,6 +51,45 @@ public:
 	}
 };
 
+struct FileInfo {
+	
+	FileInfo(const std::string &filename) 
+		: filename(filename)
+	{
+		update();
+	}
+
+	bool isRecentlyModified() const {
+		ALLEGRO_FS_ENTRY *entry = al_create_fs_entry(filename.c_str());
+		time_t newLastModified = al_get_fs_entry_mtime(entry);
+		al_destroy_fs_entry(entry);
+		return (newLastModified > this->lastModified);
+	}
+
+	void update() {
+		ALLEGRO_FS_ENTRY *entry = al_create_fs_entry(filename.c_str());
+		lastModified = al_get_fs_entry_mtime(entry);
+		al_destroy_fs_entry(entry);
+	}
+
+	std::string filename;
+	time_t lastModified;
+};
+
+template<typename T>
+struct ResourceMap {
+	map <string, T> data;
+	map <string, FileInfo> fileInfo;
+	/** 
+	   TODO
+	put()
+	operator[]
+	~ResourceMap {
+
+	}
+	*/
+};
+
 class ResourcesImpl : public Resources
 {
 private:
@@ -58,7 +97,8 @@ private:
 	std::map <std::string, Anim*> animlist;
 	std::map <std::string, std::shared_ptr<FontWrapper>> fonts;
 
-	std::map <std::string, Tilemap*> jsonMaps; // seperately loaded maps
+	ResourceMap<Tilemap*> jsonMaps;
+
 	std::map <std::string, TEG_TILELIST*> tilelists;
 
 	std::map <std::string, ALLEGRO_SAMPLE *> samples;
@@ -310,7 +350,7 @@ public:
 		for(auto &i : samples) {
 			al_destroy_sample (i.second);
 		}
-		for(auto &i : jsonMaps) {
+		for(auto &i : jsonMaps.data) {
 			delete (i.second);
 		}
 	}
@@ -361,10 +401,10 @@ public:
 	}
 
 	virtual Tilemap *getJsonMap (const string &id) override {
-		if (jsonMaps.find(id) == jsonMaps.end()) {
+		if (jsonMaps.data.find(id) == jsonMaps.data.end()) {
 			throw (ResourceException(string_format("Couldn't find MAP '%s'", id.c_str())));
 		}
-		return jsonMaps[id];
+		return jsonMaps.data[id];
 	}
 
 	virtual TEG_TILELIST *getTilelist (const string &id) override {
@@ -389,7 +429,11 @@ public:
 		}
 
 		Tilemap *result = loadTilemap(filename, tiles);
-		jsonMaps[id] = result;
+		
+		// Can't use operator[], it needs a default constructor which FileInfo doesn't have.
+		jsonMaps.fileInfo.insert(pair<string, FileInfo>(id, FileInfo(filename)));
+
+		jsonMaps.data[id] = result;
 	}
 
 	virtual void addStream(const string &id, const string &filename) override {
@@ -416,22 +460,20 @@ public:
 	}
 
 	virtual void refreshModifiedFiles() {
-		for (auto &i: jsonMaps) {
-
-			Tilemap *tilemap = i.second;
-			ALLEGRO_FS_ENTRY *entry = al_create_fs_entry(tilemap->filename.c_str());
-			time_t lastModified = al_get_fs_entry_mtime(entry);
-			al_destroy_fs_entry(entry);
-
-			if (lastModified > tilemap->lastModified) {
-				cout << tilemap->filename << " Has changed, updating! " << endl;
-
+		for (auto &i: jsonMaps.fileInfo) {
+			const string &id = i.first;
+			FileInfo &f = i.second;
+			if (f.isRecentlyModified()) {
+				cout << f.filename << " Has changed, updating! " << endl;
+				Tilemap *old = jsonMaps.data[id];
 				// TODO: this is a memory leak. 
 				// We can't destroy the old one yet because it's still in use
 				// But we're replacing the owning pointer
 				// Shared_ptr will solve this.
-				Tilemap *result = loadTilemap(tilemap->filename, tilemap->map->tilelist);
-				i.second = result;
+				// or we keep an extra list with discarded pointers...
+				Tilemap *replacement = loadTilemap(f.filename, old->map->tilelist);
+				jsonMaps.data[id] = replacement;
+				f.update();
 			}
 		}
 	}

@@ -1,9 +1,6 @@
 #include "tilemap.h"
 #include "assert.h"
 #include <tegel5.h>
-#include <allegro5/allegro.h>
-
-#include <iostream> // debugging
 
 Tilemap::~Tilemap() {
 	teg_destroymap(map);
@@ -14,11 +11,6 @@ Tilemap *loadTilemap (const std::string &filename, TEG_TILELIST *tiles) {
 	Tilemap *result = new Tilemap();
 	JsonNode node = jsonParseFile(filename);
 	result->rawData = node;
-	result->filename = filename;
-	
-	ALLEGRO_FS_ENTRY *entry = al_create_fs_entry(filename.c_str());
-	result->lastModified = al_get_fs_entry_mtime(entry);
-	al_destroy_fs_entry(entry);
 
 	int w = node.getInt("width");
 	int h = node.getInt("height");
