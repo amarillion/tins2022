@@ -4,11 +4,11 @@
 #include "component.h"
 #include "sound.h"
 #include "timer.h"
-#include "point.h"
 
 #include <string>
 #include <vector>
 #include <map>
+#include "point.h"
 
 #ifdef USE_MONITORING
 #include <chrono>
