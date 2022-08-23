@@ -50,14 +50,18 @@ int _teg_installed = 0;
 
 int teg_scan_data_line (char *line, TEG_TILE *tempframes, TEG_TILELIST *tiles /*, const DATAFILE *data */);
 
+
 /**
  * Same as strncpy, but ensure null terminated
  */
+/*
+ // Prevent duplicate definition on clang/osx
 void strlcpy(char * dest, const char *src, size_t len)
 {
 	strncpy (dest, src, len);
 	if (strlen(src) > len-1) dest[len-1] = 0;
 }
+*/
 
 // grow or shrink the tilelist, preserving as much data as possible
 // returns 0 when failed, 1 on success.

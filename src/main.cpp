@@ -6,9 +6,12 @@
 
 using namespace std;
 
-int main(int argc, const char *const *argv)
+// definition of main must be exactly this, or you'll get al_mangled_main errors on Mac os x.
+// so no const char antything
+int main(int argc, char **argv)
 {
-	auto mainloop = MainLoop();
+    // Fix unneeded copy, clang doesn't like it on C++14
+    MainLoop mainloop {};
 	auto engine = Engine::newInstance();
 
 	mainloop
