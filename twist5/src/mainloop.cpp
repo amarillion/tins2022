@@ -244,9 +244,6 @@ int MainLoop::init(int argc, const char *const *argv)
 		allegro_message ("Could not initialize primitives addon. ");
 	}
 
-	// set default audio module if none was provided
-	if (!_audio) _audio = make_unique<Audio>();
-
 	// set_volume_per_voice (1); //TODO
 	if (_audio->isInstalled())
 	{
