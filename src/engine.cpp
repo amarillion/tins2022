@@ -3,7 +3,6 @@
 #include "game.h"
 #include "mainloop.h"
 #include "DrawStrategy.h" // clearscreen
-#include "color.h"
 #include "text.h"
 #include "input.h"
 #include "metrics.h"
@@ -83,6 +82,7 @@ public:
 			resources->addFiles("data/*.xml");
 			resources->addFiles("data/*.ogg");
 			resources->addFiles("data/*.ttf");
+			resources->addFiles("data/*.glsl");
 			resources->addStream("TankedTrinkets_above", "data/TankedTrinkets_above.ogg");
 			resources->addStream("TankedTrinkets_under", "data/TankedTrinkets_under.ogg");
 			loadMaps();

@@ -15,6 +15,7 @@
 #include "mainloop.h"
 #include "enemy.h"
 #include "crossfade.h"
+#include "ripple.h"
 
 using namespace std;
 
@@ -72,7 +73,8 @@ struct MapLayout {
 class GameImpl : public Game
 {
 	Engine *parent;
-
+	unique_ptr<RippleEffect> ripple;
+	ALLEGRO_BITMAP *preEffectBuffer;
 public:
 	GameImpl(Engine *parent) : 
 			parent(parent),
@@ -97,6 +99,10 @@ public:
 		gamefont = res->getFont("megaman_2")->get(24);
 		smallfont = res->getFont("megaman_2")->get(8);
 		Sprite::anims = res->getAnims();
+
+		RippleEffect::init(res);
+		ripple = make_unique<RippleEffect>();
+		preEffectBuffer = al_create_bitmap(MAIN_WIDTH, MAIN_HEIGHT);
 	}
 
 	int totalRedSocks;
@@ -433,8 +439,13 @@ void GameImpl::updateObjects()
 	sprites.remove_if (MyObjectRemover());
 }
 
-void GameImpl::draw (const GraphicsContext &gc)
+void GameImpl::draw (const GraphicsContext &gc3)
 {
+	GraphicsContext gc;
+	gc.buffer = preEffectBuffer;
+	gc.xofst = gc3.xofst;
+	gc.yofst = gc3.yofst;
+
 	Container::draw(gc);
 
 	// gc2 is a graphicsContext using aViewport's offset
@@ -464,12 +475,18 @@ void GameImpl::draw (const GraphicsContext &gc)
 	}
 #endif
 
+	al_set_target_bitmap(gc3.buffer);
+	int counter = MainLoop::getMainLoop()->getMsecCounter();
+	ripple->enable(float(counter % 1000) / 1000.0f, preEffectBuffer);
+	al_draw_filled_rectangle(0, 0, MAIN_WIDTH, MAIN_HEIGHT, BLACK);
+	ripple->disable();
+
 	// draw water
-	al_draw_filled_rectangle(
-		0, localWaterLevel - 16 + gc2.yofst,
-		GAME_WIDTH, GAME_HEIGHT,
-		al_map_rgba(0,0,255,64)
-	);
+//	al_draw_filled_rectangle(
+//		0, localWaterLevel - 16 + gc2.yofst,
+//		GAME_WIDTH, GAME_HEIGHT,
+//		al_map_rgba(0,0,255,64)
+//	);
 }
 
 void GameImpl::initGame()
@@ -484,7 +501,7 @@ void GameImpl::initGame()
 	redSocksCollected = 0;
 	cout << "Reset player map entry pos" << endl;
 	playerMapEntryPos = playerFirstStart;
-	
+
 	initMap();
 }
 
