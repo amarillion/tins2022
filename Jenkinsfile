@@ -1,8 +1,6 @@
 node {
 
 	catchError {
-		def TWIST_HOME = "${env.JENKINS_HOME}/jobs/twist5/workspace"
-		
 		stage('CheckOut') {
 			checkout scm
 		}
