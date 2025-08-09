@@ -52,8 +52,10 @@ int teg_scan_data_line (char *line, TEG_TILE *tempframes, TEG_TILELIST *tiles /*
 
 /**
  * Same as strncpy, but ensure null terminated
+ * Some systems define strlcpy, some don't.
+ * To avoid name clashes, this function is called teg_strlcpy instead.
  */
-void strlcpy(char * dest, const char *src, size_t len)
+void teg_strlcpy(char * dest, const char *src, size_t len)
 {
 	strncpy (dest, src, len);
 	if (strlen(src) > len-1) dest[len-1] = 0;
@@ -91,7 +93,7 @@ int teg_tilelist_resize (TEG_TILELIST *tiles, int newtilenum, int newanimsteps)
 	}
 	else
 	{
-		strlcpy (teg_error, teg_errorlist[TEGERR_MEMORY], sizeof(teg_error)-1);
+		teg_strlcpy (teg_error, teg_errorlist[TEGERR_MEMORY], sizeof(teg_error)-1);
 		return 0;		
 	}
 }
@@ -118,7 +120,7 @@ int teg_scan_data_line (const char *line, TEG_TILE *tempframes, TEG_TILELIST *ti
 	}	
 	else
 	{
-		strlcpy (teg_error, teg_errorlist[TEGERR_UEO_BODY], sizeof(teg_error)-1);
+		teg_strlcpy (teg_error, teg_errorlist[TEGERR_UEO_BODY], sizeof(teg_error)-1);
 		error = true;
 	}
 	for (frame = 0; frame < tiles->animsteps && !lastframe && !error; )
@@ -158,7 +160,7 @@ int teg_scan_data_line (const char *line, TEG_TILE *tempframes, TEG_TILELIST *ti
 	if (!error && frame == 0)
 	{
 		error = true;
-		strlcpy (teg_error, teg_errorlist[TEGERR_UEO_BODY], sizeof(teg_error)-1);
+		teg_strlcpy (teg_error, teg_errorlist[TEGERR_UEO_BODY], sizeof(teg_error)-1);
 	} 
 	if (!error && frame < tiles->animsteps)
 	{
@@ -290,7 +292,7 @@ TEG_TILELIST *teg_loadtiles_data_v3(ifstream &f, const char *filename)
 		if (temp->tiles == NULL)
 		{
 			error = true;
-			strlcpy (teg_error, teg_errorlist[TEGERR_MEMORY], sizeof(teg_error)-1);
+			teg_strlcpy (teg_error, teg_errorlist[TEGERR_MEMORY], sizeof(teg_error)-1);
 		}
 	}
 
@@ -387,7 +389,7 @@ TEG_TILELIST *teg_loadtiles_from_stream (ifstream &f, const char *filename)
 		if (version < 3 || version > 3)
 		{
 			error = true; // not the right format version
-			strlcpy (teg_error, teg_errorlist[TEGERR_TLL_VERSION], sizeof(teg_error)-1);
+			teg_strlcpy (teg_error, teg_errorlist[TEGERR_TLL_VERSION], sizeof(teg_error)-1);
 		} 
 		else if (version == 3)
 		{
@@ -396,7 +398,7 @@ TEG_TILELIST *teg_loadtiles_from_stream (ifstream &f, const char *filename)
 		else 
 		{
 			error = true; // not the right format version
-			strlcpy (teg_error, teg_errorlist[TEGERR_TLL_VERSION], sizeof(teg_error)-1);
+			teg_strlcpy (teg_error, teg_errorlist[TEGERR_TLL_VERSION], sizeof(teg_error)-1);
 		}
 	}
 	return NULL;	
@@ -488,8 +490,8 @@ TEG_TILELIST *teg_loadtiles (const char *filename)
 	inf.open(filename, ios::in /*,  "rt"*/); //TODO mode...
 	if (!inf)
 	{
-		strlcpy (teg_error, teg_errorlist[TEGERR_FOPEN], sizeof(teg_error)-1);
-		return NULL; // error
+		teg_strlcpy (teg_error, teg_errorlist[TEGERR_FOPEN], sizeof(teg_error)-1);
+		return nullptr; // error
 	}
 	result = teg_loadtiles_from_stream (inf, filename);
 	if (result)
@@ -497,7 +499,7 @@ TEG_TILELIST *teg_loadtiles (const char *filename)
 		assert (result->filename == NULL); // make sure that no memory for filename has been allocated yet
 		int len = strlen (filename);
 		result->filename = (char *)malloc(len + 1);
-		strlcpy (result->filename, filename, len);
+		teg_strlcpy (result->filename, filename, len);
 	}
 	inf.close();
 	return result;
